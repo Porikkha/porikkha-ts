@@ -1,6 +1,18 @@
 import { Schema, model, models } from "mongoose";
 import Question from "@/models/questions";
-const examSchema = Schema({
+
+
+interface Exam {
+  creatorId: string,
+  title: string,
+  description: string ,
+  questions: [Object],
+  startTime: Date,
+  duration: Number,
+  allowedAbilities: [Object],
+};
+
+const examSchema = new Schema<Exam>({
   creatorId: { type: String, required: true },
   title: { type: String, required: true },
   description: { type: String },
