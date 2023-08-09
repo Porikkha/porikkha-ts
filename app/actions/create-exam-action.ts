@@ -1,7 +1,7 @@
 "use server";
 
 import { connectMongoDB } from "@/utils/database";
-import Exam from "@/models/exams";
+import Exam, { ExamInterface } from "@/models/exams";
 
 /**
  * Create a new exam in the database.
@@ -9,12 +9,12 @@ import Exam from "@/models/exams";
  * @param {Array} quess - List of questions to be added to the exam.
  * @param {string} sessionId - ID of the session or creator.
  */
-export const createExam = async (quess, sessionId) => {
+export const createExam = async (quess:any, sessionId:any) => {
   await connectMongoDB();
 
   // Transform the provided questions into the desired format.
-  const questions = quess.map((question) => {
-    const choices = question.OPTIONS.map((choice, index) => ({
+  const questions = quess.map((question:any) => {
+    const choices = question.OPTIONS.map((choice:any, index:any) => ({
       text: choice,
       id: index + 1,
     }));
@@ -30,7 +30,7 @@ export const createExam = async (quess, sessionId) => {
   });
 
   // Define the exam object.
-  const exam = {
+  const exam:ExamInterface =  {
     creatorId: sessionId,
     title: "Exam 1",
     description: "This is an exam",

@@ -2,7 +2,7 @@ import { Schema, model, models } from "mongoose";
 import Question from "@/models/questions";
 
 
-interface Exam {
+export interface ExamInterface {
   creatorId: string,
   title: string,
   description: string ,
@@ -12,7 +12,7 @@ interface Exam {
   allowedAbilities: [Object],
 };
 
-const examSchema = new Schema<Exam>({
+const examSchema = new Schema<ExamInterface>({
   creatorId: { type: String, required: true },
   title: { type: String, required: true },
   description: { type: String },
