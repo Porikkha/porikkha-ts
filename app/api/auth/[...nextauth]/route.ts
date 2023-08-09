@@ -1,22 +1,22 @@
-import NextAuth from "next-auth";
+import NextAuth, { DefaultSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { prisma } from "@/utils/database";
 
 const handler = NextAuth({
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
   callbacks: {
     async session({ session }) {
       const sessionUser = await prisma.user.findUnique({
         where: {
-          email: session.user.email,
+          email: session.user?.email as string,
         },
       });
-      session.user.id = sessionUser.id.toString();
+      session.user.id = sessionUser?.id.toString();
       return session;
     },
     async signIn({ profile }) {
