@@ -3,19 +3,20 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, } from "react";
-import { signIn, signOut, useSession, getProviders } from "next-auth/react";
-import { Provider } from "next-auth/providers/index";
+import { signIn, signOut, useSession, getProviders, ClientSafeProvider, LiteralUnion } from "next-auth/react";
+import { BuiltInProviderType } from "next-auth/providers/index";
 
 const Nav = () => {
   const { data: session } = useSession();
-  const [providers, setProviders] = useState<Provider[]>();
+  const [providers, setProviders] = useState<Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider> | null>();
 
 
   const [toggleDropdown, setToggleDropdown] = useState(false);
   useEffect(() => {
     const setupProviders = async () => {
       const response = await getProviders();
-      setProviders(response as unknown as Provider[]);
+      setProviders(response);
+      console.log(`nav: providers response: `);
       console.log(response);
     };
     setupProviders();
