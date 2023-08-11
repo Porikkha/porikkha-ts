@@ -8,7 +8,6 @@ export interface Choice {
 export default interface Question { //extends Document {
   id: number; 
   title: string;
-  description?: string;
   choices: Choice[];
   type: "single-choice" | "multiple-choice" | "short-answer";
   points: number;

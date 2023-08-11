@@ -52,7 +52,7 @@ export const createExamFromQuestions = async (
   }
 };
 
-export const createExam = async (exam: Exam, sessionId: any) => {
+export const createExam = async (exam: ExamInterface, sessionId: any) => {
   await connectMongoDB();
   try {
     const res = await Exam.create(exam);
