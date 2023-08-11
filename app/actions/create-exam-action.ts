@@ -11,27 +11,14 @@ import Question from "@/interfaces/Question";
  * @param {Array} quess - List of questions to be added to the exam.
  * @param {string} sessionId - ID of the session or creator.
  */
-export const createExamFromQuestions = async (quess:Question[], sessionId:any) => {
+export const createExamFromQuestions = async (
+  quess: Question[],
+  sessionId: any
+) => {
   await connectMongoDB();
 
-  // const questions = quess.map((question:any) => {
-  //   const choices = question.OPTIONS.map((choice:any, index:any) => ({
-  //     text: choice,
-  //     id: index + 1,
-  //   }));
-
-  //   return {
-  //     title: question.QUESTION,
-  //     description: "This is a question",
-  //     choices: choices,
-  //     type: "single-choice",
-  //     points: 1,
-  //     answerId: [1],
-  //   };
-  // });
-
   // Define the exam object.
-  const exam:ExamInterface =  {
+  const exam: ExamInterface = {
     creatorId: sessionId,
     title: "Exam 1",
     description: "This is an exam",
@@ -65,16 +52,13 @@ export const createExamFromQuestions = async (quess:Question[], sessionId:any) =
   }
 };
 
-
-export const createExam = async (exam:Exam, sessionId:any) => {
+export const createExam = async (exam: Exam, sessionId: any) => {
   await connectMongoDB();
-  try{
+  try {
     const res = await Exam.create(exam);
     console.log("🚀 Exam creation successful!");
-    console.log("Exam Id: ",res._id) ;
-  }
-  catch(err){
+    console.log("Exam Id: ", res._id);
+  } catch (err) {
     console.error("🚀 Error during exam creation:", err);
   }
 };
-

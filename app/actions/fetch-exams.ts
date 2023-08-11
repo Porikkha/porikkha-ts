@@ -2,7 +2,7 @@
 import { connectMongoDB } from "@/utils/database";
 import Exam from "@/models/exams";
 
-export const createExam = async (creatorId:any) => {
+export const createExam = async (creatorId: any) => {
   await connectMongoDB();
   try {
     const exams = await Exam.find({ creatorId: creatorId }).exec();
