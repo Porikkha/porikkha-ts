@@ -1,5 +1,5 @@
 import Alert from "@mui/material/Alert";
-const SuccessAlert = ({ showSuccessAlert, setShowSuccessAlert }) => {
+const SuccessAlert = ({ showSuccessAlert, setShowSuccessAlert }:{showSuccessAlert:boolean, setShowSuccessAlert: (event: React.SyntheticEvent<Element, Event>) => void}) => {
   return (
     showSuccessAlert && (
       <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
