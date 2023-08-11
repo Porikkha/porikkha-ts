@@ -31,7 +31,7 @@ export default function MultipleChoice({ qdata, editActions }: { qdata: Question
         <Typography sx={{alignSelf:"center"}} className="order-last">Points : 5</Typography>
       </CardContent>
       <Divider sx={{ width: "100%", alignSelf: "center" }} />
-      <CardContent className="pl-10">
+      <CardContent className="ml-10">
         <RadioGroup onChange={(e) => handleChange(e)} defaultValue="medium" name="radio-buttons-group">
           {qdata.choices.map((option, index) => {
             return <Radio value={index + 1} label={option.text} key={index+1} />;
