@@ -21,7 +21,7 @@ const QuestionForm = ({ question, onDone }:any) => {
 
   const handleSubmit = (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    onDone({ type, title, description, choices });
+    onDone({ type:type, title:title, description:description, choices:choices });
   };
 
   return (
