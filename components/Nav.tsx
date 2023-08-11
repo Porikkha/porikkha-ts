@@ -7,7 +7,7 @@ import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
 const Nav = () => {
   const { data: session } = useSession();
-  const [providers, setProviders] = useState(null);
+  const [providers, setProviders] = useState<any>(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
   useEffect(() => {
     const setupProviders = async () => {
@@ -38,12 +38,12 @@ const Nav = () => {
             <Link href="/create-exam" className="purple_btn">
               Create Exam
             </Link>
-            <button type="button" onClick={signOut} className="outline_btn">
+            <button type="button" onClick={() => signOut()} className="outline_btn">
               Sign Out
             </button>
             <Link href="/profile">
               <Image
-                src={session?.user.image}
+                src={session?.user.image as string}
                 width={37}
                 height={37}
                 className="rounded-full"
@@ -84,7 +84,7 @@ const Nav = () => {
               }}
             >
               <Image
-                src={session?.user.image}
+                src={session?.user.image as string }
                 width={37}
                 height={37}
                 className="rounded-full"

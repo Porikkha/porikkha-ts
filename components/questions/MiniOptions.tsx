@@ -5,7 +5,7 @@ import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
 import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 
 
-export default function MiniOptions( {editActions} ) {
+export default function MiniOptions( {editActions}:any ) {
     const [options, setOptions] = useState(false);
 
     return (

@@ -2,11 +2,11 @@
 import { Card, CardContent, Divider, Typography } from "@mui/joy";
 import { Radio, RadioGroup,Box } from "@mui/joy";
 import MiniOptions from "@/components/questions/MiniOptions";
+import Question from "@/interfaces/Question";
 
-export default function MultipleChoice({ qdata, editActions }) {
-
-  const handleChange = (e) => {
-
+export default function MultipleChoice({ qdata, editActions }: { qdata: Question, editActions: any } ) {
+  const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
   };
 
   return (
@@ -25,16 +25,16 @@ export default function MultipleChoice({ qdata, editActions }) {
             borderRadius: "5px",
           }}
         >
-           <Typography>{qdata.NUMBER}</Typography> 
+           <Typography>{qdata.id}</Typography> 
         </Box>
-        <Typography className="grow" sx={{alignSelf:"center"}}>{qdata.QUESTION}</Typography>
+        <Typography className="grow" sx={{alignSelf:"center"}}>{qdata.title}</Typography>
         <Typography sx={{alignSelf:"center"}} className="order-last">Points : 5</Typography>
       </CardContent>
       <Divider sx={{ width: "100%", alignSelf: "center" }} />
       <CardContent className="pl-10">
-        <RadioGroup onChange={(e) => handleChange()} defaultValue="medium" name="radio-buttons-group">
-          {qdata.OPTIONS.map((option, index) => {
-            return <Radio value={index + 1} label={option} key={index+1} />;
+        <RadioGroup onChange={(e) => handleChange(e)} defaultValue="medium" name="radio-buttons-group">
+          {qdata.choices.map((option, index) => {
+            return <Radio value={index + 1} label={option.text} key={index+1} />;
           })}
         </RadioGroup>
       </CardContent>
