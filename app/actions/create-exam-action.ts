@@ -1,8 +1,8 @@
 "use server";
 
 import { connectMongoDB } from "@/utils/database";
-import Exam, { ExamInterface } from "@/models/exams";
-
+import Exam from "@/models/exams";
+import ExamInterface from "@/interfaces/Exam";
 /**
  * Create a new exam in the database.
  *

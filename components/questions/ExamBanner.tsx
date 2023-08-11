@@ -1,10 +1,9 @@
-
 import Link from "next/link";
 import { useState } from "react";
 import { Input, Switch, Typography, Modal, ModalDialog, Stack, FormControl, FormLabel, Button } from "@mui/joy";
 import Label from "@/components/ui/Labels";
 
-export default function ExamBanner({values, setters}) {
+export default function ExamBanner({values, setters}: any) {
     return (
               <div className="px-20 py-10 w-4/5 mx-auto bg-white rounded-xl items-center space-x-4">
         <div className="w-full">
