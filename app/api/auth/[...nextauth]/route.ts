@@ -10,16 +10,16 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async session({ session }) {
+    async session( {session} : any) {
       const sessionUser = await prisma.user.findUnique({
         where: {
           email: session.user?.email as string,
         },
       });
-      session.user.id = sessionUser?.id.toString();
+      session.user.id = (sessionUser?.id as string).toString();
       return session;
     },
-    async signIn({ profile }) {
+    async signIn({ profile }: any) {
       try {
         // check if user already exists
         const userExists = await prisma.user.findUnique({

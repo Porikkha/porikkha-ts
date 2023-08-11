@@ -1,7 +1,7 @@
 import "@/styles/globals.css";
 import '@fontsource/inter';
 import Nav from "@/components/Nav";
-import Provider from "@/components/Provider";
+import Provider from "./Provider";
 import Footer from "@/components/ui/Footer";
 
 export const metadata = {
