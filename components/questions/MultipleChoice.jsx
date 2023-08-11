@@ -1,14 +1,9 @@
 "use client";
-//import { Card, CardContent, Typography } from "@mui/material";
 import { Card, CardContent, Divider, Typography } from "@mui/joy";
 import { Radio, RadioGroup,Box } from "@mui/joy";
 import MiniOptions from "@/components/questions/MiniOptions";
-import ModeOutlinedIcon from '@mui/icons-material/ModeOutlined';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
-import ArrowUpwardOutlinedIcon from '@mui/icons-material/ArrowUpwardOutlined';
-import ArrowDownwardOutlinedIcon from '@mui/icons-material/ArrowDownwardOutlined';
 
-export default function MultipleChoice({ qdata }) {
+export default function MultipleChoice({ qdata, editActions }) {
 
   const handleChange = (e) => {
 
@@ -44,7 +39,7 @@ export default function MultipleChoice({ qdata }) {
         </RadioGroup>
       </CardContent>
       <Divider sx={{ width: "100%", alignSelf: "center" }} />
-      <MiniOptions/>
+      <MiniOptions editActions={editActions}/>
 
 
     </Card>
