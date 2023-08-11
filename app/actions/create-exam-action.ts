@@ -3,38 +3,39 @@
 import { connectMongoDB } from "@/utils/database";
 import Exam from "@/models/exams";
 import ExamInterface from "@/interfaces/Exam";
+import Question from "@/interfaces/Question";
+
 /**
  * Create a new exam in the database.
  *
  * @param {Array} quess - List of questions to be added to the exam.
  * @param {string} sessionId - ID of the session or creator.
  */
-export const createExam = async (quess:any, sessionId:any) => {
+export const createExamFromQuestions = async (quess:Question[], sessionId:any) => {
   await connectMongoDB();
 
-  // Transform the provided questions into the desired format.
-  const questions = quess.map((question:any) => {
-    const choices = question.OPTIONS.map((choice:any, index:any) => ({
-      text: choice,
-      id: index + 1,
-    }));
+  // const questions = quess.map((question:any) => {
+  //   const choices = question.OPTIONS.map((choice:any, index:any) => ({
+  //     text: choice,
+  //     id: index + 1,
+  //   }));
 
-    return {
-      title: question.QUESTION,
-      description: "This is a question",
-      choices: choices,
-      type: "single-choice",
-      points: 1,
-      answerId: [1],
-    };
-  });
+  //   return {
+  //     title: question.QUESTION,
+  //     description: "This is a question",
+  //     choices: choices,
+  //     type: "single-choice",
+  //     points: 1,
+  //     answerId: [1],
+  //   };
+  // });
 
   // Define the exam object.
   const exam:ExamInterface =  {
     creatorId: sessionId,
     title: "Exam 1",
     description: "This is an exam",
-    questions: questions,
+    questions: quess,
     startTime: new Date(),
     duration: 60,
     allowedAbilities: [
@@ -63,3 +64,17 @@ export const createExam = async (quess:any, sessionId:any) => {
     console.error("🚀 Error during exam creation:", err);
   }
 };
+
+
+export const createExam = async (exam:Exam, sessionId:any) => {
+  await connectMongoDB();
+  try{
+    const res = await Exam.create(exam);
+    console.log("🚀 Exam creation successful!");
+    console.log("Exam Id: ",res._id) ;
+  }
+  catch(err){
+    console.error("🚀 Error during exam creation:", err);
+  }
+};
+

@@ -1,14 +1,10 @@
-
 import { Input, Typography, Modal, ModalDialog, Stack, FormControl, FormLabel, Button } from "@mui/joy";
 import EditMultipleChoice from "./EditMultipleChoice";
+import Question from "@/interfaces/Question";
+import { dummyQuestions } from "@/interfaces/Question";
 
-const qdata = {
-  NUMBER : 1,
-  QUESTION: "What is the capital of Dubai?",
-  OPTIONS: ["Abu Dhabi", "Dhaka", "Delhi", "Kabul"],
-}
 
-export default function AddQuestionModal({open, setOpen, addQuestion}) {
+export default function AddQuestionModal({open, setOpen, addQuestion}:any) {
     return (
       <Modal open={open} onClose={() => setOpen(false)}>
         <ModalDialog
@@ -22,7 +18,7 @@ export default function AddQuestionModal({open, setOpen, addQuestion}) {
           <Typography id="basic-modal-dialog-description">
             Fill in the information of the question
           </Typography>
-            <EditMultipleChoice qdata={qdata} addQuestion={addQuestion}/>
+            <EditMultipleChoice qdata={dummyQuestions[0]} addQuestion={addQuestion}/>
         </ModalDialog>
       </Modal>
     )

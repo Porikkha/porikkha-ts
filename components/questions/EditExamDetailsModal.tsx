@@ -9,7 +9,7 @@ import {
 	Button,
 } from "@mui/joy";
 
-export default function EditExamDetailsModal({ open, setOpen, values, setters }) {
+export default function EditExamDetailsModal({ open, setOpen, values, setters }:any) {
 	return (
 		<Modal open={open} onClose={() => setOpen(false)}>
 			<ModalDialog

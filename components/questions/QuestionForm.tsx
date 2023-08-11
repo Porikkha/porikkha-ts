@@ -1,38 +1,39 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Button, Input, Select, MenuItem, IconButton } from '@mui/joy';
 import { AddCircleOutline } from '@mui/icons-material';
+import { Choice } from '@/interfaces/Question';
 
-const QuestionForm = ({ question, onDone }) => {
+const QuestionForm = ({ question, onDone }:any) => {
   const [type, setType] = useState(question?.type || 'multiple-choice');
   const [title, setTitle] = useState(question?.title || '');
   const [description, setDescription] = useState(question?.description || '');
-  const [choices, setChoices] = useState(question?.choices || ['']);
+  const [choices, setChoices] = useState<Choice[]>(question?.choices || ['']);
 
   const handleAddChoice = () => {
-    setChoices([...choices, '']);
+    // setChoices([...choices, '']);
   };
 
-  const handleChoiceChange = (index, value) => {
+  const handleChoiceChange = (index:any, value:any) => {
     const newChoices = [...choices];
     newChoices[index] = value;
     setChoices(newChoices);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = (event:React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onDone({ type, title, description, choices });
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={(e) => handleSubmit(e)}>
       <Select value={type} onChange={(e, newVal) => setType(newVal)}>
-        <MenuItem value="multiple-choice">Multiple Choice</MenuItem>
-        <MenuItem value="short-answer">Short Answer</MenuItem>
+        <MenuItem>Multiple Choice</MenuItem> 
+        <MenuItem>Short Answer</MenuItem>
       </Select>
-      <Input value={title} onChange={(e) => setTitle(e.target.value)} label="Question Title" />
-      <Input value={description} onChange={(e) => setDescription(e.target.value)} label="Question Description" />
+      <Input value={title} onChange={(e) => setTitle(e.target.value)}></Input>
+      <Input value={description} onChange={(e) => setDescription(e.target.value)} />
       {type === 'multiple-choice' && choices.map((choice, index) => (
-        <Input key={index} value={choice} onChange={(e) => handleChoiceChange(index, e.target.value)} label={`Choice ${index + 1}`} />
+        <Input key={index} value={choice.text} onChange={(e) => handleChoiceChange(index, e.target.value)} />
       ))}
       {type === 'multiple-choice' && (
         <IconButton onClick={handleAddChoice}>

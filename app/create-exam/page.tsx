@@ -2,39 +2,17 @@
 
 import MultipleChoice from "@/components/questions/MultipleChoice";
 import { useEffect, useState } from "react";
-import { createExam } from "@/app/actions/create-exam-action";
+import { createExam, createExamFromQuestions } from "@/app/actions/create-exam-action";
 import { useSession } from "next-auth/react";
 import AddIcon from "@mui/icons-material/Add";
 import AddQuestionModal from "@/components/questions/AddQuestionModal";
 import EditExamDetailsModal from "@/components/questions/EditExamDetailsModal";
 import ExamBanner from "@/components/questions/ExamBanner";
 import SuccessAlert from "@/components/ui/SuccessAlert";
+import Question from "@/interfaces/Question";
+import { dummyQuestions} from "@/interfaces/Question";
+import Exam from "@/interfaces/Exam";
 
-const questions = [
-	{
-		TYPE: "MCQ",
-		NUMBER: 1,
-		QUESTION: "What is the full form of FCFS? ",
-		OPTIONS: [
-			"First Come First Serve",
-			"First Serve First Come",
-			"First Crow First Sheet",
-			"First Cross First Serve",
-		],
-	},
-	{ TYPE: "Short", NUMBER: 2, QUESTION: "Hello ? ", OPTIONS: ["1", "2"] },
-	{
-		TYPE: "MCQ",
-		NUMBER: 3,
-		QUESTION: "What is the full form of FCFS? ",
-		OPTIONS: [
-			"First Come First Serve",
-			"First Serve First Come",
-			"First Crow First Sheet",
-			"First Cross First Serve",
-		],
-	},
-];
 
 const Home = () => {
 	const [open, setOpen] = useState(false);
@@ -53,7 +31,7 @@ const Home = () => {
 	const [enableAutoGrading, setEnableAutoGrading] = useState(false);
 
 	const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-	const [quess, setQuess] = useState(questions);
+	const [quess, setQuess] = useState(dummyQuestions);
 	const { data: session } = useSession();
 
 	const setters = {
@@ -79,21 +57,21 @@ const Home = () => {
 		enableAutoGrading,
 	};
 
-  const setQuestionNumbers = (questions) => {
+  const setQuestionNumbers = (questions:Question[]) => {
     return questions.map((question, index) => {
-      question.NUMBER = index + 1;
+      question.id = index + 1;
       return question;
     });
   }
 
-  const deleteQuestion = (index) => {
+  const deleteQuestion = (index:number) => {
     let newQuestions = [...quess];
     newQuestions.splice(index, 1);
     newQuestions = setQuestionNumbers(newQuestions);
     setQuess(newQuestions);
   };
 
-  const moveQuestionUp = (index) => {
+  const moveQuestionUp = (index:number) => {
     if (index === 0) return;
     let newQuestions = [...quess];
     const temp = newQuestions[index];
@@ -103,7 +81,7 @@ const Home = () => {
     setQuess(newQuestions);
   };
 
-  const moveQuestionDown = (index) => {
+  const moveQuestionDown = (index:number) => {
     if (index === quess.length - 1) return;
     let newQuestions = [...quess];
     const temp = newQuestions[index];
@@ -114,14 +92,14 @@ const Home = () => {
   };
   
 
-  const getEditActions = (index) => {
+  const getEditActions = (index:number) => {
     const editActions = {
       deleteQuestion: () => deleteQuestion(index),
       moveQuestionUp: () => moveQuestionUp(index),
       moveQuestionDown: () => moveQuestionDown(index),
-    }
+    };
     return editActions;
-  }
+  };
 
 
 
@@ -159,9 +137,9 @@ const Home = () => {
 				<AddQuestionModal
 					open={addQuestionOpen}
 					setOpen={setAddQuestionOpen}
-					addQuestion={(data) => {
+					addQuestion={(data:Question) => {
 						setQuess([...quess, data]);
-            setAddQuestionOpen(false);
+            			setAddQuestionOpen(false);
 					}}
 				/>
 
@@ -169,7 +147,17 @@ const Home = () => {
 					className="float-right py-5"
 					onSubmit={(event) => {
 						event.preventDefault();
-						createExam(quess, session.user.id);
+						// const exam:Exam = {
+						// 	name: examName,
+						// 	description: examDesc,
+						// 	startTime: startTime,
+						// 	duration: examDuration,
+						// 	questions: quess,
+						// 	allowKeyboardShortcuts: allowKeyboardShortcuts,
+						// 	enableAutoGrading: enableAutoGrading,
+						// 	shuffleQuestions: shuffleQuestions,
+						// };
+						createExamFromQuestions(quess, session?.user?.email );
 						setShowSuccessAlert(true);
 					}}
 				>

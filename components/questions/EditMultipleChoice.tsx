@@ -8,20 +8,22 @@ import {
   IconButton,
   Typography,
 } from "@mui/joy";
-import { Radio, RadioGroup, Box, Input, Label, Button } from "@mui/joy";
+import { Radio, RadioGroup, Box, Input,  Button } from "@mui/joy";
 import { useState } from "react";
 import { Add, Delete, Remove } from "@mui/icons-material";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-export function EditMultipleChoiceOptions({ options, setOptions }) {
-  //const [opt, setOpt] = useState(options);
-  const [newopt, setNewopt] = useState("");
+import Question, { Choice } from "@/interfaces/Question";
 
-  const deleteOption = (indexToRemove) => {
+
+export function EditMultipleChoiceOptions({ options, setOptions }:{options: Choice[], setOptions: any}) {
+  const [newopt, setNewopt] = useState<Choice>({text:"", id:0});
+
+  const deleteOption = (indexToRemove:number) => {
     const nopt = options.filter((item, index) => index !== indexToRemove);
     setOptions(nopt);
   };
-  const addOption = (option) => {
+  const addOption = (option:Choice) => {
     setOptions([...options, option]);
   };
   return (
@@ -31,7 +33,7 @@ export function EditMultipleChoiceOptions({ options, setOptions }) {
           return (
             <Box className="flex mx-10 my-3" key={`${option}+${index}`}>
               <Checkbox className="px-5" />
-              <Typography className="flex-grow">{option}</Typography>
+              <Typography className="flex-grow">{option.text}</Typography>
               <DeleteOutlinedIcon
                 className="text-black hover:text-red-400"
                 onClick={() => deleteOption(index)}
@@ -44,8 +46,8 @@ export function EditMultipleChoiceOptions({ options, setOptions }) {
         <Typography className="py-2 px-4 align-middle">New Option:</Typography>
         <Input
           className="flex-grow"
-          value={newopt}
-          onChange={(e) => setNewopt(e.target.value)}
+          value={newopt.text}
+          onChange={(e) => setNewopt({...newopt,text:e.target.value})}
         ></Input>
         <IconButton
           className="mx-2 bg-slate-200/70 hover:bg-slate-200"
@@ -58,14 +60,13 @@ export function EditMultipleChoiceOptions({ options, setOptions }) {
   );
 }
 
-export default function EditMultipleChoice({ qdata, addQuestion }) {
+export default function EditMultipleChoice({ qdata, addQuestion }:{qdata:Question, addQuestion:any}) {
   const [question, setQuestion] = useState(qdata);
 
-  const handleChange = (e) => {};
+  const handleChange = (e:React.FormEvent<HTMLInputElement>) => {};
 
-  const updateQuestionTitle = (e) => {
-    console.log("called me");
-    setQuestion({ ...question, QUESTION: e.target.value });
+  const updateQuestionTitle = (e:React.ChangeEvent<HTMLInputElement>) => {
+    setQuestion({ ...question, title: e.target.value });
   };
 
   return (
@@ -94,12 +95,12 @@ export default function EditMultipleChoice({ qdata, addQuestion }) {
             borderRadius: "5px",
           }}
         >
-          <Typography>{qdata.NUMBER}</Typography>
+          <Typography>{qdata.id}</Typography>
         </Box>
         {/* <Typography sx={{alignSelf:"center"}}>{qdata.QUESTION}</Typography> */}
         <Input
           className="flex-grow"
-          value={question.QUESTION}
+          value={question.title}
           onChange={(e) => updateQuestionTitle(e)}
         />
 
@@ -108,11 +109,11 @@ export default function EditMultipleChoice({ qdata, addQuestion }) {
             Points:
           </Typography>
           <Input
-            value={question.POINTS}
+            value={question.points}
             onChange={(e) => {
               setQuestion({
                 ...question,
-                POINTS: e.target.value,
+                points: (e.target.value) as unknown as number,
               });
             }}
           />
@@ -120,11 +121,11 @@ export default function EditMultipleChoice({ qdata, addQuestion }) {
       </CardContent>
       <Divider sx={{ width: "100%", alignSelf: "center" }} />
       <CardContent>
-        {question.TYPE === "MCQ" && (
+        {question.type === "multiple-choice" && (
           <EditMultipleChoiceOptions
-            options={question.OPTIONS}
-            setOptions={(option) => {
-              setQuestion({ ...question, OPTIONS: option });
+            options={question.choices}
+            setOptions={(choices:Choice[]) => {
+              setQuestion({ ...question, choices: choices});
             }}
           />
         )}
@@ -132,10 +133,10 @@ export default function EditMultipleChoice({ qdata, addQuestion }) {
           <RadioGroup
             className="self-center p-3"
             orientation="horizontal"
-            onChange={(e) => setQuestion({ ...question, TYPE: e.target.value })}
+            onChange={(e) => setQuestion({ ...question, type: (e.target.value as string as "multiple-choice" | "short-answer") })}
           >
-            <Radio value="MCQ" label="Multiple Choice" />
-            <Radio value="Short" label="Short Answer" />
+            <Radio value="multiple-choice" label="Multiple Choice" />
+            <Radio value="short-answer" label="Short Answer" />
           </RadioGroup>
 
           <Button

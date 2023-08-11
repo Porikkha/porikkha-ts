@@ -1,13 +1,11 @@
 "use client";
-//import { Card, CardContent, Typography } from "@mui/material";
 import { Card, CardContent, Divider, Typography } from "@mui/joy";
 import { Radio, RadioGroup, Box, Input } from "@mui/joy";
+import  Question  from "@/interfaces/Question";
 // import { useState } from "react";
 
-export default function ShortText({ qdata }) {
-  // const [answer,setAnswer] = useState('') ;
+export default function ShortText({ qdata }: { qdata: Question}) {
 
-  const handleChange = (e) => {};
   return (
     <Card
       variant="outlined"
@@ -30,12 +28,11 @@ export default function ShortText({ qdata }) {
             borderRadius: "5px",
           }}
         >
-          <Typography>{qdata.NUMBER}</Typography>
+          <Typography>{qdata.id}</Typography>
         </Box>
-        <Typography sx={{ alignSelf: "center" }}>{qdata.QUESTION}</Typography>
+        <Typography sx={{ alignSelf: "center" }}>{qdata.title}</Typography>
       </CardContent>
       <Divider sx={{ width: "90%", alignSelf: "center" }} />
-      {/* <Input value={answer} onChange={(e) => { console.log(e.target.value); setAnswer(e.target.value)} }/> */}
       <Input></Input>
     </Card>
   );
