@@ -22,6 +22,7 @@ const handler = NextAuth({
     async signIn({ profile }: any) {
       try {
         // check if user already exists
+
         const userExists = await prisma.user.findUnique({
           where: {
             email: profile.email,
