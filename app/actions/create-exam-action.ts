@@ -3,7 +3,7 @@
 import { connectMongoDB } from "@/utils/database";
 import Exam from "@/models/exams";
 import ExamInterface from "@/interfaces/Exam";
-import Question from "@/interfaces/Question";
+import Question from "@/interfaces/question/Question";
 
 /**
  * Create a new exam in the database.
