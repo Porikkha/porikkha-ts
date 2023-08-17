@@ -1,5 +1,5 @@
 
-import Feed from "@/components/Feed";
+import Feed from "@/components/homepage/Feed";
 import Image from "next/image";
 import Link from "next/link";
 import { Card,CardContent,Avatar, Stack,Typography } from "@mui/material";
