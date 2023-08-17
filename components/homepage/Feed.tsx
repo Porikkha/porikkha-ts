@@ -1,4 +1,4 @@
-import Feature from "@/components/Feature";
+import Feature from "@/components/homepage/Feature";
 const icons = [
   "update.svg",
   "analytics.svg",
