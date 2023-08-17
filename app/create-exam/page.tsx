@@ -145,7 +145,7 @@ const Home = () => {
 
                 <form
                     className="float-right py-5"
-                    onSubmit={(event) => {
+                    onSubmit={async (event) => {
                         event.preventDefault();
                         // const exam:Exam = {
                         // 	name: examName,
@@ -157,8 +157,16 @@ const Home = () => {
                         // 	enableAutoGrading: enableAutoGrading,
                         // 	shuffleQuestions: shuffleQuestions,
                         // };
-                        createExamFromQuestions(quess, session?.user?.email);
-                        setShowSuccessAlert(true);
+                        // createExamFromQuestions(quess, session?.user?.email);
+                        const response = await fetch('/api/exams', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                questions: quess,
+                                sessionId: session?.user?.email,
+                            })
+                        });
+                        const data = await response.json();
+                        setShowSuccessAlert(data.status==200);
                     }}
                 >
                     <button
