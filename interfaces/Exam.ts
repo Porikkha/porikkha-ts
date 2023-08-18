@@ -1,10 +1,10 @@
-import { dummyQuestions } from "./question/MultipleChoiceQuestion";
+import Question, { dummyQuestions } from "./question/Question";
 
 export default interface Exam{
   creatorId: string,
   title: string,
   description: string ,
-  questions: Object[],
+  questions: Question[],
   startTime: Date,
   duration: Number,
   allowedAbilities: Object[],

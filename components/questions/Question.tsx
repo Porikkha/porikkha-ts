@@ -28,6 +28,7 @@ export function SingleChoices({
       onChange={(e) => handleAnswerChange(e)}
       defaultValue="medium"
       name="radio-buttons-group"
+      className="mx-10 my-3"
     >
       {choices.map((option, index) => {
         return <Radio value={option.id} label={option.text} key={index + 1} />;
@@ -142,6 +143,7 @@ export function QuestionContent({
         )}
         {qdata.type === "short-answer" && (
           <Input
+            className="mx-10 my-3"
             value={(qdata as ShortAnswerQuestion).referenceAnswer}
             onChange={(e) => {
               handleShortAnswer(e.target.value);
@@ -162,12 +164,12 @@ export default function Question({
 }) {
   return (
     <Card
+      className="my-3"
       variant="outlined"
       color="primary"
-      sx={{ stroke: "#E2E3FC", width: "95%", margin: "auto" }}
+      sx={{ stroke: "#E2E3FC", margin: "auto" }}
     >
       <QuestionContent qdata={qdata} setQuestion={setQuestion} />
-      <Divider sx={{ width: "100%", alignSelf: "center" }} />
     </Card>
   );
 }

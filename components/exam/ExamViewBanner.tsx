@@ -28,9 +28,10 @@ export default function ExamViewBanner({ exam }: any) {
 					</div>
 					<div>
             <ul className="pl-5 space-y-3 text-gray-600 list-disc marker:text-[#7FF]">
-  <li>Tailwind CSS list style with marker custom color </li>
-  <li>Tailwind CSS list style with marker custom color </li>
-  <li>Tailwind CSS list style with marker custom color </li>
+  <li>Shortcuts : Disabled </li>
+  <li>Duration : 30:00 </li>
+  <li>Total Questions : 6 </li>
+  <li>Total Points : 30 </li>
 </ul>
 					</div>
 				</div>
