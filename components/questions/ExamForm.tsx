@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Button } from '@mui/joy';
 import QuestionForm from './QuestionForm';
 import Exam from '@/interfaces/Exam';
-import Question from '@/interfaces/Question';
+import Question from '@/interfaces/question/Question';
 
 const ExamForm = ({ exam, onSubmit }:{exam:Exam, onSubmit: any}) => {
   const [questions, setQuestions] = useState(exam?.questions || []);

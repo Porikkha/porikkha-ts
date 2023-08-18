@@ -13,7 +13,10 @@ import { useState } from "react";
 import { Add, Delete, Remove } from "@mui/icons-material";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
-import Question, { Choice } from "@/interfaces/Question";
+import Question from "@/interfaces/question/Question";
+import Choice from "@/interfaces/question/Choice";
+import MultipleChoiceQuestion from "@/interfaces/question/MultipleChoiceQuestion";
+import MiniOptions from "./MiniOptions";
 
 
 export function EditMultipleChoiceOptions({ options, setOptions }:{options: Choice[], setOptions: any}) {
@@ -60,7 +63,7 @@ export function EditMultipleChoiceOptions({ options, setOptions }:{options: Choi
   );
 }
 
-export default function EditMultipleChoice({ qdata, addQuestion }:{qdata:Question, addQuestion:any}) {
+export default function EditQuestion({ qdata, addQuestion, editActions}:{editActions:any,qdata:Question, addQuestion:any}) {
   const [question, setQuestion] = useState(qdata);
 
   const handleChange = (e:React.FormEvent<HTMLInputElement>) => {};
@@ -123,9 +126,9 @@ export default function EditMultipleChoice({ qdata, addQuestion }:{qdata:Questio
       <CardContent>
         {question.type === "multiple-choice" && (
           <EditMultipleChoiceOptions
-            options={question.choices}
+            options={(question as MultipleChoiceQuestion).choices}
             setOptions={(choices:Choice[]) => {
-              setQuestion({ ...question, choices: choices});
+              setQuestion({ ...question, choices: choices} as MultipleChoiceQuestion);
             }}
           />
         )}
@@ -149,6 +152,7 @@ export default function EditMultipleChoice({ qdata, addQuestion }:{qdata:Questio
             Create
           </Button>
         </Box>
+        <MiniOptions editActions={editActions} />
       </CardContent>
     </Card>
   );

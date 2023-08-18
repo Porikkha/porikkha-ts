@@ -1,14 +1,16 @@
-"use client";
-import { Card, CardContent } from "@mui/material";
-import Button from "@mui/joy/Button";
-import { CssVarsProvider } from "@mui/joy/styles";
-import EditMultipleChoice from "@/components/questions/EditMultipleChoice"
-import { dummyQuestions } from "@/interfaces/Question";
 
-export default function Page() {
-  return (
-    <>
-      <EditMultipleChoice qdata={dummyQuestions[0]} addQuestion={null}/>
-    </>
-  );
+"use client"
+import EditQuestion from "@/components/questions/EditQuestion";
+import EditQuestionModal from "@/components/questions/EditQuestionModal";
+import { dummyQuestions } from "@/interfaces/question/MultipleChoiceQuestion";
+import { useState } from "react";
+
+
+
+export default function Page(){
+    const [ques,setQues] = useState(dummyQuestions[1]);
+    return <>
+        <EditQuestion qdata={ques} setQuestion={setQues} editActions={null} />
+        <EditQuestionModal qdata={ques} setQuestion={setQues} editActions={null} />
+    </> ;
 }
