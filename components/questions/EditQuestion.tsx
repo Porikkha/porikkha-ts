@@ -48,7 +48,7 @@ function SingleChoices({
   };
   return (
     <>
-      <CardContent className="mb-5">
+      <CardContent className="mb-5" >
         <RadioGroup
           onChange={(e) => handleChange(e)}
           defaultValue="medium"
@@ -56,12 +56,11 @@ function SingleChoices({
         >
           {choices.map((option, index) => {
             return (
-              <Box sx={{ display: "flex", flexGrow: "1", width: "100%"}} key={`${option}`}>
+              <Box sx={{ display: "flex", flexGrow: "1", width: "100%"}} key={`${option.id} ${option.text}`}>
                 <Radio
                   sx={{ flexGrow: "1" }}
                   value={option.id}
                   label={option.text}
-                  key={index + 1}
                 />
                 {edit && (
                   <DeleteOutlined
@@ -211,7 +210,7 @@ export default function EditQuestion({
 
   return (
     <Card
-      key = {`${qdata.id} ${qdata.title}`}
+      key = {`editQuestion ${qdata.id} ${qdata.type}`}
       variant="outlined"
       color="primary"
       sx={{ stroke: "#E2E3FC", margin: "auto" }}
@@ -234,12 +233,12 @@ export default function EditQuestion({
         >
           <Typography>{qdata.id}</Typography>
         </Box>
-        <Box sx={{ display: "flex", flexGrow: "1", alignItems: "center" }}>
+        <Box sx={{ display: "flex", flexGrow:"1", alignItems: "center" }} > 
           {edit ? (
             <Input
-              sx={{ flexGrow: "1" }}
               value={qdata.title}
-              onChange={(e) => setQuestion({ ...qdata, title: e.target.value })}
+              onChange={(e) => { setQuestion({ ...qdata,title: e.target.value as string} as Question); } }
+            sx={{ flexGrow: "1" }}
             />
           ) : (
             <Typography sx={{ alignSelf: "center", justifySelf: "center" }}>
@@ -272,6 +271,7 @@ export default function EditQuestion({
       <CardContent className="ml-10">
         {qdata.type === "multiple-choice" && (
           <MultipleChoices
+            key={`MultipleChoice${qdata.id}${qdata.title}`}
             choices={(qdata as MultipleChoiceQuestion).choices}
             setChoices={(choices: Choice[]) => {
               setQuestion({ ...qdata, choices: choices });
@@ -287,6 +287,7 @@ export default function EditQuestion({
         )}
         {qdata.type === "single-choice" && (
           <SingleChoices
+            key={`SingleChoice${qdata.id}${qdata.title}`}
             choices={(qdata as SingleChoiceQuestion).choices}
             setChoices={(choices: Choice[]) => {
               setQuestion({ ...qdata, choices: choices });
