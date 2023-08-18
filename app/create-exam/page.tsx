@@ -21,7 +21,7 @@ import { dummyQuestions as dummySCQs } from "@/interfaces/question/SingleChoiceQ
 const dummyQuestions = (dummyMCQs as Question[]).concat(dummySCQs).concat(dummyShorts)
 
 import Exam from "@/interfaces/Exam";
-import EditQuestion from "@/components/questions/EditQuestion";
+import EditQuestionModal from "@/components/questions/EditQuestionModal";
 
 
 const Home = () => {
@@ -137,8 +137,8 @@ const Home = () => {
                                 }}
                                 editActions={getEditActions(index)}
                             /> */}
-                            <EditQuestion
-                                key={`${index}${{...question}}`}
+                            <EditQuestionModal
+                                key={`${index}${question.type}}`}
                                 qdata={question}
                                 setQuestion={(question:Question) => {
                                     let newQuestions = [...quess] ;
