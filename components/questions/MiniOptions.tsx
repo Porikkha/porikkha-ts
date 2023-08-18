@@ -11,7 +11,7 @@ export default function MiniOptions( {editActions}:any ) {
     return (
         <div className="flex flex-row-reverse px-5">
             <div className="flex-row text-slate-500 font-bold bg-light-purple rounded-full px-5">
-                <ModeOutlinedIcon className="m-2 hover:text-black" onClick={(e) => console.log("hello")} />
+                <ModeOutlinedIcon className="m-2 hover:text-black" onClick={(e) =>  editActions.editQuestion()} />
                 <DeleteOutlinedIcon  className="m-2 hover:text-black" onClick={(e) => editActions.deleteQuestion()}/>
                 <ArrowDownwardOutlinedIcon  className="m-2 hover:text-black" onClick={(e) => editActions.moveQuestionDown()}/>
                 <ArrowUpwardOutlinedIcon  className="m-2 hover:text-black" onClick={(e) => editActions.moveQuestionUp()}/>

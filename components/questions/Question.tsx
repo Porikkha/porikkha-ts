@@ -33,14 +33,14 @@ function MultipleChoices({choices,handleChange}:{choices:Choice[], handleChange:
         } </>;
 }
 
-export default function Question({ qdata, editActions }: { qdata: Question, editActions: any } ) {
+export default function Question({ qdata, setQuestion }: { qdata: Question, setQuestion: any } ) {
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
   };
 
   const handleSingleChoiceAnswer = (id:number) => {
     const newdata:SingleChoiceQuestion = {...qdata,answerId:id} as SingleChoiceQuestion;
-    editActions(newdata)
+    setQuestion(newdata)
     // console.log(newdata);
   }
 
@@ -52,11 +52,11 @@ export default function Question({ qdata, editActions }: { qdata: Question, edit
     }
     const newdata:MultipleChoiceQuestion = {...qdata,answerId:answers} as MultipleChoiceQuestion;
     console.log(answers) ;
-    editActions(newdata) ;
+    setQuestion(newdata) ;
   }
 
   const handleShortAnswer = (refAns:string) => {
-    editActions({...qdata,referenceAnswer:refAns} as ShortAnswerQuestion) ;
+    setQuestion({...qdata,referenceAnswer:refAns} as ShortAnswerQuestion) ;
   }
   return (
     <Card variant="outlined" color="primary" sx={{stroke:"#E2E3FC", width:"95%", margin:"auto"}}>

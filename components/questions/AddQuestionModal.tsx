@@ -1,5 +1,5 @@
 import { Input, Typography, Modal, ModalDialog, Stack, FormControl, FormLabel, Button } from "@mui/joy";
-import EditMultipleChoice from "./EditMultipleChoice";
+import EditMultipleChoice from "./EditQuestionOld";
 import type Question from "@/interfaces/question/Question";
 import { dummyQuestions } from "@/interfaces/question/MultipleChoiceQuestion";
 
@@ -18,7 +18,7 @@ export default function AddQuestionModal({open, setOpen, addQuestion}:any) {
           <Typography id="basic-modal-dialog-description">
             Fill in the information of the question
           </Typography>
-            <EditMultipleChoice qdata={dummyQuestions[0]} addQuestion={addQuestion}/>
+            {/* <EditMultipleChoice qdata={dummyQuestions[0]} addQuestion={addQuestion}/> */}
         </ModalDialog>
       </Modal>
     )
