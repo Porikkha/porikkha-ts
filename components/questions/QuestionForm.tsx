@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Input, Select, MenuItem, IconButton } from '@mui/joy';
 import { AddCircleOutline } from '@mui/icons-material';
-import { Choice } from '@/interfaces/Question';
+import  Choice  from '@/interfaces/question/Choice';
 
 const QuestionForm = ({ question, onDone }:any) => {
   const [type, setType] = useState(question?.type || 'multiple-choice');

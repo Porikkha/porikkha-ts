@@ -1,6 +1,6 @@
 "use client";
 
-import MultipleChoice from "@/components/questions/MultipleChoice";
+import MultipleChoice from "@/components/questions/EditQuestion";
 import { useEffect, useState } from "react";
 import {
     createExam,
@@ -13,7 +13,17 @@ import EditExamDetailsModal from "@/components/questions/EditExamDetailsModal";
 import ExamBanner from "@/components/questions/ExamBanner";
 import SuccessAlert from "@/components/ui/SuccessAlert";
 import Question from "@/interfaces/question/Question";
-import { dummyQuestions } from "@/interfaces/question/MultipleChoiceQuestion";
+
+
+import MultipleChoiceQuestion, { dummyQuestions as dummyMCQs } from "@/interfaces/question/MultipleChoiceQuestion";
+import { dummyQuestions as dummyShorts } from "@/interfaces/question/ShortAnswerQuestion";
+import { dummyQuestions as dummySCQs } from "@/interfaces/question/SingleChoiceQuestion";
+
+const dummyQuestions = (dummyMCQs as Question[]).concat(dummySCQs).concat(dummyShorts)
+
+import Exam from "@/interfaces/Exam";
+import EditQuestion from "@/components/questions/EditQuestionOld";
+
 
 const Home = () => {
     const [open, setOpen] = useState(false);
@@ -119,29 +129,54 @@ const Home = () => {
                 {quess.map((question, index) => {
                     return (
                         <div className="py-2" key={index}>
+                            {/* <EditQuestion
+                                qdata={question}
+                                addQuestion={(question:Question) => {
+                                    let newQuestions = [...quess] ;
+                                    newQuestions[index] = question ;
+                                    setQuess(newQuestions);
+                                }}
+                                editActions={getEditActions(index)}
+                            /> */}
                             <MultipleChoice
                                 qdata={question}
+                                setQuestion={(question:Question) => {
+                                    let newQuestions = [...quess] ;
+                                    newQuestions[index] = question ;
+                                    setQuess(newQuestions);
+                                }}
                                 editActions={getEditActions(index)}
                             />
                         </div>
                     );
                 })}
                 <button
-                    onClick={() => setAddQuestionOpen(true)}
+                    // onClick={() => setAddQuestionOpen(true)}
+                    onClick={() => {
+                        const newQuestion:MultipleChoiceQuestion ={
+                            id: 0,
+                            title:"Set your title",
+                            type:"multiple-choice",
+                            points:5,
+                            choices: [],
+                            answerId: [],
+                        }
+                        setQuess(setQuestionNumbers([...quess,newQuestion]));
+                    }}
                     className="bg-purple-500 text-white font-semibold py-2 px-2 border hover:border-primary rounded float-left my-5"
                 >
                     <AddIcon className="p-1" />
                     <div className="float-right mr-2">Question</div>
                 </button>
 
-                <AddQuestionModal
+                {/* <AddQuestionModal
                     open={addQuestionOpen}
                     setOpen={setAddQuestionOpen}
                     addQuestion={(data: Question) => {
                         setQuess([...quess, data]);
                         setAddQuestionOpen(false);
                     }}
-                />
+                /> */}
 
                 <form
                     className="float-right py-5"
