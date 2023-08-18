@@ -2,7 +2,8 @@
 import { Card, CardContent, Divider, Typography } from "@mui/joy";
 import { Radio, RadioGroup,Box } from "@mui/joy";
 import MiniOptions from "@/components/questions/MiniOptions";
-import Question from "@/interfaces/Question";
+import Question from "@/interfaces/question/Question";
+import MultipleChoiceQuestion from "@/interfaces/question/MultipleChoiceQuestion";
 
 export default function MultipleChoice({ qdata, editActions }: { qdata: Question, editActions: any } ) {
   const handleChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +34,7 @@ export default function MultipleChoice({ qdata, editActions }: { qdata: Question
       <Divider sx={{ width: "100%", alignSelf: "center" }} />
       <CardContent className="ml-10">
         <RadioGroup onChange={(e) => handleChange(e)} defaultValue="medium" name="radio-buttons-group">
-          {qdata.choices.map((option, index) => {
+          { (qdata as MultipleChoiceQuestion).choices.map((option, index) => {
             return <Radio value={index + 1} label={option.text} key={index+1} />;
           })}
         </RadioGroup>

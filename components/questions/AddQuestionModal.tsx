@@ -1,7 +1,7 @@
 import { Input, Typography, Modal, ModalDialog, Stack, FormControl, FormLabel, Button } from "@mui/joy";
 import EditMultipleChoice from "./EditMultipleChoice";
-import Question from "@/interfaces/Question";
-import { dummyQuestions } from "@/interfaces/Question";
+import type Question from "@/interfaces/question/Question";
+import { dummyQuestions } from "@/interfaces/question/MultipleChoiceQuestion";
 
 
 export default function AddQuestionModal({open, setOpen, addQuestion}:any) {

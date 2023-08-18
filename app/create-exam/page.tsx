@@ -12,8 +12,8 @@ import AddQuestionModal from "@/components/questions/AddQuestionModal";
 import EditExamDetailsModal from "@/components/questions/EditExamDetailsModal";
 import ExamBanner from "@/components/questions/ExamBanner";
 import SuccessAlert from "@/components/ui/SuccessAlert";
-import Question from "@/interfaces/Question";
-import { dummyQuestions } from "@/interfaces/Question";
+import Question from "@/interfaces/question/Question";
+import { dummyQuestions } from "@/interfaces/question/MultipleChoiceQuestion";
 import Exam from "@/interfaces/Exam";
 
 const Home = () => {
@@ -33,7 +33,7 @@ const Home = () => {
     const [enableAutoGrading, setEnableAutoGrading] = useState(false);
 
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [quess, setQuess] = useState(dummyQuestions);
+    const [quess, setQuess] = useState<Question[]>(dummyQuestions);
     const { data: session } = useSession();
 
     const setters = {
