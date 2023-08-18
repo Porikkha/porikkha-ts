@@ -1,6 +1,5 @@
 "use client";
 
-import MultipleChoice from "@/components/questions/EditQuestion";
 import { useEffect, useState } from "react";
 import {
     createExam,
@@ -22,7 +21,7 @@ import { dummyQuestions as dummySCQs } from "@/interfaces/question/SingleChoiceQ
 const dummyQuestions = (dummyMCQs as Question[]).concat(dummySCQs).concat(dummyShorts)
 
 import Exam from "@/interfaces/Exam";
-import EditQuestion from "@/components/questions/EditQuestionOld";
+import EditQuestion from "@/components/questions/EditQuestion";
 
 
 const Home = () => {
@@ -138,7 +137,8 @@ const Home = () => {
                                 }}
                                 editActions={getEditActions(index)}
                             /> */}
-                            <MultipleChoice
+                            <EditQuestion
+                                key={`${index}${{...question}}`}
                                 qdata={question}
                                 setQuestion={(question:Question) => {
                                     let newQuestions = [...quess] ;
