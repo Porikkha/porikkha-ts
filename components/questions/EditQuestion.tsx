@@ -313,6 +313,7 @@ export default function EditQuestion({
 	  <RadioGroup
             className="self-center p-3"
             orientation="horizontal"
+            value={qdata.type}
             onChange={(e) => setQuestion({ ...qdata, type: (e.target.value as string as "single-choice" | "multiple-choice" | "short-answer") })}
           >
             <Radio value="multiple-choice" label="Multiple Choice" />
