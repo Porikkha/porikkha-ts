@@ -5,6 +5,7 @@ import type Exam from "@/interfaces/Exam";
 
 const examSchema = new Schema<Exam>({
   creatorId: { type: String, required: true },
+  examId: {type: String, require: true},
   title: { type: String, required: true },
   description: { type: String },
   questions: [Object],

@@ -198,6 +198,7 @@ const Home = () => {
                             body: JSON.stringify({
                                 questions: quess,
                                 sessionId: session?.user?.email,
+                                examId: "123456",
                             })
                         });
                         const data = await response.json();
