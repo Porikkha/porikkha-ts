@@ -56,7 +56,7 @@ function SingleChoices({
         >
           {choices.map((option, index) => {
             return (
-              <Box sx={{ display: "flex", flexGrow: "1", width: "100%" }}>
+              <Box sx={{ display: "flex", flexGrow: "1", width: "100%"}} key={`${option}`}>
                 <Radio
                   sx={{ flexGrow: "1" }}
                   value={option.id}
@@ -211,6 +211,7 @@ export default function EditQuestion({
 
   return (
     <Card
+      key = {`${qdata.id} ${qdata.title}`}
       variant="outlined"
       color="primary"
       sx={{ stroke: "#E2E3FC", margin: "auto" }}
