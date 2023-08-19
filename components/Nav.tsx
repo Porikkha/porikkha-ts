@@ -14,16 +14,40 @@ import {
 import { BuiltInProviderType } from 'next-auth/providers/index';
 import { useRouter } from 'next/navigation';
 import ErrorAlert from './ui/ErrorAlert';
+import ExamInterface from '@/interfaces/Exam';
 
 const Nav = () => {
   const router = useRouter();
   const handleCreateExam = async (e: any) => {
     e.preventDefault();
+    const creatorId = session?.user?.email;
+    if (!creatorId) {
+        console.log("❌ ~ file: Nav.tsx:59 : creatorId not found");
+        return;
+    }
+    const exam: ExamInterface = {
+        creatorId: session?.user?.email!,
+        examId: "",
+        title: "Exam Title",
+        description: "Exam Description",
+        questions: [],
+        startTime: new Date(),
+        duration: 30,
+        allowedAbilities: [
+            {
+              type: 'copy',
+              isAllowed: false,
+            },
+            {
+              type: 'print',
+              isAllowed: true,
+            },
+          ],
+    };
     const response = await fetch('/api/exams', {
       method: 'POST',
       body: JSON.stringify({
-        sessionId: session?.user?.email,
-        questions: [],
+        exam: exam,
       }),
     });
     const data = await response.json();

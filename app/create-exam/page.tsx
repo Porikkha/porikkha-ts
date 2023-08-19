@@ -12,6 +12,7 @@ import EditExamDetailsModal from "@/components/questions/EditExamDetailsModal";
 import ExamBanner from "@/components/questions/ExamBanner";
 import SuccessAlert from "@/components/ui/SuccessAlert";
 import Question from "@/interfaces/question/Question";
+import ExamInterface from "@/interfaces/Exam";
 
 
 import MultipleChoiceQuestion, { dummyQuestions as dummyMCQs } from "@/interfaces/question/MultipleChoiceQuestion";
@@ -113,6 +114,53 @@ const Home = () => {
         return editActions;
     };
 
+    const handleExamSubmit = async (event: any) => {
+        event.preventDefault();
+        // const exam:Exam = {
+        // 	name: examName,
+        // 	description: examDesc,
+        // 	startTime: startTime,
+        // 	duration: examDuration,
+        // 	questions: quess,
+        // 	allowKeyboardShortcuts: allowKeyboardShortcuts,
+        // 	enableAutoGrading: enableAutoGrading,
+        // 	shuffleQuestions: shuffleQuestions,
+        // };
+        // createExamFromQuestions(quess, session?.user?.email);
+        const creatorId = session?.user?.email;
+        if (!creatorId) {
+            console.log("❌ ~ file: page.tsx:202 : creatorId not found");
+            return;
+        }
+        const exam: ExamInterface = {
+            creatorId: session?.user?.email!,
+            examId: "123456",
+            title: "Exam Title",
+            description: "Exam Description",
+            questions: quess,
+            startTime: new Date(),
+            duration: 30,
+            allowedAbilities: [
+                {
+                  type: 'copy',
+                  isAllowed: false,
+                },
+                {
+                  type: 'print',
+                  isAllowed: true,
+                },
+              ],
+        };
+        const response = await fetch('/api/exams', {
+            method: 'POST',
+            body: JSON.stringify({
+                exam: exam,
+            })
+        });
+        const data = await response.json();
+        setShowSuccessAlert(data.status==200);
+    };
+
     return (
         <section className="w-full">
             <ExamBanner values={values} setters={setters} />
@@ -183,30 +231,7 @@ const Home = () => {
 
                 <form
                     className="float-right py-5"
-                    onSubmit={async (event) => {
-                        event.preventDefault();
-                        // const exam:Exam = {
-                        // 	name: examName,
-                        // 	description: examDesc,
-                        // 	startTime: startTime,
-                        // 	duration: examDuration,
-                        // 	questions: quess,
-                        // 	allowKeyboardShortcuts: allowKeyboardShortcuts,
-                        // 	enableAutoGrading: enableAutoGrading,
-                        // 	shuffleQuestions: shuffleQuestions,
-                        // };
-                        // createExamFromQuestions(quess, session?.user?.email);
-                        const response = await fetch('/api/exams', {
-                            method: 'POST',
-                            body: JSON.stringify({
-                                questions: quess,
-                                sessionId: session?.user?.email,
-                                examId: "123456",
-                            })
-                        });
-                        const data = await response.json();
-                        setShowSuccessAlert(data.status==200);
-                    }}
+                    onSubmit={handleExamSubmit}
                 >
                     <button
                         type="submit"
