@@ -25,6 +25,14 @@ import EditQuestionModal from "@/components/questions/EditQuestionModal";
 
 
 const Home = () => {
+    const setQuestionNumbers = (questions: Question[]) => {
+        return questions.map((question, index) => {
+            question.id = index + 1;
+            return question;
+        });
+    };
+
+    
     const [open, setOpen] = useState(false);
     const [addQuestionOpen, setAddQuestionOpen] = useState(false);
 
@@ -41,7 +49,7 @@ const Home = () => {
     const [enableAutoGrading, setEnableAutoGrading] = useState(false);
 
     const [showSuccessAlert, setShowSuccessAlert] = useState(false);
-    const [quess, setQuess] = useState<Question[]>(dummyQuestions);
+    const [quess, setQuess] = useState<Question[]>(setQuestionNumbers(dummyQuestions));
     const { data: session } = useSession();
 
     const setters = {
@@ -67,12 +75,7 @@ const Home = () => {
         enableAutoGrading,
     };
 
-    const setQuestionNumbers = (questions: Question[]) => {
-        return questions.map((question, index) => {
-            question.id = index + 1;
-            return question;
-        });
-    };
+    
 
     const deleteQuestion = (index: number) => {
         let newQuestions = [...quess];
