@@ -6,7 +6,12 @@ export default interface MultipleChoiceQuestion extends Question {
     answerId: number[];
 }
 
+// export function toMultipleChoiceQuestion(question:Question) {
+// 	const newQuestion: MultipleChoiceQuestion = {
+// 		id: question.id,
 
+// 	}
+// }
 export const dummyQuestions:MultipleChoiceQuestion[] = [
 	{
 		id: 1, 
