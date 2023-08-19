@@ -56,7 +56,7 @@ function EditSingleChoices({
           defaultValue="medium"
           name="radio-buttons-group"
         >
-          {choices.map((option, index) => {
+          {choices?.map((option, index) => {
             return (
               <Box
                 sx={{ display: "flex", flexGrow: "1", width: "100%" }}
@@ -123,7 +123,7 @@ function EditMultipleChoices({
   return (
     <>
       <CardContent className="mb-5">
-        {choices.map((option, index) => {
+        {choices?.map((option, index) => {
           return (
             <Box className="flex mx-10 my-3" key={`${option}+${index}`}>
               <Checkbox
@@ -285,6 +285,7 @@ export default function EditQuestion({
       </Card> */}
 
       <Card
+        key={`editQuestionPreview ${qdata.id}`}
         variant="outlined"
         color="primary"
         sx={{ stroke: "#E2E3FC", width: "95%", margin: "auto" }}
@@ -302,7 +303,7 @@ export default function EditQuestion({
       <Modal open={editquestion} onClose={() => setEditQuestion(false)}>
         <ModalDialog>
           <Card
-            key={`editQuestion ${qdata.id} ${qdata.type}`}
+            key={`editQuestion ${qdata.id}`}
             variant="outlined"
             color="primary"
             sx={{ stroke: "#E2E3FC", margin: "auto" }}
@@ -362,7 +363,7 @@ export default function EditQuestion({
             <CardContent className="ml-10">
               {qdata.type === "multiple-choice" && (
                 <EditMultipleChoices
-                  key={`MultipleChoice${qdata.id}${qdata.title}`}
+                  key={`MultipleChoice${qdata.id}`}
                   choices={(qdata as MultipleChoiceQuestion).choices}
                   setChoices={(choices: Choice[]) => {
                     setQuestion({ ...qdata, choices: choices });
@@ -379,7 +380,7 @@ export default function EditQuestion({
               )}
               {qdata.type === "single-choice" && (
                 <EditSingleChoices
-                  key={`SingleChoice${qdata.id}${qdata.title}`}
+                  key={`SingleChoice${qdata.id}`}
                   choices={(qdata as SingleChoiceQuestion).choices}
                   setChoices={(choices: Choice[]) => {
                     setQuestion({ ...qdata, choices: choices });
@@ -404,14 +405,23 @@ export default function EditQuestion({
               className="self-center p-3"
               orientation="horizontal"
               value={qdata.type}
-              onChange={(e) =>
-                setQuestion({
+              onChange={(e) => 
+                {
+                 const newQuestion = {
                   ...qdata,
                   type: e.target.value as string as
                     | "single-choice"
                     | "multiple-choice"
                     | "short-answer",
-                })
+                };
+                 if(newQuestion.type === 'multiple-choice')
+                    setQuestion( newQuestion as MultipleChoiceQuestion);
+                 else if (newQuestion.type ==='single-choice')
+                    setQuestion( newQuestion as SingleChoiceQuestion);
+                 else if (newQuestion.type ==='short-answer')
+                    setQuestion( newQuestion as ShortAnswerQuestion);
+
+                }
               }
             >
               <Radio value="multiple-choice" label="Multiple Choice" />

@@ -29,7 +29,7 @@ export function SingleChoices({
       defaultValue="medium"
       name="radio-buttons-group"
     >
-      {choices.map((option, index) => {
+      {choices?.map((option, index) => {
         return <Radio value={option.id} label={option.text} key={index + 1} />;
       })}
     </RadioGroup>
@@ -45,7 +45,7 @@ export function MultipleChoices({
 }) {
   return (
     <>
-      {choices.map((option, index) => {
+      {choices?.map((option, index) => {
         return (
           <Box className="flex mx-10 my-3" key={`${option}+${index}`}>
             <Checkbox
