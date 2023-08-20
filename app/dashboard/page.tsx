@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import formatTime, { formatDuration } from "@/utils/timeUtils";
 import { useRouter, useSearchParams } from 'next/navigation';
 import SuccessAlert from "@/components/ui/SuccessAlert";
+import { Router } from "next/router";
 
 export default function Page() {
     const [username, setUsername] = useState("Alex");
@@ -16,6 +17,10 @@ export default function Page() {
 
     const router = useRouter();
     const searchParams = useSearchParams()
+
+    const editExam = (examId : any) => {
+        router.push(`/exam/create/${examId}`);
+    }
 
     if (searchParams.has("status") && searchParams.get("status") == "success") {
         console.log("Slow Alert") ;
@@ -60,7 +65,7 @@ export default function Page() {
                 <div className="flex flex-wrap -mx-4">
                     {exams.map((exam, index) => (
                         <div className="w-1/3 px-4 mb-4" key={index}>
-                            <ExamCard exam={exam}/>
+                            <ExamCard exam={exam} editExam={editExam}/>
                         </div>
                     ))}
                 </div>
@@ -88,7 +93,7 @@ export default function Page() {
 	);
 }
 
-const ExamCard = ({exam} : any) => {
+const ExamCard = ({exam, editExam} : any) => {
     return (
         <div className="w-64 bg-fade-purple hover:border-cyan-100 rounded-md p-5">
             <Typography className="text-sm pb-1 font-bold">{exam.title}</Typography>
@@ -98,7 +103,11 @@ const ExamCard = ({exam} : any) => {
             <Typography className="text-xs pt-1 font-medium">Submissions : {0} </Typography>
 
             <div className="w-full flex justify-center">
-            <Button className="bg-white text-purple-500 border-purple-500 hover:text-white hover:bg-purple-300 border-2 rounded-md mt-5">View</Button>
+            <Button className="bg-white text-purple-500 border-purple-500 hover:text-white hover:bg-purple-300 border-2 rounded-md mt-5" 
+                onClick={
+                    () => editExam(exam.examId)
+                }
+            >View</Button>
             </div>
         </div>
     )
