@@ -5,12 +5,21 @@ import { useEffect, useState } from "react";
 import Exam, { dummyExam } from "@/interfaces/Exam";
 import { useSession } from "next-auth/react";
 import formatTime, { formatDuration } from "@/utils/timeUtils";
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+import SuccessAlert from "@/components/ui/SuccessAlert";
+
 export default function Page() {
     const [username, setUsername] = useState("Alex");
     const [exams, setExams] = useState([dummyExam]);
     const [loading, setLoading] = useState(true);
+    const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+
     const router = useRouter();
+    const searchParams = useSearchParams()
+
+    if (searchParams.has("status") && searchParams.get("status") == "success") {
+        console.log("Slow Alert") ;
+    }
 
     const { data: session } = useSession();
     console.log('😁 User: ', session?.user);
@@ -41,19 +50,24 @@ export default function Page() {
     }
 
     useEffect(() => {
+        console.log("Call useeffect")
         fetchExams();
     }, [session?.user?.id]);
 
-
     const ExamGrid = () => {
-        return (<div className="p-5">
-            <div className="grid grid-cols-3 gap-4">
-                {exams.map((exam, index) => {
-                    return <ExamCard exam={exam} key={index}/>  
-                })}
+        return (
+            <div className="p-5">
+                <div className="flex flex-wrap -mx-4">
+                    {exams.map((exam, index) => (
+                        <div className="w-1/3 px-4 mb-4" key={index}>
+                            <ExamCard exam={exam}/>
+                        </div>
+                    ))}
+                </div>
             </div>
-        </div>)
+        );
     }
+
 
 	return (
 		<section className="w-full">
@@ -65,6 +79,10 @@ export default function Page() {
 
                 { loading && <div className="w-full flex justify-center py-10"> <CircularProgress variant="soft"/> </div>}
                 { !loading && <ExamGrid /> }
+                <SuccessAlert
+                    showSuccessAlert={showSuccessAlert}
+                    setShowSuccessAlert={setShowSuccessAlert}
+                />
 			</div>
 		</section>
 	);
