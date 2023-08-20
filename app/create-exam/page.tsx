@@ -127,13 +127,13 @@ const Home = () => {
         // 	shuffleQuestions: shuffleQuestions,
         // };
         // createExamFromQuestions(quess, session?.user?.email);
-        const creatorId = session?.user?.email;
+        const creatorId = session?.user?.id;
         if (!creatorId) {
             console.log("❌ ~ file: page.tsx:202 : creatorId not found");
             return;
         }
         const exam: ExamInterface = {
-            creatorId: session?.user?.email!,
+            creatorId: session?.user?.id!,
             examId: "123456",
             title: "Exam Title",
             description: "Exam Description",

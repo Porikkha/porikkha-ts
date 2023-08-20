@@ -2,12 +2,12 @@ import Question, { dummyQuestions } from "./question/Question";
 
 export default interface Exam{
   creatorId: string,
-  examId: String,
+  examId: string,
   title: string,
   description: string ,
   questions: Question[],
   startTime: Date,
-  duration: Number,
+  duration: number,
   allowedAbilities: Object[],
 };
 

@@ -20,13 +20,13 @@ const Nav = () => {
   const router = useRouter();
   const handleCreateExam = async (e: any) => {
     e.preventDefault();
-    const creatorId = session?.user?.email;
+    const creatorId = session?.user?.id;
     if (!creatorId) {
         console.log("❌ ~ file: Nav.tsx:59 : creatorId not found");
         return;
     }
     const exam: ExamInterface = {
-        creatorId: session?.user?.email!,
+        creatorId: session?.user?.id!,
         examId: "",
         title: "Exam Title",
         description: "Exam Description",
@@ -51,7 +51,7 @@ const Nav = () => {
       }),
     });
     const data = await response.json();
-    if (data.status == 200) {
+    if (data.status == 200 && data.examId) {
       router.push('/create-exam');
     } else {
       setShowErrorAlert(true);
