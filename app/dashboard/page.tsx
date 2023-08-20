@@ -1,18 +1,50 @@
 "use client";
 
 import { Button, Chip, CircularProgress, Divider, Typography } from "@mui/joy";
-import { useState } from "react";
-import { dummyExam } from "@/interfaces/Exam";
+import { useEffect, useState } from "react";
+import Exam, { dummyExam } from "@/interfaces/Exam";
 import { useSession } from "next-auth/react";
 import formatTime, { formatDuration } from "@/utils/timeUtils";
-
+import { useRouter } from 'next/navigation';
 export default function Page() {
     const [username, setUsername] = useState("Alex");
     const [exams, setExams] = useState([dummyExam]);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
     const { data: session } = useSession();
     console.log('😁 User: ', session?.user);
+
+    const fetchExams = async () => {
+        if (!session?.user?.id) return;
+        const res = await fetch(`/api/exams/getAll/${session?.user?.id}`);
+        const data = await res.json();
+        console.log(data);
+        let newExamList = data.exams.map((exam: any) => {
+            let e : Exam = {
+                examId: exam.id, 
+                creatorId: exam.creatorId,
+                description: exam.description,
+                duration: exam.duration,
+                startTime: new Date(exam.startTime),
+                title: exam.title,
+                questions: [],
+                allowedAbilities: []
+            }
+            return e;
+        });
+        console.log("🚀 ~ file: page.tsx:37 ~ newExamList ~ newExamList:", newExamList)
+
+        setExams(newExamList);
+        // setExams(data);
+        setLoading(false);
+    }
+
+    useEffect(() => {
+        fetchExams();
+    }, [session?.user?.id]);
+
+
     const ExamGrid = () => {
         return (<div className="p-5">
             <div className="grid grid-cols-3 gap-4">
