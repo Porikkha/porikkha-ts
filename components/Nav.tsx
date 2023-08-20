@@ -22,27 +22,27 @@ const Nav = () => {
     e.preventDefault();
     const creatorId = session?.user?.id;
     if (!creatorId) {
-        console.log("❌ ~ file: Nav.tsx:59 : creatorId not found");
-        return;
+      console.log('❌ ~ file: Nav.tsx:59 : creatorId not found');
+      return;
     }
     const exam: ExamInterface = {
-        creatorId: session?.user?.id!,
-        examId: "",
-        title: "Exam Title",
-        description: "Exam Description",
-        questions: [],
-        startTime: new Date(),
-        duration: 30,
-        allowedAbilities: [
-            {
-              type: 'copy',
-              isAllowed: false,
-            },
-            {
-              type: 'print',
-              isAllowed: true,
-            },
-          ],
+      creatorId: session?.user?.id!,
+      examId: '',
+      title: 'Exam Title',
+      description: 'Exam Description',
+      questions: [],
+      startTime: new Date(),
+      duration: 30,
+      allowedAbilities: [
+        {
+          type: 'copy',
+          isAllowed: false,
+        },
+        {
+          type: 'print',
+          isAllowed: true,
+        },
+      ],
     };
     const response = await fetch('/api/exams', {
       method: 'POST',
@@ -52,7 +52,7 @@ const Nav = () => {
     });
     const data = await response.json();
     if (data.status == 200 && data.examId) {
-      router.push('/create-exam');
+      router.push('/exam/create/' + data.examId);
     } else {
       setShowErrorAlert(true);
     }

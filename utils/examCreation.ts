@@ -13,7 +13,9 @@ const createExamOnDatabase = async (exam: ExamInterface) => {
   }
   // Attempt to create the exam in the database.
   try {
-    await Exam.create(exam);
+    const filter = { examId: exam.examId };
+
+    await Exam.findOneAndUpdate(filter, exam, { upsert: true });
     console.log('✅ Exam creation successful on Mongo!');
     const prismaExam = {
       id: exam.examId,
@@ -23,10 +25,17 @@ const createExamOnDatabase = async (exam: ExamInterface) => {
       startTime: exam.startTime,
       duration: exam.duration,
     };
-    const createdExam = await prisma.exam.create({
-      data: prismaExam,
+    const createdExam = await prisma.exam.upsert({
+      where: {
+        id: exam.examId,
+      },
+      update: prismaExam,
+      create: prismaExam,
     });
-    console.log("🚀 ~ file: examCreation.ts:29 ~ createExamOnDatabase ~ createdExam:", createdExam)
+    console.log(
+      '🚀 ~ file: examCreation.ts:29 ~ createExamOnDatabase ~ createdExam:',
+      createdExam
+    );
     console.log('✅ Exam creation successful on Prisma!');
   } catch (err) {
     console.error('🚀 Error during exam creation:', err);
