@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "pgOptions": {
+                "ssl": true
+            },
+            "previewLimit": 50,
+            "server": "localhost",
+            "driver": "CockroachDB",
+            "name": "PorikkhaDB",
+            "connectString": "postgresql://shuaib:rZKb7PjTkSuhV_c-tgh0eg@porikkha-sqldb-5408.8nk.cockroachlabs.cloud:26257/defaultdb?schema=public"
+        }
+    ]
+}
