@@ -1,4 +1,4 @@
-import Alert from "@mui/material/Alert";
+import Alert from '@mui/material/Alert';
 const SuccessAlert = ({
   showSuccessAlert,
   setShowSuccessAlert,
@@ -8,8 +8,8 @@ const SuccessAlert = ({
 }) => {
   return (
     showSuccessAlert && (
-      <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
-        <Alert severity="success" onClose={() => setShowSuccessAlert(false)}>
+      <div className='fixed left-1/2 top-1/2 z-50 -translate-x-1/2 -translate-y-1/2 transform'>
+        <Alert severity='success' onClose={() => setShowSuccessAlert(false)}>
           Exam saved successfully!
         </Alert>
       </div>

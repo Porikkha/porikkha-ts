@@ -1,20 +1,13 @@
-"use client";
-import {
-  Card,
-  CardContent,
-  Checkbox,
-  Divider,
-  Input,
-  Typography,
-} from "@mui/joy";
-import { Radio, RadioGroup, Box } from "@mui/joy";
-import MiniOptions from "@/components/questions/MiniOptions";
-import Question from "@/interfaces/question/Question";
-import MultipleChoiceQuestion from "@/interfaces/question/MultipleChoiceQuestion";
-import SingleChoiceQuestion from "@/interfaces/question/SingleChoiceQuestion";
-import Choice from "@/interfaces/question/Choice";
-import React from "react";
-import ShortAnswerQuestion from "@/interfaces/question/ShortAnswerQuestion";
+'use client';
+import { Card, CardContent, Checkbox, Divider, Input, Typography } from '@mui/joy';
+import { Radio, RadioGroup, Box } from '@mui/joy';
+import MiniOptions from '@/components/questions/MiniOptions';
+import Question from '@/interfaces/question/Question';
+import MultipleChoiceQuestion from '@/interfaces/question/MultipleChoiceQuestion';
+import SingleChoiceQuestion from '@/interfaces/question/SingleChoiceQuestion';
+import Choice from '@/interfaces/question/Choice';
+import React from 'react';
+import ShortAnswerQuestion from '@/interfaces/question/ShortAnswerQuestion';
 
 export function SingleChoices({
   choices,
@@ -26,9 +19,9 @@ export function SingleChoices({
   return (
     <RadioGroup
       onChange={(e) => handleAnswerChange(e)}
-      defaultValue="medium"
-      name="radio-buttons-group"
-      className="mx-10 my-3"
+      defaultValue='medium'
+      name='radio-buttons-group'
+      className='mx-10 my-3'
     >
       {choices.map((option, index) => {
         return <Radio value={option.id} label={option.text} key={index + 1} />;
@@ -48,16 +41,16 @@ export function MultipleChoices({
     <>
       {choices.map((option, index) => {
         return (
-          <Box className="flex mx-10 my-3" key={`${option}+${index}`}>
+          <Box className='mx-10 my-3 flex' key={`${option}+${index}`}>
             <Checkbox
               value={option.id}
               onChange={(e) => handleAnswerChange(e)}
-              className="px-5"
+              className='px-5'
             />
-            <Typography className="flex-grow">{option.text}</Typography>
+            <Typography className='flex-grow'>{option.text}</Typography>
           </Box>
         );
-      })}{" "}
+      })}{' '}
     </>
   );
 }
@@ -95,34 +88,32 @@ export function QuestionContent({
   };
   return (
     <>
-      <CardContent
-        sx={{ flexDirection: "row", width: "100%", alignContent: "center" }}
-      >
+      <CardContent sx={{ flexDirection: 'row', width: '100%', alignContent: 'center' }}>
         <Box
           sx={{
             width: 50,
             height: 50,
-            backgroundColor: "#E2E3FC", // Purple color
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            color: "#fff", // Text color for the content inside the box
-            fontWeight: "bold", // Example: Applying a bold font weight to the text
-            borderRadius: "5px",
+            backgroundColor: '#E2E3FC', // Purple color
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            color: '#fff', // Text color for the content inside the box
+            fontWeight: 'bold', // Example: Applying a bold font weight to the text
+            borderRadius: '5px',
           }}
         >
           <Typography>{qdata.id}</Typography>
         </Box>
-        <Typography className="grow" sx={{ alignSelf: "center" }}>
+        <Typography className='grow' sx={{ alignSelf: 'center' }}>
           {qdata.title}
         </Typography>
-        <Typography sx={{ alignSelf: "center" }} className="order-last">
+        <Typography sx={{ alignSelf: 'center' }} className='order-last'>
           Points : 5
         </Typography>
       </CardContent>
-      <Divider sx={{ width: "100%", alignSelf: "center" }} />
+      <Divider sx={{ width: '100%', alignSelf: 'center' }} />
       <CardContent>
-        {qdata.type === "single-choice" && (
+        {qdata.type === 'single-choice' && (
           <SingleChoices
             choices={(qdata as SingleChoiceQuestion).choices}
             handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -130,20 +121,17 @@ export function QuestionContent({
             }
           />
         )}
-        {qdata.type === "multiple-choice" && (
+        {qdata.type === 'multiple-choice' && (
           <MultipleChoices
             choices={(qdata as MultipleChoiceQuestion).choices}
             handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleMultipleChoiceAnswer(
-                Number(e.target.value),
-                e.target.checked
-              )
+              handleMultipleChoiceAnswer(Number(e.target.value), e.target.checked)
             }
           />
         )}
-        {qdata.type === "short-answer" && (
+        {qdata.type === 'short-answer' && (
           <Input
-            className="mx-10 my-3"
+            className='mx-10 my-3'
             value={(qdata as ShortAnswerQuestion).referenceAnswer}
             onChange={(e) => {
               handleShortAnswer(e.target.value);
@@ -164,13 +152,12 @@ export default function Question({
 }) {
   return (
     <Card
-      className="my-3"
-      variant="outlined"
-      color="primary"
-      sx={{ stroke: "#E2E3FC", margin: "auto" }}
+      className='my-3'
+      variant='outlined'
+      color='primary'
+      sx={{ stroke: '#E2E3FC', margin: 'auto' }}
     >
       <QuestionContent qdata={qdata} setQuestion={setQuestion} />
     </Card>
   );
 }
-
