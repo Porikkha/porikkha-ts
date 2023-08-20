@@ -3,6 +3,7 @@
 import { Button, Chip, CircularProgress, Divider, Typography } from "@mui/joy";
 import { useState } from "react";
 import { dummyExam } from "@/interfaces/Exam";
+import { useSession } from "next-auth/react";
 import formatTime, { formatDuration } from "@/utils/timeUtils";
 
 export default function Page() {
@@ -10,7 +11,8 @@ export default function Page() {
     const [exams, setExams] = useState([dummyExam]);
     const [loading, setLoading] = useState(false);
 
-
+    const { data: session } = useSession();
+    console.log('😁 User: ', session?.user);
     const ExamGrid = () => {
         return (<div className="p-5">
             <div className="grid grid-cols-3 gap-4">

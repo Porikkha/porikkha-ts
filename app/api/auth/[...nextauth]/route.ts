@@ -1,6 +1,6 @@
-import NextAuth, { DefaultSession } from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
-import { prisma } from "@/utils/database";
+import NextAuth, { DefaultSession } from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import { prisma } from '@/utils/database';
 
 const handler = NextAuth({
   providers: [
@@ -10,7 +10,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async session( {session} : any) {
+    async session({ session }: any) {
       const sessionUser = await prisma.user.findUnique({
         where: {
           email: session.user?.email as string,
@@ -40,7 +40,7 @@ const handler = NextAuth({
         }
         return true;
       } catch (error) {
-        console.log("🚀 ~ file: route.js:34 ~ signIn ~ error:", error);
+        console.log('🚀 ~ file: route.js:34 ~ signIn ~ error:', error);
         return false;
       }
     },

@@ -1,11 +1,10 @@
-import { Schema, model, models } from "mongoose";
-import Question from "@/models/questions";
-import type Exam from "@/interfaces/Exam";
-
+import { Schema, model, models } from 'mongoose';
+import Question from '@/models/questions';
+import type Exam from '@/interfaces/Exam';
 
 const examSchema = new Schema<Exam>({
   creatorId: { type: String, required: true },
-  examId: {type: String, require: true},
+  examId: { type: String, required: true, unique: true },
   title: { type: String, required: true },
   description: { type: String },
   questions: [Object],
@@ -14,6 +13,6 @@ const examSchema = new Schema<Exam>({
   allowedAbilities: [Object],
 });
 
-const Exam = models.Exam || model("Exam", examSchema);
+const Exam = models.Exam || model('Exam', examSchema);
 
 export default Exam;

@@ -18,9 +18,8 @@ module.exports = {
       }
     },
   },
-  plugins: []
-}
-
+  plugins: [],
+};
 
 // import type { Config } from 'tailwindcss'
 

@@ -2,14 +2,12 @@
 
 const Switch = () => {
   return (
-    <div className="relative inline-block w-12 h-6 mr-2 align-middle select-none">
+    <div className='relative mr-2 inline-block h-6 w-12 select-none align-middle'>
       <input
-        type="checkbox"
-        className="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer focus:outline-none transition-transform"
+        type='checkbox'
+        className='toggle-checkbox absolute block h-6 w-6 cursor-pointer appearance-none rounded-full border-4 bg-white transition-transform focus:outline-none'
       />
-      <label
-        className="toggle-label block w-6 h-6 rounded-full bg-gray-300 cursor-pointer"
-      ></label>
+      <label className='toggle-label block h-6 w-6 cursor-pointer rounded-full bg-gray-300'></label>
     </div>
   );
 };
