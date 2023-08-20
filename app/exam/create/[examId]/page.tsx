@@ -14,6 +14,7 @@ import MultipleChoiceQuestion, {
 } from '@/interfaces/question/MultipleChoiceQuestion';
 import { dummyQuestions as dummyShorts } from '@/interfaces/question/ShortAnswerQuestion';
 import { dummyQuestions as dummySCQs } from '@/interfaces/question/SingleChoiceQuestion';
+import { useRouter } from 'next/navigation';
 
 const dummyQuestions = (dummyMCQs as Question[]).concat(dummySCQs).concat(dummyShorts);
 
@@ -29,6 +30,7 @@ const Home = ({ params }: { params: { examId: string } }) => {
   };
 
   const [open, setOpen] = useState(false);
+  const router = useRouter();
 
   const [examName, setExamName] = useState('Exam Name');
   const [examDesc, setExamDesc] = useState('Exam Description');
@@ -144,7 +146,9 @@ const Home = ({ params }: { params: { examId: string } }) => {
       }),
     });
     const data = await response.json();
-    setShowSuccessAlert(data.status == 200);
+
+    // setShowSuccessAlert(data.status == 200);
+    router.push('/dashboard?status=success');
   };
 
   const fetchExam = async (examId: string) => {

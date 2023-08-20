@@ -21,3 +21,16 @@ export const getExamFromDatabase = async (examId: string) => {
     throw new Error('🚀 Error during exam fetch:', err);
   }
 };
+
+export const getExamMetaByUserId = async (userId: string) => {
+  console.log("🚀 ~ file: examRepo.ts:26 ~ getAllExamsFromDatabase ~ userId:", userId)
+  const exams = await prisma.exam.findMany(
+    {
+      where: {
+        creatorId: userId
+      }
+    }
+  )
+  console.log("🚀 ~ file: examRepo.ts:30 ~ getAllExamsFromDatabase ~ exams", exams)
+  return exams;
+};
