@@ -7,19 +7,19 @@ export default interface Submission {
     score: Number,
 }
 
-interface Answer {
+export interface Answer {
     questionId: Number,
     type: "single-choice" | "multiple-choice" | "short-answer";
 }
 
-interface MultipleChoiceAnswer extends Answer {
+export interface MultipleChoiceAnswer extends Answer {
     answer: Number[],
 }
 
-interface SingleChoiceAnswer extends Answer {
+export interface SingleChoiceAnswer extends Answer {
     answer: Number,
 }
 
-interface ShortAnswerAnswer extends Answer {
+export interface ShortAnswerAnswer extends Answer {
     answer: String,
 }

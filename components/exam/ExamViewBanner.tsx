@@ -22,14 +22,14 @@ export default function ExamViewBanner({ exam }: any) {
         <div className='w-full'>
           <div className='font-sans text-3xl font-bold text-black'>{exam.title}</div>
           <div className='py-3 font-sans text-sm font-semibold text-slate-500'>
-            {exam.startTime.toTimeString()}
+            {exam.startTime.toLocaleString()}
           </div>
           <div>
             <ul className='list-disc space-y-3 pl-5 text-gray-600 marker:text-[#7FF]'>
-              <li>Shortcuts : Disabled </li>
-              <li>Duration : 30:00 </li>
-              <li>Total Questions : 6 </li>
-              <li>Total Points : 30 </li>
+              <li>Shortcuts : </li>
+              <li>Duration : {exam.duration} </li>
+              <li>Total Questions : {exam.questions.length} </li>
+              {/* <li>Total Points : { exam.questions.} </li> */}
             </ul>
           </div>
         </div>
