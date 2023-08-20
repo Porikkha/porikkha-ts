@@ -3,11 +3,12 @@
 import { Button, Chip, CircularProgress, Divider, Typography } from "@mui/joy";
 import { useState } from "react";
 import { dummyExam } from "@/interfaces/Exam";
+import formatTime, { formatDuration } from "@/utils/timeUtils";
 
 export default function Page() {
     const [username, setUsername] = useState("Alex");
     const [exams, setExams] = useState([dummyExam]);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
 
     const ExamGrid = () => {
@@ -40,8 +41,9 @@ const ExamCard = ({exam} : any) => {
         <div className="w-64 bg-fade-purple hover:border-cyan-100 rounded-md p-5">
             <Typography className="text-sm pb-1 font-bold">{exam.title}</Typography>
             <Divider className="bg-slate-200"/>
-            <Typography className="text-xs pt-1 font-medium">Start : {exam.startTime.toTimeString()} </Typography>
-            <Typography className="text-xs pt-1 font-medium">Duration : {exam.duration} </Typography>
+            <Typography className="text-xs pt-1 font-medium">Start : { formatTime(exam.startTime)} </Typography>
+            <Typography className="text-xs pt-1 font-medium">Duration : { formatDuration(exam.duration) } </Typography>
+            <Typography className="text-xs pt-1 font-medium">Submissions : {0} </Typography>
 
             <div className="w-full flex justify-center">
             <Button className="bg-white text-purple-500 border-purple-500 hover:text-white hover:bg-purple-300 border-2 rounded-md mt-5">View</Button>
