@@ -9,8 +9,9 @@ import ExamViewBanner from '@/components/exam/ExamViewBanner';
 import { useSession } from 'next-auth/react';
 import type Exam from '@/interfaces/Exam';
 import type Submission from '@/interfaces/Submission';
-import type { Answer, MultipleChoiceAnswer, SingleChoiceAnswer } from '@/interfaces/Submission';
+import type { Answer, MultipleChoiceAnswer, ShortAnswerAnswer, SingleChoiceAnswer } from '@/interfaces/Submission';
 import SuccessAlert from '@/components/ui/SuccessAlert';
+import { MultipleChoiceQuestion, ShortAnswerQuestion } from '@/interfaces';
 
 
 export default function Page({ params }: { params: { examId: string } }) {
@@ -45,10 +46,27 @@ export default function Page({ params }: { params: { examId: string } }) {
     }
   };
   const fetchSubmissioon = async () => {
-    const response = await fetch(`/api/exams/submit/${exam.examId}/${session?.user.id}`, {
-      method: 'GET',
+	// console.log("fetch submit");
+    const response = await fetch(`/api/exams/submit`, {
+      method: 'PUT',
+	  body: JSON.stringify({
+        examId: exam.examId,
+		userId: session?.user?.id 
+      }),
     });
     const data = await response.json();
+    console.log("🚀 ~ file: page.tsx:56 ~ fetchSubmissioon ~ data:", data)
+	
+	const ques = (data.submission as Submission).answers.map((answer,index) => {
+		let q = questions[index];
+		if( q.type === "multiple-choice") 
+			(q as MultipleChoiceQuestion).answerId = (answer as MultipleChoiceAnswer).answer; 
+		else if (q.type === "single-choice")
+			(q as SingleChoiceQuestion).answerId = (answer as SingleChoiceAnswer).answer ;
+		else if( q.type === "short-answer") 
+			(q as ShortAnswerQuestion).referenceAnswer = (answer as ShortAnswerAnswer).answer ;
+		return q ;
+	});
     if (data.status == 200 && data.submission) {
       const submission = data.submission;
       // setExamName(exam.title);
@@ -107,7 +125,7 @@ export default function Page({ params }: { params: { examId: string } }) {
   useEffect(() => {
     fetchExam(params.examId);
     fetchSubmissioon();
-  }, [params.examId]);
+  }, []);
 
 
   return (

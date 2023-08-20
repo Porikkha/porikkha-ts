@@ -4,22 +4,22 @@ export default interface Submission {
     userId: string,
     answers: Answer[],
     submissionTime: Date,
-    score: Number,
+    score: number,
 }
 
 export interface Answer {
-    questionId: Number,
+    questionId: number,
     type: "single-choice" | "multiple-choice" | "short-answer";
 }
 
 export interface MultipleChoiceAnswer extends Answer {
-    answer: Number[],
+    answer: number[],
 }
 
 export interface SingleChoiceAnswer extends Answer {
-    answer: Number,
+    answer: number,
 }
 
 export interface ShortAnswerAnswer extends Answer {
-    answer: String,
+    answer: string,
 }
