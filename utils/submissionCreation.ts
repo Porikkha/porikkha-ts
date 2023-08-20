@@ -46,13 +46,22 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
   return { status: 200, submissionId: submission.examId };
 };
 
-// const generateId = (length = 6) => {
-//   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-//   let result = '';
-//   for (let i = 0; i < length; i++) {
-//     result += characters.charAt(Math.floor(Math.random() * characters.length));
-//   }
-//   return result;
-// };
+const getSubmissionFromDatabase = async (examId: string, userId: string) => {
+  try {
+    await connectMongoDB();
+    console.log('✅ ~ file: route.ts:9 ~ POST ~ Connected to mongoDB');
+  } catch (err) {
+    console.log('🚀 ~ file: route.ts:11 ~ POST ~ Error connecting to mongoDB:', err);
+    return {};
+  }
+  // Attempt to create the exam in the database.
+  try {
+    const submission = await Submission.findOne({examId: examId, userId: userId});
+    console.log('✅ Submission fetch successful from Mongo!');
+    return submission;
+  } catch (err: any) {
+    throw new Error('🚀 Error during submission fetch:', err);
+  }
+};
 
-export { createSubmissionOnDatabase};
+export { getSubmissionFromDatabase,createSubmissionOnDatabase};

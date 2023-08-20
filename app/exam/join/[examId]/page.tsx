@@ -44,6 +44,20 @@ export default function Page({ params }: { params: { examId: string } }) {
       // setExamDuration(exam.duration.toString());
     }
   };
+  const fetchSubmissioon = async () => {
+    const response = await fetch(`/api/exams/submit/${exam.examId}/${session?.user.id}`, {
+      method: 'GET',
+    });
+    const data = await response.json();
+    if (data.status == 200 && data.submission) {
+      const submission = data.submission;
+      // setExamName(exam.title);
+      // setExamDesc(exam.description);
+      // setStartTime(new Date(exam.startTime).toTimeString());
+  };
+
+  };
+
   const handleAnswerSubmit = async(event: any) => {
     event.preventDefault();
     const userId = session?.user?.id;
@@ -92,6 +106,7 @@ export default function Page({ params }: { params: { examId: string } }) {
   };
   useEffect(() => {
     fetchExam(params.examId);
+    fetchSubmissioon();
   }, [params.examId]);
 
 
