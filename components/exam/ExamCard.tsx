@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 const ExamCard = ({exam} : any) => {
     const router = useRouter() ;
 
-    const editExam = (examId : any) => {
-        router.push(`/exam/create/${examId}`);
+    const editExam = (examID : any) => {
+        router.push(`/exam/create/${examID}`);
     }    
     
     return (
@@ -22,7 +22,7 @@ const ExamCard = ({exam} : any) => {
             <div className="w-full flex justify-center">
             <Button className="bg-white text-purple-500 border-purple-500 hover:text-white hover:bg-purple-300 border-2 rounded-md mt-5" 
                 onClick={
-                    () => editExam(exam.examId)
+                    () => editExam(exam.examID)
                 }
             >View</Button>
             </div>

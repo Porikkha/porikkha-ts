@@ -65,7 +65,7 @@ const getSubmissionFromDatabase = async (examID: string, userID: string) => {
   }
 };
 
-const getAllSubmissionsFromDatabase = async (userId: string) => {
+const getAllSubmissionsFromDatabase = async (userID: string) => {
   try {
     await connectMongoDB();
     console.log('✅ ~ file: route.ts:9 ~ POST ~ Connected to mongoDB');
@@ -74,7 +74,7 @@ const getAllSubmissionsFromDatabase = async (userId: string) => {
     return null;
   }
   try {
-    const submissions = await Submission.find({userId: userId}) ;
+    const submissions = await Submission.find({userID}) ;
     console.log('✅ Submissions fetch successful from Mongo!');
     return submissions;
   } catch (err: any) {

@@ -20,8 +20,8 @@ export function ExamGrid() {
       console.log(data);
       let newExamList = data.exams.map((exam: any) => {
         let e: Exam = {
-          examId: exam.id,
-          creatorId: exam.creatorId,
+          examID: exam.examID,
+          creatorID: exam.creatorID,
           description: exam.description,
           duration: exam.duration,
           startTime: new Date(exam.startTime),
