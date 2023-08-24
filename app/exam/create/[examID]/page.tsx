@@ -22,7 +22,7 @@ import Exam from '@/interfaces/Exam';
 import EditQuestionModal from '@/components/questions/EditQuestionModal';
 import { CircularProgress } from '@mui/joy';
 
-const Home = ({ params }: { params: { examId: string } }) => {
+const Home = ({ params }: { params: { examID: string } }) => {
   const setQuestionNumbers = (questions: Question[]) => {
     return questions.map((question, index) => {
       question.id = index + 1;
@@ -111,14 +111,14 @@ const Home = ({ params }: { params: { examId: string } }) => {
 
   const handleExamSubmit = async (event: any) => {
     event.preventDefault();
-    const creatorId = session?.user?.id;
-    if (!creatorId) {
-      console.log('❌ ~ file: page.tsx:202 : creatorId not found');
+    const creatorID = session?.user?.id;
+    if (!creatorID) {
+      console.log('❌ ~ file: page.tsx:202 : creatorID not found');
       return;
     }
     const exam: ExamInterface = {
-      creatorId: session?.user?.id!,
-      examId: params.examId,
+      creatorID: session?.user?.id!,
+      examID: params.examID,
       title: examName,
       description: examDesc,
       questions: quess,
@@ -153,8 +153,8 @@ const Home = ({ params }: { params: { examId: string } }) => {
     router.push('/dashboard?status=success');
   };
 
-  const fetchExam = async (examId: string) => {
-    const response = await fetch(`/api/exams/${params.examId}`, {
+  const fetchExam = async (examID: string) => {
+    const response = await fetch(`/api/exams/${params.examID}`, {
       method: 'GET',
     });
     const data = await response.json();
@@ -171,7 +171,7 @@ const Home = ({ params }: { params: { examId: string } }) => {
   };
 
   useEffect(() => {
-    fetchExam(params.examId);
+    fetchExam(params.examID);
   }, []);
 
   return (

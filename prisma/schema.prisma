@@ -8,7 +8,7 @@ datasource db {
 }
 
 model User {
-  userID            String             @id @default(uuid()) @map("id")
+  userID            String             @id @default(uuid())
   username          String             @db.String(255)
   email             String             @unique @db.String(255)
   image             String?            @db.String(255)
@@ -23,11 +23,11 @@ model User {
 }
 
 model Exam {
-  examID      String       @id @map("id")
+  examID      String       @id
   creator     User         @relation(fields: [creatorID], references: [userID])
   creatorID   String
-  classroomID Int
-  classroom   Classroom    @relation(fields: [classroomID], references: [classroomID])
+  classroomID Int?
+  classroom   Classroom?   @relation(fields: [classroomID], references: [classroomID])
   title       String
   startTime   DateTime     @default(now())
   duration    Int
@@ -41,7 +41,7 @@ model Exam {
 }
 
 model Question {
-  questionID Int      @default(sequence()) @map("id")
+  questionID Int      @default(sequence())
   examID     String
   type       String // or use an enum
   points     Int
@@ -52,7 +52,7 @@ model Question {
 }
 
 model Classroom {
-  classroomID Int                @id @default(sequence()) @map("id")
+  classroomID Int                @id @default(sequence())
   creatorID   String
   creator     User               @relation("createdClassrooms", fields: [creatorID], references: [userID])
   name        String
@@ -63,7 +63,7 @@ model Classroom {
 }
 
 model DiscussionThread {
-  discussionThreadID Int       @id @default(sequence()) @map("id")
+  discussionThreadID Int       @id @default(sequence())
   classroomID        Int
   classroom          Classroom @relation(fields: [classroomID], references: [classroomID])
   creatorID          String
@@ -75,7 +75,7 @@ model DiscussionThread {
 }
 
 model Post {
-  postID     Int              @id @default(sequence()) @map("id")
+  postID     Int              @id @default(sequence())
   creatorID  String
   creator    User             @relation(fields: [creatorID], references: [userID])
   threadID   Int
@@ -85,7 +85,7 @@ model Post {
 }
 
 model Reply {
-  replyID   Int    @id @default(sequence()) @map("id")
+  replyID   Int    @id @default(sequence())
   creatorID String
   creator   User   @relation(fields: [creatorID], references: [userID])
   postID    Int
@@ -94,7 +94,7 @@ model Reply {
 }
 
 model Submission {
-  submissionID   Int     @id @default(sequence()) @map("id")
+  submissionID   Int     @id @default(sequence())
   studentID      String
   student        User    @relation(fields: [studentID], references: [userID])
   examID         String
@@ -105,7 +105,7 @@ model Submission {
 }
 
 model Report {
-  reportID    Int      @id @default(sequence()) @map("id")
+  reportID    Int      @id @default(sequence())
   type        String
   description String
   examID      String

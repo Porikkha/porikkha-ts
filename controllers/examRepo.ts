@@ -8,7 +8,7 @@ import { getSubmissionFromDatabase } from './submission';
 import SubmissionInterface, { mergeSubmissionWithExam } from '@/interfaces/Submission';
 
 
-export const getExamFromDatabase = async (examId: string) => {
+export const getExamFromDatabase = async (examID: string) => {
   // Connect to mongoDB
   try {
     await connectMongoDB();
@@ -19,14 +19,14 @@ export const getExamFromDatabase = async (examId: string) => {
   }
   // Attempt to create the exam in the database.
   try {
-    const exam= await Exam.findOne({ examId });
+    const exam= await Exam.findOne({ examID });
     console.log('✅ Exam fetch successful from Mongo!');
     return exam;
   } catch (err: any) {
     throw new Error('🚀 Error during exam fetch:', err);
   }
 };
-export const getExamWithoutAnswer = async (userId:string, examId: string) => {
+export const getExamWithoutAnswer = async (userID:string, examID: string) => {
   // Connect to mongoDB
   try {
     await connectMongoDB();
@@ -36,8 +36,8 @@ export const getExamWithoutAnswer = async (userId:string, examId: string) => {
     return {};
   }
   try {
-    const examWithAnswer = await Exam.findOne({ examId });
-    const submission:SubmissionInterface|null = await getSubmissionFromDatabase(examId,userId) ;
+    const examWithAnswer = await Exam.findOne({ examID });
+    const submission:SubmissionInterface|null = await getSubmissionFromDatabase(examID,userID) ;
 
     if( examWithAnswer === null ) 
       return null ;
@@ -53,12 +53,12 @@ export const getExamWithoutAnswer = async (userId:string, examId: string) => {
   }
 };
 
-export const getExamMetaByUserId = async (userId: string) => {
-  console.log("🚀 ~ file: examRepo.ts:26 ~ getAllExamsFromDatabase ~ userId:", userId)
+export const getExamMetaByUserId = async (userID: string) => {
+  console.log("🚀 ~ file: examRepo.ts:26 ~ getAllExamsFromDatabase ~ userID:", userID)
   const exams = await prisma.exam.findMany(
     {
       where: {
-        creatorId: userId
+        creatorID: userID
       }
     }
   )

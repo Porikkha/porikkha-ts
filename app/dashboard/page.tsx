@@ -19,8 +19,8 @@ export default function Page() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const editExam = (examId: any) => {
-    router.push(`/exam/create/${examId}`);
+  const editExam = (examID: any) => {
+    router.push(`/exam/create/${examID}`);
   };
 
   if (searchParams.has('status') && searchParams.get('status') == 'success') {
@@ -37,8 +37,8 @@ export default function Page() {
     console.log(data);
     let newExamList = data.exams.map((exam: any) => {
       let e: Exam = {
-        examId: exam.id,
-        creatorId: exam.creatorId,
+        examID: exam.examID,
+        creatorID: exam.creatorID,
         description: exam.description,
         duration: exam.duration,
         startTime: new Date(exam.startTime),
@@ -136,7 +136,7 @@ const ExamCard = ({ exam, editExam }: any) => {
       <div className='flex w-full justify-center'>
         <Button
           className='mt-5 rounded-md border-2 border-purple-500 bg-white text-purple-500 hover:bg-purple-300 hover:text-white'
-          onClick={() => editExam(exam.examId)}
+          onClick={() => editExam(exam.examID)}
         >
           View
         </Button>

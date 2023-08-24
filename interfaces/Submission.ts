@@ -2,8 +2,8 @@ import { Exam, MultipleChoiceQuestion, ShortAnswerQuestion, SingleChoiceQuestion
 import { Answer, MultipleChoiceAnswer, ShortAnswerAnswer, SingleChoiceAnswer } from "./question/Answer";
 
 export default interface Submission {
-    examId: string,
-    userId: string,
+    examID: string,
+    userID: string,
     answers: Answer[],
     submissionTime: Date,
     score: number,

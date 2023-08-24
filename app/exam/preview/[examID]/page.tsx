@@ -10,7 +10,7 @@ import {
   Button,
 } from '@mui/joy';
 
-const ExamBanner = ({ params }: { params: { examId: string } }) => {
+const ExamBanner = ({ params }: { params: { examID: string } }) => {
   const title = 'Operating Systems - Quiz I';
   const totalTime = '30:00';
   const startTime = '10:00 AM';
