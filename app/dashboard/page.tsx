@@ -8,6 +8,7 @@ import formatTime, { formatDuration } from "@/utils/timeUtils";
 import { useRouter, useSearchParams } from 'next/navigation';
 import SuccessAlert from "@/components/ui/SuccessAlert";
 import { Router } from "next/router";
+import Sidebar from "@/components/dashboard/Sidebar";
 
 export default function Page() {
     const [username, setUsername] = useState("Alex");
@@ -75,6 +76,8 @@ export default function Page() {
 
 
 	return (
+        <>
+        <Sidebar />
 		<section className="w-full">
 			<div className="w-4/5 mx-auto bg-white rounded-md p-5">
                 <Typography className="text-3xl pb-2">Welcome {username}</Typography>
@@ -90,6 +93,7 @@ export default function Page() {
                 />
 			</div>
 		</section>
+        </>
 	);
 }
 
