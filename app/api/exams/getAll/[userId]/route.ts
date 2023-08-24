@@ -1,7 +1,7 @@
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
-import { getExamMetaByUserId } from '@/utils/examRepo';
+import { getExamMetaByUserId } from '@/controllers/examRepo';
 
 // export async function GET(request: NextRequest) {
 //   const body = await request.json();

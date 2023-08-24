@@ -1,6 +1,6 @@
 'use server';
 import { NextRequest, NextResponse } from 'next/server';
-import { createSubmissionOnDatabase, getSubmissionFromDatabase } from '@/utils/submission';
+import { createSubmissionOnDatabase, getSubmissionFromDatabase } from '@/controllers/submission';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();

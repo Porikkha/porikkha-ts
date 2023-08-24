@@ -1,6 +1,6 @@
 'use server';
 import { NextRequest, NextResponse } from 'next/server';
-import { getExamFromDatabase, getExamWithoutAnswer } from '@/utils/examRepo';
+import { getExamFromDatabase, getExamWithoutAnswer } from '@/controllers/examRepo';
 import { getServerSession } from 'next-auth';
 export async function GET(request: NextRequest, { params }: any) {
   // we will use params to access the data passed to the dynamic route

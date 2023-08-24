@@ -1,6 +1,6 @@
 'use server';
 import { NextRequest, NextResponse } from 'next/server';
-import { getExamFromDatabase } from '@/utils/examRepo';
+import { getExamFromDatabase } from '@/controllers/examRepo';
 export async function GET(request: NextRequest, { params }: any) {
   // we will use params to access the data passed to the dynamic route
   const examId = params.examId;
