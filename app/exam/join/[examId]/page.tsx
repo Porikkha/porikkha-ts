@@ -11,6 +11,7 @@ import type { Answer, MultipleChoiceAnswer, ShortAnswerAnswer, SingleChoiceAnswe
 import SuccessAlert from '@/components/ui/SuccessAlert';
 import { MultipleChoiceQuestion, ShortAnswerQuestion, Question as QuestionInterface } from '@/interfaces';
 import Loading from '@/components/Loading';
+import { useRouter } from 'next/navigation';
 
 
 export default function Page({ params }: { params: { examId: string } }) {
@@ -19,7 +20,7 @@ export default function Page({ params }: { params: { examId: string } }) {
   const [exam, setExam] = useState(dummyExam);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [loading, setLoading] = useState(true);
-
+  const router = useRouter() ;
 
   const fetchExam = async (examId: string) => {
     const response = await fetch(`/api/exams/join/${params.examId}`, {
@@ -78,6 +79,9 @@ export default function Page({ params }: { params: { examId: string } }) {
     });
     const data = await response.json();
     setShowSuccessAlert(data.status == 200);
+    
+    if( data.status === 200) 
+      router.push('/dashboard?status=success');
   };
   useEffect(() => {
     fetchExam(params.examId);
