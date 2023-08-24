@@ -1,18 +1,19 @@
 'use client';
 import { Card, CardContent, Checkbox, Divider, Input, Typography } from '@mui/joy';
 import { Radio, RadioGroup, Box } from '@mui/joy';
-import MiniOptions from '@/components/questions/MiniOptions';
 import Question from '@/interfaces/question/Question';
 import MultipleChoiceQuestion from '@/interfaces/question/MultipleChoiceQuestion';
 import SingleChoiceQuestion from '@/interfaces/question/SingleChoiceQuestion';
-import Choice from '@/interfaces/question/Choice';
 import React from 'react';
-import ShortAnswerQuestion from '@/interfaces/question/ShortAnswerQuestion';
+import { SingleChoiceAnswer, ShortAnswerQuestion, Choice, MultipleChoiceAnswer } from '@/interfaces';
+import { ContactlessOutlined } from '@mui/icons-material';
 
 export function SingleChoices({
   choices,
+  answer,
   handleAnswerChange,
 }: {
+  answer?: SingleChoiceAnswer['answer'],
   choices: Choice[];
   handleAnswerChange: any;
 }) {
@@ -24,7 +25,7 @@ export function SingleChoices({
       className='mx-10 my-3'
     >
       {choices.map((option, index) => {
-        return <Radio value={option.id} label={option.text} key={index + 1} />;
+        return <Radio value={option.id} label={option.text} key={index + 1} checked={answer !== undefined && option.id === answer} />;
       })}
     </RadioGroup>
   );
@@ -32,11 +33,21 @@ export function SingleChoices({
 
 export function MultipleChoices({
   choices,
+  answer,
   handleAnswerChange,
 }: {
   choices: Choice[];
+  answer: MultipleChoiceAnswer['answer'],
   handleAnswerChange: any;
 }) {
+  const getChecked = () => {
+    let checked = new Array<boolean>(choices.length + 1).fill(false);
+    answer.forEach((id: number) => {
+      checked[id] = true;
+    });
+    return checked;
+  }
+  const checked = getChecked();
   return (
     <>
       {choices.map((option, index) => {
@@ -45,6 +56,7 @@ export function MultipleChoices({
             <Checkbox
               value={option.id}
               onChange={(e) => handleAnswerChange(e)}
+              checked={checked[option.id]}// checked[option.id]===true}
               className='px-5'
             />
             <Typography className='flex-grow'>{option.text}</Typography>
@@ -55,6 +67,30 @@ export function MultipleChoices({
   );
 }
 
+
+export const handleSingleChoiceAnswer = (id: number, qdata: SingleChoiceQuestion, setQuestion: any) => {
+  const newdata: SingleChoiceQuestion = {
+    ...qdata,
+    answer: id,
+  } as SingleChoiceQuestion;
+  setQuestion(newdata);
+};
+
+export const handleMultipleChoiceAnswer = (id: number, checked: boolean, qdata: MultipleChoiceQuestion, setQuestion: any) => {
+  let answers = (qdata as MultipleChoiceQuestion).answer;
+  answers = answers.filter(answer => answer != id);
+  if (checked) {
+    answers = [...(answers as number[]), id];
+  }
+  const newdata: MultipleChoiceQuestion = {
+    ...qdata,
+    answer: answers,
+  } as MultipleChoiceQuestion;
+  setQuestion(newdata);
+};
+export const handleShortAnswer = (refAns: string, qdata: ShortAnswerQuestion, setQuestion: any) => {
+  setQuestion({ ...qdata, answer: refAns } as ShortAnswerQuestion);
+};
 export function QuestionContent({
   qdata,
   setQuestion,
@@ -62,30 +98,7 @@ export function QuestionContent({
   qdata: Question;
   setQuestion: any;
 }) {
-  const handleSingleChoiceAnswer = (id: number) => {
-    const newdata: SingleChoiceQuestion = {
-      ...qdata,
-      answerId: id,
-    } as SingleChoiceQuestion;
-    setQuestion(newdata);
-  };
 
-  const handleMultipleChoiceAnswer = (id: number, checked: boolean) => {
-    let answers = (qdata as MultipleChoiceQuestion).answerId;
-    answers = answers.filter((answer, index) => answer != id);
-    if (checked) {
-      answers = [...answers, id];
-    }
-    const newdata: MultipleChoiceQuestion = {
-      ...qdata,
-      answerId: answers,
-    } as MultipleChoiceQuestion;
-    setQuestion(newdata);
-  };
-
-  const handleShortAnswer = (refAns: string) => {
-    setQuestion({ ...qdata, referenceAnswer: refAns } as ShortAnswerQuestion);
-  };
   return (
     <>
       <CardContent sx={{ flexDirection: 'row', width: '100%', alignContent: 'center' }}>
@@ -116,25 +129,27 @@ export function QuestionContent({
         {qdata.type === 'single-choice' && (
           <SingleChoices
             choices={(qdata as SingleChoiceQuestion).choices}
+            answer={(qdata as SingleChoiceQuestion).answer}
             handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleSingleChoiceAnswer(Number(e.target.value))
+              handleSingleChoiceAnswer(Number(e.target.value), qdata as SingleChoiceQuestion, setQuestion)
             }
           />
         )}
         {qdata.type === 'multiple-choice' && (
           <MultipleChoices
             choices={(qdata as MultipleChoiceQuestion).choices}
+            answer={(qdata as MultipleChoiceQuestion).answer}
             handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleMultipleChoiceAnswer(Number(e.target.value), e.target.checked)
+              handleMultipleChoiceAnswer(Number(e.target.value), e.target.checked, qdata as MultipleChoiceQuestion, setQuestion)
             }
           />
         )}
         {qdata.type === 'short-answer' && (
           <Input
             className='mx-10 my-3'
-            value={(qdata as ShortAnswerQuestion).referenceAnswer}
+            value={(qdata as ShortAnswerQuestion).answer}
             onChange={(e) => {
-              handleShortAnswer(e.target.value);
+              handleShortAnswer(e.target.value, qdata as ShortAnswerQuestion, setQuestion);
             }}
           ></Input>
         )}

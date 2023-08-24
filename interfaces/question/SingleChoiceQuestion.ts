@@ -1,10 +1,15 @@
 // extend Question
 import Question from './Question';
 import Choice from './Choice';
+import { SingleChoiceAnswer } from './Answer';
 
-export default interface SingleChoiceQuestion extends Question {
+export default interface SingleChoiceQuestion extends Question,SingleChoiceAnswer {
   choices: Choice[];
-  answerId: number | undefined;
+}
+
+
+export function removeSingleChoiceQuestionAnswer(question:SingleChoiceQuestion) {
+  return {...question,answer:0} ;
 }
 
 export const dummyQuestions: SingleChoiceQuestion[] = [
@@ -14,7 +19,7 @@ export const dummyQuestions: SingleChoiceQuestion[] = [
     choices: [{ text: 'New Delhi', id: 1 }],
     type: 'single-choice',
     points: 5,
-    answerId: 1,
+    answer: 1,
   },
   {
     id: 2,
@@ -26,6 +31,6 @@ export const dummyQuestions: SingleChoiceQuestion[] = [
     ],
     type: 'single-choice',
     points: 5,
-    answerId: 1,
+    answer: 1,
   },
 ];

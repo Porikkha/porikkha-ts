@@ -20,6 +20,7 @@ const dummyQuestions = (dummyMCQs as Question[]).concat(dummySCQs).concat(dummyS
 
 import Exam from '@/interfaces/Exam';
 import EditQuestionModal from '@/components/questions/EditQuestionModal';
+import { CircularProgress } from '@mui/joy';
 
 const Home = ({ params }: { params: { examId: string } }) => {
   const setQuestionNumbers = (questions: Question[]) => {
@@ -48,6 +49,7 @@ const Home = ({ params }: { params: { examId: string } }) => {
   const [quess, setQuess] = useState<Question[]>(setQuestionNumbers(dummyQuestions));
   const { data: session } = useSession();
 
+  const [loading,setLoading] = useState(true) ;
   const setters = {
     setExamName,
     setExamDesc,
@@ -121,7 +123,7 @@ const Home = ({ params }: { params: { examId: string } }) => {
       description: examDesc,
       questions: quess,
       startTime: new Date(startTimeFormatted),
-      duration: parseInt(examDuration.trim()),
+      duration: parseInt(examDuration?.trim()),
       allowedAbilities: [
         {
           type: 'shuffle',
@@ -163,8 +165,9 @@ const Home = ({ params }: { params: { examId: string } }) => {
       setStartTime(new Date(exam.startTime).toTimeString());
       setStartTimeFormatted(new Date(exam.startTime).toLocaleString());
       setQuess(setQuestionNumbers(exam.questions));
-      setExamDuration(exam.duration.toString());
+      setExamDuration(exam.duration?.toString());
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -186,7 +189,8 @@ const Home = ({ params }: { params: { examId: string } }) => {
       />
 
       <div className='mx-auto w-4/5'>
-        {quess.map((question, index) => {
+      { loading && <div className="w-full flex justify-center py-10"> <CircularProgress variant="soft"/> </div> }
+        { !loading && quess.map((question, index) => {
           return (
             <div className='py-2' key={index}>
               {/* <EditQuestion
@@ -220,7 +224,7 @@ const Home = ({ params }: { params: { examId: string } }) => {
               type: 'multiple-choice',
               points: 5,
               choices: [],
-              answerId: [],
+              answer: [],
             };
             setQuess(setQuestionNumbers([...quess, newQuestion]));
           }}

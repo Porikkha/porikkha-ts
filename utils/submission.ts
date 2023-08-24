@@ -12,9 +12,8 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
     console.log('🚀 ~ file: route.ts:11 ~ POST ~ Error connecting to mongoDB:', err);
     return { status: 500 };
   }
-  // Attempt to create the exam in the database.
   try {
-    const filter = { examId: submission.examId };
+    const filter = { examId: submission.examId, userId: submission.userId };
 
     await Submission.findOneAndUpdate(filter, submission, { upsert: true });
     console.log('✅ Submission creation successful on Mongo!');
@@ -52,16 +51,22 @@ const getSubmissionFromDatabase = async (examId: string, userId: string) => {
     console.log('✅ ~ file: route.ts:9 ~ POST ~ Connected to mongoDB');
   } catch (err) {
     console.log('🚀 ~ file: route.ts:11 ~ POST ~ Error connecting to mongoDB:', err);
-    return {};
+    return null;
   }
   // Attempt to create the exam in the database.
   try {
-    const submission = await Submission.findOne({examId: examId, userId: userId});
+    const submission:SubmissionInterface|null = await Submission.findOne({examId: examId, userId: userId});
     console.log('✅ Submission fetch successful from Mongo!');
+    console.log(submission);
     return submission;
   } catch (err: any) {
     throw new Error('🚀 Error during submission fetch:', err);
+    return null ;
   }
 };
+ 
+
+
+
 
 export { getSubmissionFromDatabase,createSubmissionOnDatabase};
