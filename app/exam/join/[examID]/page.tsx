@@ -7,20 +7,30 @@ import ExamViewBanner from '@/components/exam/ExamViewBanner';
 import { useSession } from 'next-auth/react';
 import type Exam from '@/interfaces/Exam';
 import type Submission from '@/interfaces/Submission';
-import type { Answer, MultipleChoiceAnswer, ShortAnswerAnswer, SingleChoiceAnswer } from '@/interfaces';
+import type {
+  Answer,
+  MultipleChoiceAnswer,
+  ShortAnswerAnswer,
+  SingleChoiceAnswer,
+} from '@/interfaces';
 import SuccessAlert from '@/components/ui/SuccessAlert';
-import { MultipleChoiceQuestion, ShortAnswerQuestion, Question as QuestionInterface } from '@/interfaces';
+import {
+  MultipleChoiceQuestion,
+  ShortAnswerQuestion,
+  Question as QuestionInterface,
+} from '@/interfaces';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
 
-
 export default function Page({ params }: { params: { examID: string } }) {
   const { data: session } = useSession();
-  const [questions, setQuestions] = useState<QuestionInterface[]>(removeAnswerFromExam(dummyExam).questions);
+  const [questions, setQuestions] = useState<QuestionInterface[]>(
+    removeAnswerFromExam(dummyExam).questions
+  );
   const [exam, setExam] = useState(dummyExam);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [loading, setLoading] = useState(true);
-  const router = useRouter() ;
+  const router = useRouter();
 
   const fetchExam = async (examID: string) => {
     const response = await fetch(`/api/exams/join/${params.examID}`, {
@@ -34,7 +44,7 @@ export default function Page({ params }: { params: { examID: string } }) {
       setLoading(false);
     }
   };
-   const handleAnswerSubmit = async (event: any) => {
+  const handleAnswerSubmit = async (event: any) => {
     event.preventDefault();
     const userID = session?.user?.id;
     if (!userID) {
@@ -43,8 +53,8 @@ export default function Page({ params }: { params: { examID: string } }) {
     }
     const submission: Submission = {
       examID: params.examID,
-      userID: session?.user?.id! ,
-      answers: questions.map((question:QuestionInterface) => {
+      userID: session?.user?.id!,
+      answers: questions.map((question: QuestionInterface) => {
         if (question.type === 'short-answer') {
           return {
             questionId: question.id,
@@ -79,14 +89,12 @@ export default function Page({ params }: { params: { examID: string } }) {
     });
     const data = await response.json();
     setShowSuccessAlert(data.status == 200);
-    
-    if( data.status === 200) 
-      router.push('/dashboard?status=success');
+
+    if (data.status === 200) router.push('/dashboard?status=success');
   };
   useEffect(() => {
     fetchExam(params.examID);
   }, []);
-
 
   return (
     <section className='w-full'>
@@ -96,8 +104,9 @@ export default function Page({ params }: { params: { examID: string } }) {
       />
       <ExamViewBanner exam={exam} />
       <div className='mx-auto w-4/5'>
-        {loading ? <Loading />
-          :
+        {loading ? (
+          <Loading />
+        ) : (
           questions.map((question, index) => {
             return (
               <Question
@@ -111,13 +120,11 @@ export default function Page({ params }: { params: { examID: string } }) {
                 key={index}
               />
             );
-          })}
+          })
+        )}
       </div>
       <div className='mx-auto w-4/5'>
-        <form
-          className='float-right py-5'
-          onSubmit={handleAnswerSubmit}
-        >
+        <form className='float-right py-5' onSubmit={handleAnswerSubmit}>
           <button
             type='submit'
             className='rounded-md bg-purple-700/70 px-4 py-2 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-green-500'

@@ -3,13 +3,12 @@ import Question from './Question';
 import Choice from './Choice';
 import { SingleChoiceAnswer } from './Answer';
 
-export default interface SingleChoiceQuestion extends Question,SingleChoiceAnswer {
+export default interface SingleChoiceQuestion extends Question, SingleChoiceAnswer {
   choices: Choice[];
 }
 
-
-export function removeSingleChoiceQuestionAnswer(question:SingleChoiceQuestion) {
-  return {...question,answer:0} ;
+export function removeSingleChoiceQuestionAnswer(question: SingleChoiceQuestion) {
+  return { ...question, answer: 0 };
 }
 
 export const dummyQuestions: SingleChoiceQuestion[] = [

@@ -5,9 +5,9 @@ export type { default as MultipleChoiceQuestion } from './question/MultipleChoic
 export type { default as ShortAnswerQuestion } from './question/ShortAnswerQuestion';
 export type { default as User } from './User';
 export type { default as Exam } from './Exam';
-export type { SingleChoiceAnswer } from './question/Answer'
-export type { MultipleChoiceAnswer } from './question/Answer'
-export type { ShortAnswerAnswer } from './question/Answer'
-export type { Answer } from './question/Answer'
+export type { SingleChoiceAnswer } from './question/Answer';
+export type { MultipleChoiceAnswer } from './question/Answer';
+export type { ShortAnswerAnswer } from './question/Answer';
+export type { Answer } from './question/Answer';
 export * from './question/Question';
-export * from "@prisma/client"
+export * from '@prisma/client';

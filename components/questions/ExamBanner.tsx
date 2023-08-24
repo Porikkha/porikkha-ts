@@ -23,7 +23,7 @@ export default function ExamBanner({ values, setters }: any) {
             {values.examName}
           </span>
           <button className='bg-light text-pdark hover:border-primary float-right mx-2 rounded border px-4 py-2 font-semibold'>
-            <Link href={'/exam/preview/' + values.examId}>Preview</Link>
+            <Link href={'/exam/preview/' + values.examID}>Preview</Link>
           </button>
           <button
             onClick={() => setters.setOpen(true)}

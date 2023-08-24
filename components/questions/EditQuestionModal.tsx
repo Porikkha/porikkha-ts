@@ -20,7 +20,12 @@ import React, { useState } from 'react';
 import SingleChoiceQuestion from '@/interfaces/question/SingleChoiceQuestion';
 import ShortAnswerQuestion from '@/interfaces/question/ShortAnswerQuestion';
 import { Add, DeleteOutlined } from '@mui/icons-material';
-import { QuestionContent, handleMultipleChoiceAnswer, handleShortAnswer, handleSingleChoiceAnswer } from './Question';
+import {
+  QuestionContent,
+  handleMultipleChoiceAnswer,
+  handleShortAnswer,
+  handleSingleChoiceAnswer,
+} from './Question';
 import { MultipleChoiceAnswer } from '@/interfaces';
 
 function EditSingleChoices({
@@ -31,7 +36,7 @@ function EditSingleChoices({
 }: {
   choices: Choice[];
   setChoices: any;
-  answer: SingleChoiceQuestion['answer'],
+  answer: SingleChoiceQuestion['answer'];
   handleAnswerChange: any;
 }) {
   const [newopt, setNewopt] = useState<Choice>({ text: '', id: 0 });
@@ -52,7 +57,6 @@ function EditSingleChoices({
     setChoices(setIndex([...choices, option]));
   };
 
-
   return (
     <>
       <CardContent className='mb-5'>
@@ -67,7 +71,12 @@ function EditSingleChoices({
                 sx={{ display: 'flex', flexGrow: '1', width: '100%' }}
                 key={`${option.id} ${option.text}`}
               >
-                <Radio sx={{ flexGrow: '1' }} value={option.id} label={option.text} checked={answer!==undefined && option.id===answer}/>
+                <Radio
+                  sx={{ flexGrow: '1' }}
+                  value={option.id}
+                  label={option.text}
+                  checked={answer !== undefined && option.id === answer}
+                />
                 <DeleteOutlined
                   className='text-black hover:text-red-400'
                   onClick={() => deleteOption(index)}
@@ -124,12 +133,12 @@ function EditMultipleChoices({
     setChoices(setIndex([...choices, option]));
   };
   const getChecked = () => {
-  let checked = new Array<boolean>(choices.length+1).fill(false) ;
-  answer?.forEach((id:number) => {
-    checked[id] = true ;
-  });
-    return checked ;
-  }
+    let checked = new Array<boolean>(choices.length + 1).fill(false);
+    answer?.forEach((id: number) => {
+      checked[id] = true;
+    });
+    return checked;
+  };
   const checked = getChecked();
   return (
     <>
@@ -140,7 +149,7 @@ function EditMultipleChoices({
               <Checkbox
                 value={option.id}
                 onChange={(e) => handleAnswerChange(e)}
-                checked = {checked[option.id]}
+                checked={checked[option.id]}
                 className='px-5'
               />
               <Typography className='flex-grow'>{option.text}</Typography>
@@ -267,7 +276,12 @@ export default function EditQuestion({
                   }}
                   answer={(qdata as MultipleChoiceQuestion).answer}
                   handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleMultipleChoiceAnswer(Number(e.target.value), e.target.checked,qdata as MultipleChoiceQuestion,setQuestion)
+                    handleMultipleChoiceAnswer(
+                      Number(e.target.value),
+                      e.target.checked,
+                      qdata as MultipleChoiceQuestion,
+                      setQuestion
+                    )
                   }
                 />
               )}
@@ -280,7 +294,11 @@ export default function EditQuestion({
                   }}
                   answer={(qdata as SingleChoiceQuestion).answer}
                   handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleSingleChoiceAnswer(Number(e.target.value),qdata as SingleChoiceQuestion,setQuestion)
+                    handleSingleChoiceAnswer(
+                      Number(e.target.value),
+                      qdata as SingleChoiceQuestion,
+                      setQuestion
+                    )
                   }
                 />
               )}
@@ -288,7 +306,11 @@ export default function EditQuestion({
                 <Input
                   value={(qdata as ShortAnswerQuestion).answer}
                   onChange={(e) => {
-                    handleShortAnswer(e.target.value, qdata as ShortAnswerQuestion, setQuestion);
+                    handleShortAnswer(
+                      e.target.value,
+                      qdata as ShortAnswerQuestion,
+                      setQuestion
+                    );
                   }}
                   disabled={!editquestion}
                 ></Input>

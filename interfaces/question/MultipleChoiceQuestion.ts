@@ -2,14 +2,13 @@ import Question from './Question';
 import Choice from './Choice';
 import { MultipleChoiceAnswer } from './Answer';
 
-export default interface MultipleChoiceQuestion extends Question,MultipleChoiceAnswer {
+export default interface MultipleChoiceQuestion extends Question, MultipleChoiceAnswer {
   choices: Choice[];
 }
 
-export function removeMultipleChoiceQuestionAnswer(question:MultipleChoiceQuestion) {
-  return {...question,answer:[]} ;
+export function removeMultipleChoiceQuestionAnswer(question: MultipleChoiceQuestion) {
+  return { ...question, answer: [] };
 }
-
 
 export const dummyQuestions: MultipleChoiceQuestion[] = [
   {

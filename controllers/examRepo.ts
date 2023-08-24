@@ -2,11 +2,18 @@ import { connectMongoDB } from '@/utils/database';
 import Exam from '@/models/exams';
 import ExamInterface, { removeAnswerFromExam } from '@/interfaces/Exam';
 import { prisma } from '@/utils/database';
-import { MultipleChoiceAnswer, MultipleChoiceQuestion, ShortAnswerAnswer, ShortAnswerQuestion, SingleChoiceAnswer, SingleChoiceQuestion, removeAnswer } from '@/interfaces';
+import {
+  MultipleChoiceAnswer,
+  MultipleChoiceQuestion,
+  ShortAnswerAnswer,
+  ShortAnswerQuestion,
+  SingleChoiceAnswer,
+  SingleChoiceQuestion,
+  removeAnswer,
+} from '@/interfaces';
 import Submission from '@/models/submissions';
 import { getSubmissionFromDatabase } from './submission';
 import SubmissionInterface, { mergeSubmissionWithExam } from '@/interfaces/Submission';
-
 
 export const getExamFromDatabase = async (examID: string) => {
   // Connect to mongoDB
@@ -19,14 +26,14 @@ export const getExamFromDatabase = async (examID: string) => {
   }
   // Attempt to create the exam in the database.
   try {
-    const exam= await Exam.findOne({ examID });
+    const exam = await Exam.findOne({ examID });
     console.log('✅ Exam fetch successful from Mongo!');
     return exam;
   } catch (err: any) {
     throw new Error('🚀 Error during exam fetch:', err);
   }
 };
-export const getExamWithoutAnswer = async (userID:string, examID: string) => {
+export const getExamWithoutAnswer = async (userID: string, examID: string) => {
   // Connect to mongoDB
   try {
     await connectMongoDB();
@@ -37,34 +44,29 @@ export const getExamWithoutAnswer = async (userID:string, examID: string) => {
   }
   try {
     const examWithAnswer = await Exam.findOne({ examID });
-    const submission = await getSubmissionFromDatabase(examID,userID) ;
+    const submission = await getSubmissionFromDatabase(examID, userID);
 
-    if( examWithAnswer === null ) {
+    if (examWithAnswer === null) {
       console.log('❌❌❌ Error during exam fetch: Exam not found');
       return null;
     }
 
-    const exam = removeAnswerFromExam(examWithAnswer) ; 
-    console.log("🚀 ~ file: examRepo.ts:48 ~ getExamWithoutAnswer ~ exam:", exam)
+    const exam = removeAnswerFromExam(examWithAnswer);
+    console.log('🚀 ~ file: examRepo.ts:48 ~ getExamWithoutAnswer ~ exam:', exam);
 
-    if( submission === null ) 
-      return exam ;
-    
-    return mergeSubmissionWithExam(exam,submission) ; 
+    if (submission === null) return exam;
+
+    return mergeSubmissionWithExam(exam, submission);
   } catch (err: any) {
     throw new Error('🚀 Error during exam fetch:', err);
   }
 };
 
 export const getExamMetaByUserId = async (userID: string) => {
-  console.log("🚀 ~ file: examRepo.ts:26 ~ getAllExamsFromDatabase ~ userID:", userID)
-  const exams = await prisma.exam.findMany(
-    {
-      where: {
-        creatorID: userID
-      } as any,
-    }
-  )
-  console.log("🚀 ~ file: examRepo.ts:30 ~ getAllExamsFromDatabase ~ exams", exams)
+  const exams = await prisma.exam.findMany({
+    where: {
+      creatorID: userID,
+    },
+  });
   return exams;
 };

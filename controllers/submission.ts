@@ -18,13 +18,13 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
     await Submission.findOneAndUpdate(filter, submission, { upsert: true });
     console.log('✅ Submission creation successful on Mongo!');
     const prismaSubmission = {
-        examID: submission.examID,
-        userID: submission.userID,
-        submissionTime: submission.submissionTime,
-        score: submission.score,
-        answers: {
-            create: submission.answers
-        }
+      examID: submission.examID,
+      userID: submission.userID,
+      submissionTime: submission.submissionTime,
+      score: submission.score,
+      answers: {
+        create: submission.answers,
+      },
     };
     // const createdSubmission = await prisma.submission.upsert({
     //   where: {
@@ -55,17 +55,20 @@ const getSubmissionFromDatabase = async (examID: string, userID: string) => {
   }
   // Attempt to create the exam in the database.
   try {
-    const submission:SubmissionInterface|null = await Submission.findOne({examID: examID, userID: userID});
+    const submission: SubmissionInterface | null = await Submission.findOne({
+      examID: examID,
+      userID: userID,
+    });
     console.log('✅ Submission fetch successful from Mongo!');
     console.log(submission);
     return submission;
   } catch (err: any) {
     throw new Error('🚀 Error during submission fetch:', err);
-    return null ;
+    return null;
   }
 };
 
-const getAllSubmissionsFromDatabase = async (userId: string) => {
+const getAllSubmissionsFromDatabase = async (userID: string) => {
   try {
     await connectMongoDB();
     console.log('✅ ~ file: route.ts:9 ~ POST ~ Connected to mongoDB');
@@ -74,13 +77,17 @@ const getAllSubmissionsFromDatabase = async (userId: string) => {
     return null;
   }
   try {
-    const submissions = await Submission.find({userId: userId}) ;
+    const submissions = await Submission.find({ userID });
     console.log('✅ Submissions fetch successful from Mongo!');
     return submissions;
   } catch (err: any) {
     throw new Error('🚀 Error during submission fetch:', err);
-    return null ;
+    return null;
   }
-}
+};
 
-export { getSubmissionFromDatabase,createSubmissionOnDatabase, getAllSubmissionsFromDatabase};
+export {
+  getSubmissionFromDatabase,
+  createSubmissionOnDatabase,
+  getAllSubmissionsFromDatabase,
+};
