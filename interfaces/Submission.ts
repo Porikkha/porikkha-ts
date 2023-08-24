@@ -8,8 +8,6 @@ export default interface Submission {
     submissionTime: Date,
     score: number,
 }
-
-
 export function mergeSubmissionWithExam(exam:Exam,submission:Submission) {
     const ques = submission.answers.map((answer, index) => {
       let q = exam.questions[index];
@@ -21,6 +19,7 @@ export function mergeSubmissionWithExam(exam:Exam,submission:Submission) {
         (q as ShortAnswerQuestion).answer = (answer as ShortAnswerAnswer).answer;
       return q;
     });
-
-    return {...exam,questions:ques} ;
+    const newExam = {...exam,questions:ques} as Exam;
+    console.log("🚀 ~ file: Submission.ts:25 ~ mergeSubmissionWithExam ~ newExam:", newExam)
+    return  newExam; 
 }

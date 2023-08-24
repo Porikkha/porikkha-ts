@@ -39,10 +39,12 @@ export const getExamWithoutAnswer = async (userID:string, examID: string) => {
     const examWithAnswer = await Exam.findOne({ examID });
     const submission:SubmissionInterface|null = await getSubmissionFromDatabase(examID,userID) ;
 
-    if( examWithAnswer === null ) 
-      return null ;
+    if( examWithAnswer === null ) {
+      console.log('❌❌❌ Error during exam fetch: Exam not found');
+      return null;
+    }
 
-    const exam = removeAnswerFromExam(examWithAnswer) ; 
+    const exam:ExamInterface = removeAnswerFromExam(examWithAnswer) ; 
 
     if( submission === null ) 
       return exam ;

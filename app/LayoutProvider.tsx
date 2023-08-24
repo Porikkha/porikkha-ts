@@ -7,10 +7,6 @@ import Nav from '@/components/Nav';
 
 export const LayoutProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  console.log(
-    '🚀 ~ file: NavLayoutProvider.tsx:10 ~ LayoutProvider ~ pathname:',
-    pathname
-  );
   return (
     <>
       {pathname !== '/dashboard' && <Nav />}

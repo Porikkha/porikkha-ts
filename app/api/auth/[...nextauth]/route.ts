@@ -1,8 +1,9 @@
 import NextAuth, { DefaultSession } from 'next-auth';
+import { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import { prisma } from '@/utils/database';
 
-const handler = NextAuth({
+export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
@@ -17,6 +18,7 @@ const handler = NextAuth({
         },
       });
       session.user.id = (sessionUser?.userID as string).toString();
+      session.user.role = (sessionUser?.role as string).toString();
       return session;
     },
     async signIn({ profile }: any) {
@@ -45,6 +47,7 @@ const handler = NextAuth({
       }
     },
   },
-});
+};
 
+const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };

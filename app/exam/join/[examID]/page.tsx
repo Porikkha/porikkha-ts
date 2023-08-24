@@ -42,7 +42,7 @@ export default function Page({ params }: { params: { examID: string } }) {
     }
     const submission: Submission = {
       examID: params.examID,
-      userID: session?.user?.email! ,
+      userID: session?.user?.id! ,
       answers: questions.map((question:QuestionInterface) => {
         if (question.type === 'short-answer') {
           return {
