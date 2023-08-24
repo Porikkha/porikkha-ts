@@ -1,82 +1,39 @@
 'use client';
 import SingleChoiceQuestion from '@/interfaces/question/SingleChoiceQuestion';
 import Question from '@/components/questions/Question';
-import type QuestionInterface from '@/interfaces/question/Question';
 import { useEffect, useState } from 'react';
-
-import { dummyExam } from '@/interfaces/Exam';
+import { dummyExam, removeAnswerFromExam } from '@/interfaces/Exam';
 import ExamViewBanner from '@/components/exam/ExamViewBanner';
 import { useSession } from 'next-auth/react';
 import type Exam from '@/interfaces/Exam';
 import type Submission from '@/interfaces/Submission';
-import type { Answer, MultipleChoiceAnswer, ShortAnswerAnswer, SingleChoiceAnswer } from '@/interfaces/Submission';
+import type { Answer, MultipleChoiceAnswer, ShortAnswerAnswer, SingleChoiceAnswer } from '@/interfaces';
 import SuccessAlert from '@/components/ui/SuccessAlert';
-import { MultipleChoiceQuestion, ShortAnswerQuestion } from '@/interfaces';
+import { MultipleChoiceQuestion, ShortAnswerQuestion, Question as QuestionInterface } from '@/interfaces';
+import Loading from '@/components/Loading';
 
 
 export default function Page({ params }: { params: { examId: string } }) {
-  let qq = dummyExam.questions;
-  qq = qq.map((question, index) => {
-    if (question.type === 'short-answer') return { ...question, referenceAnswer: '' };
-    else if (question.type === 'multiple-choice') return { ...question, answerId: [] };
-    else if (question.type === 'single-choice')
-      return { ...question, answerId: undefined } as SingleChoiceQuestion;
-    return question;
-  });
-
-  const {data:session} = useSession(); 
-  const [questions, setQuestions] = useState<QuestionInterface[]>(qq);
-  const [exam,setExam] = useState(dummyExam);
+  const { data: session } = useSession();
+  const [questions, setQuestions] = useState<QuestionInterface[]>(removeAnswerFromExam(dummyExam).questions);
+  const [exam, setExam] = useState(dummyExam);
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [loading, setLoading] = useState(true);
+
 
   const fetchExam = async (examId: string) => {
-    const response = await fetch(`/api/exams/${params.examId}`, {
+    const response = await fetch(`/api/exams/join/${params.examId}`, {
       method: 'GET',
     });
     const data = await response.json();
     if (data.status == 200 && data.exam) {
       const exam = data.exam;
       setExam(exam);
-      // setExamName(exam.title);
-      // setExamDesc(exam.description);
-      // setStartTime(new Date(exam.startTime).toTimeString());
-      // setStartTimeFormatted(new Date(exam.startTime).toLocaleString());
       setQuestions(exam.questions);
-      // setExamDuration(exam.duration.toString());
+      setLoading(false);
     }
   };
-  const fetchSubmissioon = async () => {
-	// console.log("fetch submit");
-    const response = await fetch(`/api/exams/submit`, {
-      method: 'PUT',
-	  body: JSON.stringify({
-        examId: exam.examId,
-		userId: session?.user?.id 
-      }),
-    });
-    const data = await response.json();
-    console.log("🚀 ~ file: page.tsx:56 ~ fetchSubmissioon ~ data:", data)
-	
-	const ques = (data.submission as Submission).answers.map((answer,index) => {
-		let q = questions[index];
-		if( q.type === "multiple-choice") 
-			(q as MultipleChoiceQuestion).answerId = (answer as MultipleChoiceAnswer).answer; 
-		else if (q.type === "single-choice")
-			(q as SingleChoiceQuestion).answerId = (answer as SingleChoiceAnswer).answer ;
-		else if( q.type === "short-answer") 
-			(q as ShortAnswerQuestion).referenceAnswer = (answer as ShortAnswerAnswer).answer ;
-		return q ;
-	});
-    if (data.status == 200 && data.submission) {
-      const submission = data.submission;
-      // setExamName(exam.title);
-      // setExamDesc(exam.description);
-      // setStartTime(new Date(exam.startTime).toTimeString());
-  };
-
-  };
-
-  const handleAnswerSubmit = async(event: any) => {
+   const handleAnswerSubmit = async (event: any) => {
     event.preventDefault();
     const userId = session?.user?.id;
     if (!userId) {
@@ -85,33 +42,33 @@ export default function Page({ params }: { params: { examId: string } }) {
     }
     const submission: Submission = {
       examId: params.examId,
-      userId: userId,
-      answers: questions.map((question) => {
+      userId: session?.user?.email! ,
+      answers: questions.map((question:QuestionInterface) => {
         if (question.type === 'short-answer') {
           return {
             questionId: question.id,
             type: 'short-answer',
-            answer: (question as any).referenceAnswer,
+            answer: (question as ShortAnswerQuestion).answer,
           } as Answer;
         } else if (question.type === 'multiple-choice') {
           return {
             questionId: question.id,
             type: 'multiple-choice',
-            answer: (question as any).answerId,
+            answer: (question as MultipleChoiceQuestion).answer,
           } as MultipleChoiceAnswer;
         } else if (question.type === 'single-choice') {
           return {
             questionId: question.id,
             type: 'single-choice',
-            answer: (question as any).answerId,
+            answer: (question as SingleChoiceQuestion).answer,
           } as SingleChoiceAnswer;
         }
         return {} as Answer;
       }),
       submissionTime: new Date(),
       score: 0,
-   };
-   console.log('🚀 ~ file: page.tsx:138 ~ handleExamSubmit ~ exam:', exam);
+    };
+    console.log('🚀 ~ file: page.tsx:138 ~ handleExamSubmit ~ exam:', exam);
 
     const response = await fetch('/api/exams/submit', {
       method: 'POST',
@@ -124,32 +81,33 @@ export default function Page({ params }: { params: { examId: string } }) {
   };
   useEffect(() => {
     fetchExam(params.examId);
-    fetchSubmissioon();
   }, []);
 
 
   return (
     <section className='w-full'>
-    <SuccessAlert
+      <SuccessAlert
         showSuccessAlert={showSuccessAlert}
         setShowSuccessAlert={setShowSuccessAlert}
       />
       <ExamViewBanner exam={exam} />
       <div className='mx-auto w-4/5'>
-        {questions.map((question, index) => {
-          return (
-            <Question
-              qdata={question}
-              setQuestion={(ques: QuestionInterface) => {
-                const newquestions = [...questions];
-                newquestions[index] = ques;
-                console.log(newquestions);
-                setQuestions(newquestions);
-              }}
-              key={index}
-            />
-          );
-        })}
+        {loading ? <Loading />
+          :
+          questions.map((question, index) => {
+            return (
+              <Question
+                qdata={question}
+                setQuestion={(ques: QuestionInterface) => {
+                  const newquestions = [...questions];
+                  newquestions[index] = ques;
+                  console.log(newquestions);
+                  setQuestions(newquestions);
+                }}
+                key={index}
+              />
+            );
+          })}
       </div>
       <div className='mx-auto w-4/5'>
         <form

@@ -1,4 +1,4 @@
-import Question, { dummyQuestions } from './question/Question';
+import Question, { dummyQuestions, removeAnswer } from './question/Question';
 
 export default interface Exam {
   creatorId: string;
@@ -21,3 +21,9 @@ export const dummyExam: Exam = {
   duration: 60,
   allowedAbilities: [],
 };
+export const removeAnswerFromExam = (exam:Exam) => {
+  let newQuestions = exam.questions.map((question,index) => {
+     return removeAnswer(question)
+  })
+  return {...exam,questions:newQuestions} ; 
+}
