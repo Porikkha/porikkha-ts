@@ -1,17 +1,16 @@
 import Question from './Question';
 import Choice from './Choice';
+import { MultipleChoiceAnswer } from './Answer';
 
-export default interface MultipleChoiceQuestion extends Question {
+export default interface MultipleChoiceQuestion extends Question,MultipleChoiceAnswer {
   choices: Choice[];
-  answerId: number[];
 }
 
-// export function toMultipleChoiceQuestion(question:Question) {
-// 	const newQuestion: MultipleChoiceQuestion = {
-// 		id: question.id,
+export function removeMultipleChoiceQuestionAnswer(question:MultipleChoiceQuestion) {
+  return {...question,answer:[]} ;
+}
 
-// 	}
-// }
+
 export const dummyQuestions: MultipleChoiceQuestion[] = [
   {
     id: 1,
@@ -24,7 +23,7 @@ export const dummyQuestions: MultipleChoiceQuestion[] = [
     ],
     type: 'multiple-choice',
     points: 5,
-    answerId: [1, 2, 3, 4],
+    answer: [1, 2, 3, 4],
   },
   {
     id: 2,
@@ -36,6 +35,6 @@ export const dummyQuestions: MultipleChoiceQuestion[] = [
     ],
     type: 'multiple-choice',
     points: 5,
-    answerId: [1, 2],
+    answer: [1, 2],
   },
 ];

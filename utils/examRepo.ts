@@ -1,7 +1,9 @@
 import { connectMongoDB } from '@/utils/database';
 import Exam from '@/models/exams';
-import ExamInterface from '@/interfaces/Exam';
+import ExamInterface, { removeAnswerFromExam } from '@/interfaces/Exam';
 import { prisma } from '@/utils/database';
+import { removeAnswer } from '@/interfaces';
+
 
 export const getExamFromDatabase = async (examId: string) => {
   // Connect to mongoDB
@@ -14,7 +16,9 @@ export const getExamFromDatabase = async (examId: string) => {
   }
   // Attempt to create the exam in the database.
   try {
-    const exam = await Exam.findOne({ examId });
+    const examWithAnswer = await Exam.findOne({ examId });
+    // clean answers from questions 
+    const exam = removeAnswerFromExam(examWithAnswer) ; 
     console.log('✅ Exam fetch successful from Mongo!');
     return exam;
   } catch (err: any) {

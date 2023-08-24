@@ -20,15 +20,18 @@ import React, { useState } from 'react';
 import SingleChoiceQuestion from '@/interfaces/question/SingleChoiceQuestion';
 import ShortAnswerQuestion from '@/interfaces/question/ShortAnswerQuestion';
 import { Add, DeleteOutlined } from '@mui/icons-material';
-import { QuestionContent } from './Question';
+import { QuestionContent, handleMultipleChoiceAnswer, handleShortAnswer, handleSingleChoiceAnswer } from './Question';
+import { MultipleChoiceAnswer } from '@/interfaces';
 
 function EditSingleChoices({
   choices,
   setChoices,
+  answer,
   handleAnswerChange,
 }: {
   choices: Choice[];
   setChoices: any;
+  answer: SingleChoiceQuestion['answer'],
   handleAnswerChange: any;
 }) {
   const [newopt, setNewopt] = useState<Choice>({ text: '', id: 0 });
@@ -48,6 +51,8 @@ function EditSingleChoices({
   const addOption = (option: Choice) => {
     setChoices(setIndex([...choices, option]));
   };
+
+
   return (
     <>
       <CardContent className='mb-5'>
@@ -62,7 +67,7 @@ function EditSingleChoices({
                 sx={{ display: 'flex', flexGrow: '1', width: '100%' }}
                 key={`${option.id} ${option.text}`}
               >
-                <Radio sx={{ flexGrow: '1' }} value={option.id} label={option.text} />
+                <Radio sx={{ flexGrow: '1' }} value={option.id} label={option.text} checked={answer!==undefined && option.id===answer}/>
                 <DeleteOutlined
                   className='text-black hover:text-red-400'
                   onClick={() => deleteOption(index)}
@@ -93,10 +98,12 @@ function EditSingleChoices({
 function EditMultipleChoices({
   choices,
   setChoices,
+  answer,
   handleAnswerChange,
 }: {
   choices: Choice[];
   setChoices: any;
+  answer: MultipleChoiceAnswer['answer'];
   handleAnswerChange: any;
 }) {
   const [newopt, setNewopt] = useState<Choice>({ text: '', id: 0 });
@@ -116,6 +123,14 @@ function EditMultipleChoices({
   const addOption = (option: Choice) => {
     setChoices(setIndex([...choices, option]));
   };
+  const getChecked = () => {
+  let checked = new Array<boolean>(choices.length+1).fill(false) ;
+  answer?.forEach((id:number) => {
+    checked[id] = true ;
+  });
+    return checked ;
+  }
+  const checked = getChecked();
   return (
     <>
       <CardContent className='mb-5'>
@@ -125,6 +140,7 @@ function EditMultipleChoices({
               <Checkbox
                 value={option.id}
                 onChange={(e) => handleAnswerChange(e)}
+                checked = {checked[option.id]}
                 className='px-5'
               />
               <Typography className='flex-grow'>{option.text}</Typography>
@@ -166,118 +182,8 @@ export default function EditQuestion({
   setQuestion: any;
 }) {
   const [editquestion, setEditQuestion] = useState(edit === undefined ? false : true);
-
-  const handleSingleChoiceAnswer = (id: number) => {
-    const newdata: SingleChoiceQuestion = {
-      ...qdata,
-      answerId: id,
-    } as SingleChoiceQuestion;
-    setQuestion(newdata);
-  };
-  const handleMultipleChoiceAnswer = (id: number, checked: boolean) => {
-    let answers = (qdata as MultipleChoiceQuestion).answerId;
-    answers = answers.filter((answer, index) => answer != id);
-    if (checked) {
-      answers = [...answers, id];
-    }
-    const newdata: MultipleChoiceQuestion = {
-      ...qdata,
-      answerId: answers,
-    } as MultipleChoiceQuestion;
-    setQuestion(newdata);
-  };
-
-  const handleShortAnswer = (refAns: string) => {
-    setQuestion({ ...qdata, referenceAnswer: refAns } as ShortAnswerQuestion);
-  };
-
   return (
     <>
-      {/* <Card
-        key={`editQuestion ${qdata.id} ${qdata.type}`}
-        variant="outlined"
-        color="primary"
-        sx={{ stroke: "#E2E3FC", margin: "auto" }}
-      >
-        <CardContent
-          sx={{ flexDirection: "row", width: "95%", alignContent: "center" }}
-        >
-          <Box
-            sx={{
-              width: 50,
-              height: 50,
-              backgroundColor: "#E2E3FC", // Purple color
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              color: "#fff", // Text color for the content inside the box
-              fontWeight: "bold", // Example: Applying a bold font weight to the text
-              borderRadius: "5px",
-            }}
-          >
-            <Typography>{qdata.id}</Typography>
-          </Box>
-          <Box sx={{ display: "flex", flexGrow: "1", alignItems: "center" }}>
-            <Typography sx={{ alignSelf: "center", justifySelf: "center" }}>
-              {qdata.title}
-            </Typography>
-          </Box>
-          <Box sx={{ display: "flex", width: "18%", marginLeft: "auto" }}>
-            <Typography className="mr-2" sx={{ alignSelf: "center" }}>
-              Points:
-            </Typography>
-            <Typography sx={{ alignSelf: "center" }} className="order-last">
-              {qdata.points}
-            </Typography>
-          </Box>
-        </CardContent>
-        <Divider sx={{ width: "100%", alignSelf: "center" }} />
-        <CardContent className="ml-10">
-          {qdata.type === "multiple-choice" && (
-            <MultipleChoices
-              key={`MultipleChoice${qdata.id}${qdata.title}`}
-              choices={(qdata as MultipleChoiceQuestion).choices}
-              setChoices={(choices: Choice[]) => {
-                setQuestion({ ...qdata, choices: choices });
-              }}
-              handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleMultipleChoiceAnswer(
-                  Number(e.target.value),
-                  e.target.checked
-                )
-              }
-              edit={editquestion}
-            />
-          )}
-          {qdata.type === "single-choice" && (
-            <SingleChoices
-              key={`SingleChoice${qdata.id}${qdata.title}`}
-              choices={(qdata as SingleChoiceQuestion).choices}
-              setChoices={(choices: Choice[]) => {
-                setQuestion({ ...qdata, choices: choices });
-              }}
-              handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleSingleChoiceAnswer(Number(e.target.value))
-              }
-              edit={editquestion}
-            />
-          )}
-          {qdata.type === "short-answer" && (
-            <Input
-              value={(qdata as ShortAnswerQuestion).referenceAnswer}
-              onChange={(e) => {
-                handleShortAnswer(e.target.value);
-              }}
-              disabled={!editquestion}
-            ></Input>
-          )}
-        </CardContent>
-        <Divider sx={{ width: "100%", alignSelf: "center" }} />
-        <MiniOptions
-          editActions={{ ...editActions, editQuestion: () => setEditQuestion(!editquestion) }}
-        />
-      </Card> */}
-
       <Card
         key={`editQuestionPreview ${qdata.id}`}
         variant='outlined'
@@ -293,7 +199,6 @@ export default function EditQuestion({
           }}
         />
       </Card>
-
       <Modal open={editquestion} onClose={() => setEditQuestion(false)}>
         <ModalDialog>
           <Card
@@ -360,8 +265,9 @@ export default function EditQuestion({
                   setChoices={(choices: Choice[]) => {
                     setQuestion({ ...qdata, choices: choices });
                   }}
+                  answer={(qdata as MultipleChoiceQuestion).answer}
                   handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleMultipleChoiceAnswer(Number(e.target.value), e.target.checked)
+                    handleMultipleChoiceAnswer(Number(e.target.value), e.target.checked,qdata as MultipleChoiceQuestion,setQuestion)
                   }
                 />
               )}
@@ -372,16 +278,17 @@ export default function EditQuestion({
                   setChoices={(choices: Choice[]) => {
                     setQuestion({ ...qdata, choices: choices });
                   }}
+                  answer={(qdata as SingleChoiceQuestion).answer}
                   handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                    handleSingleChoiceAnswer(Number(e.target.value))
+                    handleSingleChoiceAnswer(Number(e.target.value),qdata as SingleChoiceQuestion,setQuestion)
                   }
                 />
               )}
               {qdata.type === 'short-answer' && (
                 <Input
-                  value={(qdata as ShortAnswerQuestion).referenceAnswer}
+                  value={(qdata as ShortAnswerQuestion).answer}
                   onChange={(e) => {
-                    handleShortAnswer(e.target.value);
+                    handleShortAnswer(e.target.value, qdata as ShortAnswerQuestion, setQuestion);
                   }}
                   disabled={!editquestion}
                 ></Input>

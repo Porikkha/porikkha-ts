@@ -22,7 +22,7 @@ export default function ExamViewBanner({ exam }: any) {
         <div className='w-full'>
           <div className='font-sans text-3xl font-bold text-black'>{exam.title}</div>
           <div className='py-3 font-sans text-sm font-semibold text-slate-500'>
-            {exam.startTime.toLocaleString()}
+            {exam.startTime?.toLocaleString()}
           </div>
           <div>
             <ul className='list-disc space-y-3 pl-5 text-gray-600 marker:text-[#7FF]'>
