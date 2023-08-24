@@ -56,3 +56,23 @@ export const getExamMetaByUserId = async (userId: string) => {
   console.log("🚀 ~ file: examRepo.ts:30 ~ getAllExamsFromDatabase ~ exams", exams)
   return exams;
 };
+
+
+const mergeSubmissioonToExam = async () => {
+  console.log("🚀 ~ file: page.tsx:56 ~ fetchSubmissioon ~ data:", data)
+
+  const ques = (data.submission as Submission).answers.map((answer, index) => {
+    let q = questions[index];
+    if (q.type === "multiple-choice")
+      (q as MultipleChoiceQuestion).answer = (answer as MultipleChoiceAnswer).answer;
+    else if (q.type === "single-choice")
+      (q as SingleChoiceQuestion).answer = (answer as SingleChoiceAnswer).answer;
+    else if (q.type === "short-answer")
+      (q as ShortAnswerQuestion).answer = (answer as ShortAnswerAnswer).answer;
+    return q;
+  });
+  if (data.status == 200 && data.submission) {
+    const submission = data.submission;
+  };
+
+};

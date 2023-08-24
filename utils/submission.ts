@@ -63,5 +63,9 @@ const getSubmissionFromDatabase = async (examId: string, userId: string) => {
     throw new Error('🚀 Error during submission fetch:', err);
   }
 };
+ 
+
+
+
 
 export { getSubmissionFromDatabase,createSubmissionOnDatabase};
