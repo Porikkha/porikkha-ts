@@ -49,7 +49,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
   const [quess, setQuess] = useState<Question[]>(setQuestionNumbers(dummyQuestions));
   const { data: session } = useSession();
 
-  const [loading,setLoading] = useState(true) ;
+  const [loading, setLoading] = useState(true);
   const setters = {
     setExamName,
     setExamDesc,
@@ -189,11 +189,17 @@ const Home = ({ params }: { params: { examID: string } }) => {
       />
 
       <div className='mx-auto w-4/5'>
-      { loading && <div className="w-full flex justify-center py-10"> <CircularProgress variant="soft"/> </div> }
-        { !loading && quess.map((question, index) => {
-          return (
-            <div className='py-2' key={index}>
-              {/* <EditQuestion
+        {loading && (
+          <div className='flex w-full justify-center py-10'>
+            {' '}
+            <CircularProgress variant='soft' />{' '}
+          </div>
+        )}
+        {!loading &&
+          quess.map((question, index) => {
+            return (
+              <div className='py-2' key={index}>
+                {/* <EditQuestion
                                 qdata={question}
                                 addQuestion={(question:Question) => {
                                     let newQuestions = [...quess] ;
@@ -202,19 +208,19 @@ const Home = ({ params }: { params: { examID: string } }) => {
                                 }}
                                 editActions={getEditActions(index)}
                             /> */}
-              <EditQuestionModal
-                key={`${index}${question.type}}`}
-                qdata={question}
-                setQuestion={(question: Question) => {
-                  let newQuestions = [...quess];
-                  newQuestions[index] = question;
-                  setQuess(newQuestions);
-                }}
-                editActions={getEditActions(index)}
-              />
-            </div>
-          );
-        })}
+                <EditQuestionModal
+                  key={`${index}${question.type}}`}
+                  qdata={question}
+                  setQuestion={(question: Question) => {
+                    let newQuestions = [...quess];
+                    newQuestions[index] = question;
+                    setQuess(newQuestions);
+                  }}
+                  editActions={getEditActions(index)}
+                />
+              </div>
+            );
+          })}
         <button
           // onClick={() => setAddQuestionOpen(true)}
           onClick={() => {

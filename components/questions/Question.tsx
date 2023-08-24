@@ -5,7 +5,12 @@ import Question from '@/interfaces/question/Question';
 import MultipleChoiceQuestion from '@/interfaces/question/MultipleChoiceQuestion';
 import SingleChoiceQuestion from '@/interfaces/question/SingleChoiceQuestion';
 import React from 'react';
-import { SingleChoiceAnswer, ShortAnswerQuestion, Choice, MultipleChoiceAnswer } from '@/interfaces';
+import {
+  SingleChoiceAnswer,
+  ShortAnswerQuestion,
+  Choice,
+  MultipleChoiceAnswer,
+} from '@/interfaces';
 import { ContactlessOutlined } from '@mui/icons-material';
 
 export function SingleChoices({
@@ -13,7 +18,7 @@ export function SingleChoices({
   answer,
   handleAnswerChange,
 }: {
-  answer?: SingleChoiceAnswer['answer'],
+  answer?: SingleChoiceAnswer['answer'];
   choices: Choice[];
   handleAnswerChange: any;
 }) {
@@ -25,7 +30,14 @@ export function SingleChoices({
       className='mx-10 my-3'
     >
       {choices.map((option, index) => {
-        return <Radio value={option.id} label={option.text} key={index + 1} checked={answer !== undefined && option.id === answer} />;
+        return (
+          <Radio
+            value={option.id}
+            label={option.text}
+            key={index + 1}
+            checked={answer !== undefined && option.id === answer}
+          />
+        );
       })}
     </RadioGroup>
   );
@@ -37,7 +49,7 @@ export function MultipleChoices({
   handleAnswerChange,
 }: {
   choices: Choice[];
-  answer: MultipleChoiceAnswer['answer'],
+  answer: MultipleChoiceAnswer['answer'];
   handleAnswerChange: any;
 }) {
   const getChecked = () => {
@@ -46,7 +58,7 @@ export function MultipleChoices({
       checked[id] = true;
     });
     return checked;
-  }
+  };
   const checked = getChecked();
   return (
     <>
@@ -56,7 +68,7 @@ export function MultipleChoices({
             <Checkbox
               value={option.id}
               onChange={(e) => handleAnswerChange(e)}
-              checked={checked[option.id]}// checked[option.id]===true}
+              checked={checked[option.id]} // checked[option.id]===true}
               className='px-5'
             />
             <Typography className='flex-grow'>{option.text}</Typography>
@@ -67,8 +79,11 @@ export function MultipleChoices({
   );
 }
 
-
-export const handleSingleChoiceAnswer = (id: number, qdata: SingleChoiceQuestion, setQuestion: any) => {
+export const handleSingleChoiceAnswer = (
+  id: number,
+  qdata: SingleChoiceQuestion,
+  setQuestion: any
+) => {
   const newdata: SingleChoiceQuestion = {
     ...qdata,
     answer: id,
@@ -76,9 +91,14 @@ export const handleSingleChoiceAnswer = (id: number, qdata: SingleChoiceQuestion
   setQuestion(newdata);
 };
 
-export const handleMultipleChoiceAnswer = (id: number, checked: boolean, qdata: MultipleChoiceQuestion, setQuestion: any) => {
+export const handleMultipleChoiceAnswer = (
+  id: number,
+  checked: boolean,
+  qdata: MultipleChoiceQuestion,
+  setQuestion: any
+) => {
   let answers = (qdata as MultipleChoiceQuestion).answer;
-  answers = answers.filter(answer => answer != id);
+  answers = answers.filter((answer) => answer != id);
   if (checked) {
     answers = [...(answers as number[]), id];
   }
@@ -88,7 +108,11 @@ export const handleMultipleChoiceAnswer = (id: number, checked: boolean, qdata: 
   } as MultipleChoiceQuestion;
   setQuestion(newdata);
 };
-export const handleShortAnswer = (refAns: string, qdata: ShortAnswerQuestion, setQuestion: any) => {
+export const handleShortAnswer = (
+  refAns: string,
+  qdata: ShortAnswerQuestion,
+  setQuestion: any
+) => {
   setQuestion({ ...qdata, answer: refAns } as ShortAnswerQuestion);
 };
 export function QuestionContent({
@@ -98,7 +122,6 @@ export function QuestionContent({
   qdata: Question;
   setQuestion: any;
 }) {
-
   return (
     <>
       <CardContent sx={{ flexDirection: 'row', width: '100%', alignContent: 'center' }}>
@@ -131,7 +154,11 @@ export function QuestionContent({
             choices={(qdata as SingleChoiceQuestion).choices}
             answer={(qdata as SingleChoiceQuestion).answer}
             handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleSingleChoiceAnswer(Number(e.target.value), qdata as SingleChoiceQuestion, setQuestion)
+              handleSingleChoiceAnswer(
+                Number(e.target.value),
+                qdata as SingleChoiceQuestion,
+                setQuestion
+              )
             }
           />
         )}
@@ -140,7 +167,12 @@ export function QuestionContent({
             choices={(qdata as MultipleChoiceQuestion).choices}
             answer={(qdata as MultipleChoiceQuestion).answer}
             handleAnswerChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleMultipleChoiceAnswer(Number(e.target.value), e.target.checked, qdata as MultipleChoiceQuestion, setQuestion)
+              handleMultipleChoiceAnswer(
+                Number(e.target.value),
+                e.target.checked,
+                qdata as MultipleChoiceQuestion,
+                setQuestion
+              )
             }
           />
         )}
@@ -149,7 +181,11 @@ export function QuestionContent({
             className='mx-10 my-3'
             value={(qdata as ShortAnswerQuestion).answer}
             onChange={(e) => {
-              handleShortAnswer(e.target.value, qdata as ShortAnswerQuestion, setQuestion);
+              handleShortAnswer(
+                e.target.value,
+                qdata as ShortAnswerQuestion,
+                setQuestion
+              );
             }}
           ></Input>
         )}

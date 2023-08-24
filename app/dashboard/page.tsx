@@ -9,22 +9,24 @@ import Sidebar from '@/components/dashboard/Sidebar';
 
 export default function Page() {
   const searchParams = useSearchParams();
-	const {data: session} = useSession() ;
+  const { data: session } = useSession();
 
   if (searchParams.has('status') && searchParams.get('status') == 'success') {
     console.log('Slow Alert');
   }
 
-  return (<>
-    <Sidebar/>
-    <section className='w-full'>
-       <div className='mx-auto w-4/5 rounded-md bg-white p-5'>
-      	<Typography className='pb-2 text-3xl'>Welcome, {session?.user.name!}</Typography>
-      	<ExamGrid />
-				<SubmissionGrid /> 
-			</div>
-    </section>
+  return (
+    <>
+      <Sidebar />
+      <section className='w-full'>
+        <div className='mx-auto w-4/5 rounded-md bg-white p-5'>
+          <Typography className='pb-2 text-3xl'>
+            Welcome, {session?.user.name!}
+          </Typography>
+          <ExamGrid />
+          <SubmissionGrid />
+        </div>
+      </section>
     </>
   );
 }
-

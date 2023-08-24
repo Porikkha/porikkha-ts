@@ -1,5 +1,10 @@
-import { CircularProgress } from "@mui/joy";
+import { CircularProgress } from '@mui/joy';
 
 export default function Loading() {
-    return <div className="w-full flex justify-center py-10"> <CircularProgress variant="soft"/> </div>
+  return (
+    <div className='flex w-full justify-center py-10'>
+      {' '}
+      <CircularProgress variant='soft' />{' '}
+    </div>
+  );
 }

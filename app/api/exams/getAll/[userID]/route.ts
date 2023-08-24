@@ -23,9 +23,8 @@ import { getExamMetaByUserId } from '@/controllers/examRepo';
 //   return NextResponse.json({ status: 200, exam: exam });
 // }
 
-export async function GET(request: NextRequest, {params} : any) {
-    const userID = params.userID;
-    console.log("🚀 ~ file: route.ts:28 ~ GET ~ userID:", userID)
-    const exams = await getExamMetaByUserId(userID);
-    return NextResponse.json({status: 200, exams: exams});
+export async function GET(request: NextRequest, { params }: any) {
+  const userID = params.userID;
+  const exams = await getExamMetaByUserId(userID);
+  return NextResponse.json({ status: 200, exams: exams });
 }

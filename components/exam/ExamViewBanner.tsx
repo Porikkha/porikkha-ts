@@ -16,7 +16,7 @@ import {
 import Label from '@/components/ui/Labels';
 
 export default function ExamViewBanner({ exam }: any) {
-  console.log("🚀 ~ file: ExamViewBanner.tsx:19 ~ ExamViewBanner ~ exam:", exam)
+  console.log('🚀 ~ file: ExamViewBanner.tsx:19 ~ ExamViewBanner ~ exam:', exam);
   return (
     <div className='mx-auto w-4/5 items-center space-x-4 rounded-xl bg-white px-20 py-10'>
       <div className='w-full'>

@@ -21,10 +21,10 @@ export const dummyExam: Exam = {
   duration: 60,
   allowedAbilities: [],
 };
-export const removeAnswerFromExam = (exam:Exam) => {
-  let newQuestions = exam.questions.map((question,index) => {
-     return removeAnswer(question)
-  })
-  exam.questions = newQuestions ;
-  return exam; 
-}
+export const removeAnswerFromExam = (exam: Exam) => {
+  let newQuestions = exam.questions.map((question, index) => {
+    return removeAnswer(question);
+  });
+  exam.questions = newQuestions;
+  return exam;
+};

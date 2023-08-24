@@ -1,11 +1,10 @@
 import { ShortAnswerAnswer } from './Answer';
 import Question from './Question';
 
-export default interface ShortAnswerQuestion extends Question,ShortAnswerAnswer {
-}
+export default interface ShortAnswerQuestion extends Question, ShortAnswerAnswer {}
 
-export function removeShortQuestionAnswer (question: ShortAnswerQuestion) {
-  return {...question,answer:""} ;
+export function removeShortQuestionAnswer(question: ShortAnswerQuestion) {
+  return { ...question, answer: '' };
 }
 export const dummyQuestions: ShortAnswerQuestion[] = [
   {
