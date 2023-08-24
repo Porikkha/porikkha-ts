@@ -180,27 +180,27 @@ export default function EditQuestion({
   const handleSingleChoiceAnswer = (id: number) => {
     const newdata: SingleChoiceQuestion = {
       ...qdata,
-      answerId: id,
+      answer: id,
     } as SingleChoiceQuestion;
     setQuestion(newdata);
     // console.log(newdata);
   };
   const handleMultipleChoiceAnswer = (id: number, checked: boolean) => {
-    let answers = (qdata as MultipleChoiceQuestion).answerId;
+    let answers = (qdata as MultipleChoiceQuestion).answer;
     answers = answers.filter((answer, index) => answer != id);
     if (checked) {
       answers = [...answers, id];
     }
     const newdata: MultipleChoiceQuestion = {
       ...qdata,
-      answerId: answers,
+      answer: answers,
     } as MultipleChoiceQuestion;
     console.log(answers);
     setQuestion(newdata);
   };
 
   const handleShortAnswer = (refAns: string) => {
-    setQuestion({ ...qdata, referenceAnswer: refAns } as ShortAnswerQuestion);
+    setQuestion({ ...qdata, answer: refAns } as ShortAnswerQuestion);
   };
 
   return (
@@ -292,7 +292,7 @@ export default function EditQuestion({
         )}
         {qdata.type === 'short-answer' && (
           <Input
-            value={(qdata as ShortAnswerQuestion).referenceAnswer}
+            value={(qdata as ShortAnswerQuestion).answer}
             onChange={(e) => {
               handleShortAnswer(e.target.value);
             }}
