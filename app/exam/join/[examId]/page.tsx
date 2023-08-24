@@ -24,7 +24,7 @@ export default function Page({ params }: { params: { examId: string } }) {
 
 
   const fetchExam = async (examId: string) => {
-    const response = await fetch(`/api/exams/${params.examId}`, {
+    const response = await fetch(`/api/exams/join/${params.examId}`, {
       method: 'GET',
     });
     const data = await response.json();

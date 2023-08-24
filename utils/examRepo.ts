@@ -16,6 +16,24 @@ export const getExamFromDatabase = async (examId: string) => {
   }
   // Attempt to create the exam in the database.
   try {
+    const exam= await Exam.findOne({ examId });
+    console.log('✅ Exam fetch successful from Mongo!');
+    return exam;
+  } catch (err: any) {
+    throw new Error('🚀 Error during exam fetch:', err);
+  }
+};
+export const getExamWithoutAnswer = async (examId: string) => {
+  // Connect to mongoDB
+  try {
+    await connectMongoDB();
+    console.log('✅ ~ file: route.ts:9 ~ POST ~ Connected to mongoDB');
+  } catch (err) {
+    console.log('🚀 ~ file: route.ts:11 ~ POST ~ Error connecting to mongoDB:', err);
+    return {};
+  }
+  // Attempt to create the exam in the database.
+  try {
     const examWithAnswer = await Exam.findOne({ examId });
     // clean answers from questions 
     const exam = removeAnswerFromExam(examWithAnswer) ; 
