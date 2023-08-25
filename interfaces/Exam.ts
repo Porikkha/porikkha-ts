@@ -22,14 +22,9 @@ export const dummyExam: Exam = {
   allowedAbilities: [],
 };
 export const removeAnswerFromExam = (exam:Exam) => {
-  console.log("🚀 ~ file: Exam.ts:25 ~ removeAnswerFromExam ~ exam:", exam)
-  
   let newQuestions = exam.questions.map((question,index) => {
      return removeAnswer(question)
   })
-  // const newExam:Exam = {...(exam as Exam),questions:newQuestions} ;
   exam.questions = newQuestions ;
-  console.log("🚀 ~ file: Exam.ts:31 ~ removeAnswerFromExam ~ newExam:", exam)
-  
   return exam; 
 }
