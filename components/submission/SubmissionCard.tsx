@@ -14,7 +14,7 @@ const SubmissionCard = ({submission} : {submission:Submission} ) => {
     
     return (
         <div className="w-64 bg-fade-purple hover:border-cyan-100 rounded-md p-5">
-            <Typography className="text-sm pb-1 font-bold">{submission.examId}</Typography>
+            <Typography className="text-sm pb-1 font-bold">{submission.examID}</Typography>
             <Divider className="bg-slate-200"/>
             {/* <Typography className="text-xs pt-1 font-medium">Submission Time: { formatTime(submission?.submissionTime!)} </Typography> */}
             <Typography className="text-xs pt-1 font-medium">Score : {submission.score} </Typography>
@@ -22,7 +22,7 @@ const SubmissionCard = ({submission} : {submission:Submission} ) => {
             <div className="w-full flex justify-center">
             <Button className="bg-white text-purple-500 border-purple-500 hover:text-white hover:bg-purple-300 border-2 rounded-md mt-5" 
                 onClick={
-                    () => editSubmission(submission.examId)
+                    () => editSubmission(submission.examID)
                 }
             >View</Button>
             </div>
