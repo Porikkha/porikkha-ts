@@ -14,7 +14,7 @@ import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
 
 
-export default function Page({ params }: { params: { examId: string } }) {
+export default function Page({ params }: { params: { examID: string } }) {
   const { data: session } = useSession();
   const [questions, setQuestions] = useState<QuestionInterface[]>(removeAnswerFromExam(dummyExam).questions);
   const [exam, setExam] = useState(dummyExam);
@@ -22,8 +22,8 @@ export default function Page({ params }: { params: { examId: string } }) {
   const [loading, setLoading] = useState(true);
   const router = useRouter() ;
 
-  const fetchExam = async (examId: string) => {
-    const response = await fetch(`/api/exams/join/${params.examId}`, {
+  const fetchExam = async (examID: string) => {
+    const response = await fetch(`/api/exams/join/${params.examID}`, {
       method: 'GET',
     });
     const data = await response.json();
@@ -36,14 +36,14 @@ export default function Page({ params }: { params: { examId: string } }) {
   };
    const handleAnswerSubmit = async (event: any) => {
     event.preventDefault();
-    const userId = session?.user?.id;
-    if (!userId) {
-      console.log('❌ ~ file: page.tsx:202 : creatorId not found');
+    const userID = session?.user?.id;
+    if (!userID) {
+      console.log('❌ ~ file: page.tsx:202 : creatorID not found');
       return;
     }
     const submission: Submission = {
-      examId: params.examId,
-      userId: session?.user?.email! ,
+      examID: params.examID,
+      userID: session?.user?.id! ,
       answers: questions.map((question:QuestionInterface) => {
         if (question.type === 'short-answer') {
           return {
@@ -84,7 +84,7 @@ export default function Page({ params }: { params: { examId: string } }) {
       router.push('/dashboard?status=success');
   };
   useEffect(() => {
-    fetchExam(params.examId);
+    fetchExam(params.examID);
   }, []);
 
 

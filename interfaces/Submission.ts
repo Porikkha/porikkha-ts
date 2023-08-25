@@ -2,14 +2,12 @@ import { Exam, MultipleChoiceQuestion, ShortAnswerQuestion, SingleChoiceQuestion
 import { Answer, MultipleChoiceAnswer, ShortAnswerAnswer, SingleChoiceAnswer } from "./question/Answer";
 
 export default interface Submission {
-    examId: string,
-    userId: string,
+    examID: string,
+    userID: string,
     answers: Answer[],
     submissionTime: Date,
     score: number,
 }
-
-
 export function mergeSubmissionWithExam(exam:Exam,submission:Submission) {
     const ques = submission.answers.map((answer, index) => {
       let q = exam.questions[index];
@@ -21,6 +19,6 @@ export function mergeSubmissionWithExam(exam:Exam,submission:Submission) {
         (q as ShortAnswerQuestion).answer = (answer as ShortAnswerAnswer).answer;
       return q;
     });
-
-    return {...exam,questions:ques} ;
+    const newExam = {...exam,questions:ques} as Exam;
+    return  newExam; 
 }

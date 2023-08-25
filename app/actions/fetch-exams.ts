@@ -2,10 +2,10 @@
 import { connectMongoDB } from '@/utils/database';
 import Exam from '@/models/exams';
 
-export const createExam = async (creatorId: any) => {
+export const createExam = async (creatorID: any) => {
   await connectMongoDB();
   try {
-    const exams = await Exam.find({ creatorId: creatorId }).exec();
+    const exams = await Exam.find({ creatorID }).exec();
     console.log('🚀 ~ found exam: fetch-exams.js:9 ~ createExam ~ exams:', exams);
     return exams;
   } catch (err) {

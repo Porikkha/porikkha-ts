@@ -1,8 +1,8 @@
 import Question, { dummyQuestions, removeAnswer } from './question/Question';
 
 export default interface Exam {
-  creatorId: string;
-  examId: string;
+  creatorID: string;
+  examID: string;
   title: string;
   description: string;
   questions: Question[];
@@ -12,8 +12,8 @@ export default interface Exam {
 }
 
 export const dummyExam: Exam = {
-  creatorId: '1',
-  examId: '123456',
+  creatorID: '1',
+  examID: '123456',
   title: 'General Knowledge',
   description: 'This is a general knowledge exam. Will help in BCS',
   questions: dummyQuestions,
@@ -25,5 +25,6 @@ export const removeAnswerFromExam = (exam:Exam) => {
   let newQuestions = exam.questions.map((question,index) => {
      return removeAnswer(question)
   })
-  return {...exam,questions:newQuestions} ; 
+  exam.questions = newQuestions ;
+  return exam; 
 }

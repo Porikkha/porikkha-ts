@@ -13,13 +13,13 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
     return { status: 500 };
   }
   try {
-    const filter = { examId: submission.examId, userId: submission.userId };
+    const filter = { examID: submission.examID, userID: submission.userID };
 
     await Submission.findOneAndUpdate(filter, submission, { upsert: true });
     console.log('✅ Submission creation successful on Mongo!');
     const prismaSubmission = {
-        examId: submission.examId,
-        userId: submission.userId,
+        examID: submission.examID,
+        userID: submission.userID,
         submissionTime: submission.submissionTime,
         score: submission.score,
         answers: {
@@ -42,10 +42,10 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
     console.error('🚀 Error during exam creation:', err);
     return { status: 500 };
   }
-  return { status: 200, submissionId: submission.examId };
+  return { status: 200, submissionId: submission.examID };
 };
 
-const getSubmissionFromDatabase = async (examId: string, userId: string) => {
+const getSubmissionFromDatabase = async (examID: string, userID: string) => {
   try {
     await connectMongoDB();
     console.log('✅ ~ file: route.ts:9 ~ POST ~ Connected to mongoDB');
@@ -55,7 +55,7 @@ const getSubmissionFromDatabase = async (examId: string, userId: string) => {
   }
   // Attempt to create the exam in the database.
   try {
-    const submission:SubmissionInterface|null = await Submission.findOne({examId: examId, userId: userId});
+    const submission:SubmissionInterface|null = await Submission.findOne({examID: examID, userID: userID});
     console.log('✅ Submission fetch successful from Mongo!');
     console.log(submission);
     return submission;

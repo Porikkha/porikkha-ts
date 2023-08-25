@@ -16,8 +16,8 @@ export const createExamFromQuestions = async (quess: Question[], sessionId: any)
 
   // Define the exam object.
   const exam: ExamInterface = {
-    creatorId: sessionId,
-    examId: '123456',
+    creatorID: sessionId,
+    examID: '123456',
     title: 'Exam 1',
     description: 'This is an exam',
     questions: quess,

@@ -8,20 +8,107 @@ datasource db {
 }
 
 model User {
-  id       String  @id @default(uuid())
-  username String  @db.String(255)
-  email    String  @unique @db.String(255)
-  image    String? @db.String(255)
-  Exam     Exam[]
+  userID            String             @id @default(uuid())
+  username          String             @db.String(255)
+  email             String             @unique @db.String(255)
+  image             String?            @db.String(255)
+  role              String             @default("examiner")
+  createdClassrooms Classroom[]        @relation("createdClassrooms")
+  joinedClassrooms  Classroom[]        @relation("joinedClassrooms")
+  discussions       DiscussionThread[]
+  posts             Post[]
+  replies           Reply[]
+  submissions       Submission[]
+  Exam              Exam[]
 }
 
 model Exam {
-  id          String   @id
-  creator     User     @relation(fields: [creatorId], references: [id])
-  creatorId   String
+  examID      String       @id
+  creator     User         @relation(fields: [creatorID], references: [userID])
+  creatorID   String
+  classroomID Int?
+  classroom   Classroom?   @relation(fields: [classroomID], references: [classroomID])
   title       String
-  description String?
-  startTime   DateTime @default(now())
+  startTime   DateTime     @default(now())
   duration    Int
-  submissions Int?     @default(0)
+  description String?
+  updatedAt   DateTime?    @updatedAt
+  submissions Int          @default(0)
+  totalMarks  Int          @default(0)
+  isPublished Boolean      @default(false)
+  questions   Question[]
+  Submission  Submission[]
+}
+
+model Question {
+  questionID Int      @default(sequence())
+  examID     String
+  type       String // or use an enum
+  points     Int
+  exam       Exam     @relation(fields: [examID], references: [examID])
+  Report     Report[]
+
+  @@id([examID, questionID])
+}
+
+model Classroom {
+  classroomID Int                @id @default(sequence())
+  creatorID   String
+  creator     User               @relation("createdClassrooms", fields: [creatorID], references: [userID])
+  name        String
+  description String
+  exams       Exam[]
+  discussions DiscussionThread[]
+  users       User[]             @relation("joinedClassrooms")
+}
+
+model DiscussionThread {
+  discussionThreadID Int       @id @default(sequence())
+  classroomID        Int
+  classroom          Classroom @relation(fields: [classroomID], references: [classroomID])
+  creatorID          String
+  creator            User      @relation(fields: [creatorID], references: [userID])
+  title              String
+  content            String
+  timePosted         DateTime  @default(now())
+  Post               Post[]
+}
+
+model Post {
+  postID     Int              @id @default(sequence())
+  creatorID  String
+  creator    User             @relation(fields: [creatorID], references: [userID])
+  threadID   Int
+  discussion DiscussionThread @relation(fields: [threadID], references: [discussionThreadID])
+  content    String
+  Reply      Reply[]
+}
+
+model Reply {
+  replyID   Int    @id @default(sequence())
+  creatorID String
+  creator   User   @relation(fields: [creatorID], references: [userID])
+  postID    Int
+  post      Post   @relation(fields: [postID], references: [postID])
+  content   String
+}
+
+model Submission {
+  submissionID   Int     @id @default(sequence())
+  studentID      String
+  student        User    @relation(fields: [studentID], references: [userID])
+  examID         String
+  exam           Exam    @relation(fields: [examID], references: [examID])
+  integrityScore Int
+  achievedMarks  Int
+  canSubmit      Boolean
+}
+
+model Report {
+  reportID    Int      @id @default(sequence())
+  type        String
+  description String
+  examID      String
+  questionID  Int
+  question    Question @relation(fields: [examID, questionID], references: [examID, questionID])
 }

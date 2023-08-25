@@ -5,10 +5,10 @@ import { getExamMetaByUserId } from '@/controllers/examRepo';
 
 // export async function GET(request: NextRequest) {
 //   const body = await request.json();
-//   if (body.exam.examId == '') {
-//     const examId = generateId();
-//     console.log('🆔 ~ file: route.ts:11 ~ POST ~ examId:', examId);
-//     body.exam.examId = examId;
+//   if (body.exam.examID == '') {
+//     const examID = generateId();
+//     console.log('🆔 ~ file: route.ts:11 ~ POST ~ examID:', examID);
+//     body.exam.examID = examID;
 //   }
 //   const res = await createExamOnDatabase(body.exam);
 //   return NextResponse.json(res);
@@ -16,16 +16,16 @@ import { getExamMetaByUserId } from '@/controllers/examRepo';
 
 // export async function GET(request: NextRequest, { params }: any) {
 //   // we will use params to access the data passed to the dynamic route
-//   const examId = params.examId;
-//   console.log('🚀 ~ file: route.ts:7 ~ GET ~ examId:', examId);
-//   const exam = await getExamFromDatabase(examId);
+//   const examID = params.examID;
+//   console.log('🚀 ~ file: route.ts:7 ~ GET ~ examID:', examID);
+//   const exam = await getExamFromDatabase(examID);
 //   console.log('🚀 ~ file: route.ts:9 ~ GET ~ exam:', exam);
 //   return NextResponse.json({ status: 200, exam: exam });
 // }
 
 export async function GET(request: NextRequest, {params} : any) {
-    const userId = params.userId;
-    console.log("🚀 ~ file: route.ts:28 ~ GET ~ userId:", userId)
-    const exams = await getExamMetaByUserId(userId);
+    const userID = params.userID;
+    console.log("🚀 ~ file: route.ts:28 ~ GET ~ userID:", userID)
+    const exams = await getExamMetaByUserId(userID);
     return NextResponse.json({status: 200, exams: exams});
 }

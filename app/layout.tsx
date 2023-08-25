@@ -1,6 +1,6 @@
 import '@/styles/globals.css';
 import '@fontsource/inter';
-import Nav from '@/components/Nav';
+import { LayoutProvider } from './LayoutProvider';
 import Provider from './Provider';
 import Footer from '@/components/ui/Footer';
 
@@ -19,8 +19,7 @@ const RootLayout = ({ children }: any) => {
           </div>
 
           <main className='app'>
-            <Nav />
-            {children}
+            <LayoutProvider>{children}</LayoutProvider>
           </main>
           <Footer />
         </Provider>

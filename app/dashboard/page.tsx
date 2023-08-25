@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ExamGrid } from '@/components/exam/ExamGrid';
 import { SubmissionGrid } from '@/components/submission/SubmissionGrid';
+import Sidebar from '@/components/dashboard/Sidebar';
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -14,7 +15,8 @@ export default function Page() {
     console.log('Slow Alert');
   }
 
-  return (
+  return (<>
+    <Sidebar/>
     <section className='w-full'>
        <div className='mx-auto w-4/5 rounded-md bg-white p-5'>
       	<Typography className='pb-2 text-3xl'>Welcome, {session?.user.name!}</Typography>
@@ -22,6 +24,7 @@ export default function Page() {
 				<SubmissionGrid /> 
 			</div>
     </section>
+    </>
   );
 }
 
