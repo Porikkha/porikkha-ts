@@ -18,10 +18,10 @@ export function ExamGrid() {
       const res = await fetch(`/api/exams/getAll/${session?.user?.id}`);
       const data = await res.json();
       console.log(data);
-      let newExamList = data.exams.map((exam: any) => {
+      let newExamList = data.exams.map((exam:Exam) => {
         let e: Exam = {
-          examId: exam.id,
-          creatorId: exam.creatorId,
+          examID: exam.examID,
+          creatorID: exam.creatorID,
           description: exam.description,
           duration: exam.duration,
           startTime: new Date(exam.startTime),

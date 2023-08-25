@@ -62,7 +62,7 @@ export const getExamMetaByUserId = async (userID: string) => {
     {
       where: {
         creatorID: userID
-      }
+      } as any,
     }
   )
   console.log("🚀 ~ file: examRepo.ts:30 ~ getAllExamsFromDatabase ~ exams", exams)
