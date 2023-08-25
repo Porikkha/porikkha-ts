@@ -17,8 +17,8 @@ export const authOptions: AuthOptions = {
           email: session.user?.email as string,
         },
       });
-      // session.user.id = (sessionUser?.userID as string).toString();
-      // session.user.role = (sessionUser?.role as string).toString();
+      session.user.id = (sessionUser?.userID as string).toString();
+      session.user.role = (sessionUser?.role as string).toString();
       return session;
     },
     async signIn({ profile }: any) {
@@ -47,7 +47,7 @@ export const authOptions: AuthOptions = {
       }
     },
   },
-  secret: process.env.NEXTAUTH_SECRET
+  secret: process.env.NEXTAUTH_SECRET as string,
 };
 
 const handler = NextAuth(authOptions);
