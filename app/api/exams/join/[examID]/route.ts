@@ -4,7 +4,6 @@ import { getExamFromDatabase, getExamWithoutAnswer } from '@/controllers/examRep
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 export async function GET(request: NextRequest, { params }: any) {
-  // we will use params to access the data passed to the dynamic route
   const session = await getServerSession(authOptions); 
   console.log("🚀 ~ file: route.ts:8 ~ GET ~ session:", session)
   const userID = session?.user.id!;

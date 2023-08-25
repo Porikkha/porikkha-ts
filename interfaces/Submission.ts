@@ -20,6 +20,5 @@ export function mergeSubmissionWithExam(exam:Exam,submission:Submission) {
       return q;
     });
     const newExam = {...exam,questions:ques} as Exam;
-    console.log("🚀 ~ file: Submission.ts:25 ~ mergeSubmissionWithExam ~ newExam:", newExam)
     return  newExam; 
 }
