@@ -64,9 +64,23 @@ const getSubmissionFromDatabase = async (examID: string, userID: string) => {
     return null ;
   }
 };
- 
 
+const getAllSubmissionsFromDatabase = async (userId: string) => {
+  try {
+    await connectMongoDB();
+    console.log('✅ ~ file: route.ts:9 ~ POST ~ Connected to mongoDB');
+  } catch (err) {
+    console.log('🚀 ~ file: route.ts:11 ~ POST ~ Error connecting to mongoDB:', err);
+    return null;
+  }
+  try {
+    const submissions = await Submission.find({userId: userId}) ;
+    console.log('✅ Submissions fetch successful from Mongo!');
+    return submissions;
+  } catch (err: any) {
+    throw new Error('🚀 Error during submission fetch:', err);
+    return null ;
+  }
+}
 
-
-
-export { getSubmissionFromDatabase,createSubmissionOnDatabase};
+export { getSubmissionFromDatabase,createSubmissionOnDatabase, getAllSubmissionsFromDatabase};

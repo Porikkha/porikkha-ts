@@ -1,4 +1,5 @@
 export default function formatTime(time: Date): string {
+    if( time === null || time === undefined ) return "" ;
     const meridiem = time.getHours() >= 12 ? "PM" : "AM";
     const hours = time.getHours() % 12 === 0 ? 12 : time.getHours() % 12;
     const minutes = time.getMinutes();
