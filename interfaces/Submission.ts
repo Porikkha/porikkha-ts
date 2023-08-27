@@ -29,6 +29,6 @@ export function mergeSubmissionWithExam(exam: Exam, submission: Submission) {
       (q as ShortAnswerQuestion).answer = (answer as ShortAnswerAnswer).answer;
     return q;
   });
-  const newExam = { ...exam, questions: ques } as Exam;
-  return newExam;
+  exam.questions = ques;
+  return exam;
 }
