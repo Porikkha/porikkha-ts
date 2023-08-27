@@ -17,6 +17,7 @@ export default interface Submission {
   answers: Answer[];
   submissionTime: Date;
   score: number;
+  integrityScore: number;
 }
 export function mergeSubmissionWithExam(exam: Exam, submission: Submission) {
   const ques = submission.answers.map((answer, index) => {

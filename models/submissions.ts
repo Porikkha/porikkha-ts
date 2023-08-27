@@ -8,6 +8,7 @@ const submissionSchema = new Schema<Submission>({
   answers: [Object],
   submissionTime: { type: Date, required: true },
   score: { type: Number, required: true },
+  integrityScore: { type: Number, default: 100, required: true },
 });
 // submissionSchema.index({ examID: 1, userID: 1}, { unique: true });
 

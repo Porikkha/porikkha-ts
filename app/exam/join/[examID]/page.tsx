@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { dummyExam, removeAnswerFromExam } from '@/interfaces/Exam';
 import ExamViewBanner from '@/components/exam/ExamViewBanner';
 import { useSession } from 'next-auth/react';
-import type Exam from '@/interfaces/Exam';
+import useMousePosition from '@/components/anticheat/MouseCursorPosition';
 import type Submission from '@/interfaces/Submission';
 import type {
   Answer,
@@ -31,6 +31,18 @@ export default function Page({ params }: { params: { examID: string } }) {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+  const mousePosition = useMousePosition();
+  const [integrityScore, setIntegrityScore] = useState(100);
+  const [isMouseInside, setIsMouseInside] = useState(true);
+
+  const handleMouseEnter = () => {
+    setIsMouseInside(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsMouseInside(false);
+    // Also deduct from the integrity score here if needed
+  };
 
   const fetchExam = async (examID: string) => {
     const response = await fetch(`/api/exams/join/${params.examID}`, {
@@ -78,6 +90,7 @@ export default function Page({ params }: { params: { examID: string } }) {
       }),
       submissionTime: new Date(),
       score: 0,
+      integrityScore: integrityScore,
     };
     console.log('🚀 ~ file: page.tsx:138 ~ handleExamSubmit ~ exam:', exam);
 
@@ -97,12 +110,28 @@ export default function Page({ params }: { params: { examID: string } }) {
   }, []);
 
   return (
-    <section className='w-full'>
+    <section
+      className={`gradient-border w-full ${!isMouseInside ? 'alert' : ''}`}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div className='left-gradient'></div>
+      <div className='right-gradient'></div>
       <SuccessAlert
         showSuccessAlert={showSuccessAlert}
         setShowSuccessAlert={setShowSuccessAlert}
       />
       <ExamViewBanner exam={exam} />
+      <div className='text-center'>
+        <p
+          className={`text-lg font-bold ${
+            isMouseInside ? 'text-green-900' : 'text-red-900'
+          }`}
+        >
+          Cursor location (x , y) = ({mousePosition.x}, {mousePosition.y})
+          {!isMouseInside && ' - Please return to your exam.'}
+        </p>
+      </div>
       <div className='mx-auto w-4/5'>
         {loading ? (
           <Loading />

@@ -99,7 +99,7 @@ model Submission {
   student        User    @relation(fields: [studentID], references: [userID])
   examID         String
   exam           Exam    @relation(fields: [examID], references: [examID])
-  integrityScore Int
+  integrityScore Int     @default(100)
   achievedMarks  Int
   canSubmit      Boolean
 }
