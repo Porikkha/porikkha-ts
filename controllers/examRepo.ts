@@ -26,7 +26,7 @@ export const getExamFromDatabase = async (examID: string) => {
   }
   // Attempt to create the exam in the database.
   try {
-    const exam = await Exam.findOne({ examID });
+    const exam = await Exam.findOne({ examID: examID });
     console.log('✅ Exam fetch successful from Mongo!');
     return exam;
   } catch (err: any) {
@@ -52,7 +52,6 @@ export const getExamWithoutAnswer = async (userID: string, examID: string) => {
     }
 
     const exam = removeAnswerFromExam(examWithAnswer);
-    console.log('🚀 ~ file: examRepo.ts:48 ~ getExamWithoutAnswer ~ exam:', exam);
 
     if (submission === null) return exam;
 

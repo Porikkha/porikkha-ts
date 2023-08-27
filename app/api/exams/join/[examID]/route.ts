@@ -10,6 +10,5 @@ export async function GET(request: NextRequest, { params }: any) {
   const examID = params.examID;
 
   const exam = await getExamWithoutAnswer(userID, examID);
-  console.log('🚀 ~ file: route.ts:9 ~ GET ~ exam:', exam);
   return NextResponse.json({ status: 200, exam: exam });
 }

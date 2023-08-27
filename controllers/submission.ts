@@ -60,7 +60,7 @@ const getSubmissionFromDatabase = async (examID: string, userID: string) => {
       userID: userID,
     });
     console.log('✅ Submission fetch successful from Mongo!');
-    console.log(submission);
+    console.log("🚀 ~ file: submission.ts:64 ~ getSubmissionFromDatabase ~ submission:", submission)
     return submission;
   } catch (err: any) {
     throw new Error('🚀 Error during submission fetch:', err);
