@@ -1,7 +1,8 @@
 import { connectMongoDB } from '@/utils/database';
-import SubmissionInterface from '@/interfaces/Submission';
+import SubmissionInterface, { autogradeSubmission } from '@/interfaces/Submission';
 import { prisma } from '@/utils/database';
 import Submission from '@/models/submissions';
+import { getExamFromDatabase } from './examRepo';
 
 const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
   // Connect to mongoDB
@@ -64,6 +65,17 @@ const getSubmissionFromDatabase = async (examID: string, userID: string) => {
     return null;
   }
 };
+
+const autogradeAndUpdateSubmission = async (examID: string, studentID: string) => {
+  const submission = await getSubmissionFromDatabase(examID, studentID) ;
+  const exam = await getExamFromDatabase(examID) ;
+  
+  if( submission !== null && exam !== null){
+    let newSubmission = autogradeSubmission(exam,submission);
+    await createSubmissionOnDatabase(newSubmission) ;
+    console.log("Autograding successful!")
+  }
+}
 
 const getAllSubmissionsFromDatabase = async (userID: string) => {
   try {

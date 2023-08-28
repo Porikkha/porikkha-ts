@@ -9,6 +9,7 @@ import {
   MultipleChoiceAnswer,
   ShortAnswerAnswer,
   SingleChoiceAnswer,
+  autogradeAnswer,
 } from './question/Answer';
 import {Submission as SubmissionPrisma} from "@prisma/client" ;
 
@@ -40,4 +41,23 @@ export function mergeSubmissionWithExam(exam: Exam, submission: Submission) {
   });
   exam.questions = ques;
   return exam;
+}
+
+export function autogradeSubmission(exam: Exam, submission: Submission) {
+  let newSubmission ;
+  var indexQuestion : number[] = new Array<number>(exam.questions.length+2) ; 
+  
+  exam.questions.map((question,index) => {
+    indexQuestion[question.id] = index; 
+  });
+  submission.achievedMarks = 0 ;
+  submission.answers.map((answer,index) => {
+    const ques = exam.questions[indexQuestion[answer.questionId!]];
+    const evaluation = autogradeAnswer(answer, ques as Answer ) ;
+    if( evaluation === true){
+        submission.achievedMarks! += ques.points ;
+    }
+  })
+
+  return submission ;
 }

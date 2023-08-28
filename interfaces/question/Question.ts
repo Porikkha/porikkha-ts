@@ -43,15 +43,6 @@ export function permuteQuestion(question: Question, rand:Random) {
   return question;
 }
 
-export function autogradeQuestion(question: Question) {
-  if (question.type === 'multiple-choice')
-    return autogradeMultipleChoiceQuestion(question as MultipleChoiceQuestion);
-  else if (question.type === 'single-choice')
-    return autogradeSingleChoiceQuestion(question as SingleChoiceQuestion);
-  else if (question.type === 'short-answer')
-    return autogradeShortQuestion(question as ShortAnswerQuestion);
-}
-
 export const dummyQuestions: Question[] = [
   ...MultipleChoiceQuestions,
   ...ShortAnswerQuestions,
