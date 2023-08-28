@@ -14,8 +14,10 @@ export function ExamGrid() {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
 
   const fetchExams = async () => {
+
     if (!session?.user?.id) return;
     const res = await fetch(`/api/exams/getAll/${session?.user?.id}`);
+    console.log("🚀 ~ file: ExamGrid.tsx:20 ~ fetchExams ~ res :", res )
     const data = await res.json();
     console.log(data);
     let newExamList = data.exams.map((exam: any) => {
@@ -38,7 +40,7 @@ export function ExamGrid() {
   };
 
   useEffect(() => {
-    console.log('Call useeffect');
+    console.log('Call use - effect');
     fetchExams();
   }, [session?.user?.id]);
 

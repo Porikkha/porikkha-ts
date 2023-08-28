@@ -19,7 +19,7 @@ export default function Page() {
     <>
       <Sidebar />
       <section className='w-full'>
-        <div className='mx-auto w-4/5 rounded-md bg-white p-5'>
+        <div className='w-4/5 rounded-md bg-white p-5'>
           <Typography className='pb-2 text-3xl'>
             Welcome, {session?.user.name!}
           </Typography>

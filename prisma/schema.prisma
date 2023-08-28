@@ -14,38 +14,37 @@ model User {
   image             String?            @db.String(255)
   role              String             @default("examiner")
   createdClassrooms Classroom[]        @relation("createdClassrooms")
-  joinedClassrooms  Classroom[]        @relation("joinedClassrooms")
   discussions       DiscussionThread[]
+  Exam              Exam[]
   posts             Post[]
   replies           Reply[]
   submissions       Submission[]
-  Exam              Exam[]
+  joinedClassrooms  Classroom[]        @relation("joinedClassrooms")
 }
 
 model Exam {
   examID      String       @id
-  creator     User         @relation(fields: [creatorID], references: [userID])
   creatorID   String
   classroomID Int?
-  classroom   Classroom?   @relation(fields: [classroomID], references: [classroomID])
   title       String
   startTime   DateTime     @default(now())
   duration    Int
   description String?
-  updatedAt   DateTime    @default(now())
+  updatedAt   DateTime?
   submissions Int          @default(0)
   totalMarks  Int          @default(0)
   isPublished Boolean      @default(false)
+  classroom   Classroom?   @relation(fields: [classroomID], references: [classroomID])
+  creator     User         @relation(fields: [creatorID], references: [userID])
   questions   Question[]
   Submission  Submission[]
-  canSubmit   Boolean     @default(true)
 }
 
 model Question {
   questionID Int      @default(sequence())
   examID     String
-  type       String // or use an enum
-  points     Int      @default(0)
+  type       String
+  points     Int
   exam       Exam     @relation(fields: [examID], references: [examID])
   Report     Report[]
 
@@ -55,54 +54,54 @@ model Question {
 model Classroom {
   classroomID Int                @id @default(sequence())
   creatorID   String
-  creator     User               @relation("createdClassrooms", fields: [creatorID], references: [userID])
   name        String
   description String
-  exams       Exam[]
+  creator     User               @relation("createdClassrooms", fields: [creatorID], references: [userID])
   discussions DiscussionThread[]
+  exams       Exam[]
   users       User[]             @relation("joinedClassrooms")
 }
 
 model DiscussionThread {
   discussionThreadID Int       @id @default(sequence())
   classroomID        Int
-  classroom          Classroom @relation(fields: [classroomID], references: [classroomID])
   creatorID          String
-  creator            User      @relation(fields: [creatorID], references: [userID])
   title              String
   content            String
   timePosted         DateTime  @default(now())
+  classroom          Classroom @relation(fields: [classroomID], references: [classroomID])
+  creator            User      @relation(fields: [creatorID], references: [userID])
   Post               Post[]
 }
 
 model Post {
   postID     Int              @id @default(sequence())
   creatorID  String
-  creator    User             @relation(fields: [creatorID], references: [userID])
   threadID   Int
-  discussion DiscussionThread @relation(fields: [threadID], references: [discussionThreadID])
   content    String
+  creator    User             @relation(fields: [creatorID], references: [userID])
+  discussion DiscussionThread @relation(fields: [threadID], references: [discussionThreadID])
   Reply      Reply[]
 }
 
 model Reply {
   replyID   Int    @id @default(sequence())
   creatorID String
-  creator   User   @relation(fields: [creatorID], references: [userID])
   postID    Int
-  post      Post   @relation(fields: [postID], references: [postID])
   content   String
+  creator   User   @relation(fields: [creatorID], references: [userID])
+  post      Post   @relation(fields: [postID], references: [postID])
 }
 
 model Submission {
   submissionID   Int     @id @default(sequence())
   studentID      String
-  student        User    @relation(fields: [studentID], references: [userID])
   examID         String
+  integrityScore Int     @default(100)
+  achievedMarks  Int
+  canSubmit      Boolean
   exam           Exam    @relation(fields: [examID], references: [examID])
-  integrityScore Int?    @default(100)
-  achievedMarks  Int?    @default(0)
-  submissionTime DateTime?    @default(now())
+  student        User    @relation(fields: [studentID], references: [userID])
 }
 
 model Report {
