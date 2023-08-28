@@ -32,19 +32,20 @@ model Exam {
   startTime   DateTime     @default(now())
   duration    Int
   description String?
-  updatedAt   DateTime?    @updatedAt
+  updatedAt   DateTime    @default(now())
   submissions Int          @default(0)
   totalMarks  Int          @default(0)
   isPublished Boolean      @default(false)
   questions   Question[]
   Submission  Submission[]
+  canSubmit   Boolean     @default(true)
 }
 
 model Question {
   questionID Int      @default(sequence())
   examID     String
   type       String // or use an enum
-  points     Int
+  points     Int      @default(0)
   exam       Exam     @relation(fields: [examID], references: [examID])
   Report     Report[]
 
@@ -99,9 +100,9 @@ model Submission {
   student        User    @relation(fields: [studentID], references: [userID])
   examID         String
   exam           Exam    @relation(fields: [examID], references: [examID])
-  integrityScore Int
-  achievedMarks  Int
-  canSubmit      Boolean
+  integrityScore Int?    @default(100)
+  achievedMarks  Int?    @default(0)
+  submissionTime DateTime?    @default(now())
 }
 
 model Report {

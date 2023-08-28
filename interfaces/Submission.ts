@@ -10,14 +10,12 @@ import {
   ShortAnswerAnswer,
   SingleChoiceAnswer,
 } from './question/Answer';
+import {Submission as SubmissionPrisma} from "@prisma/client" ;
 
-export default interface Submission {
-  examID: string;
-  userID: string;
-  answers: Answer[];
-  submissionTime: Date;
-  score: number;
+export default interface Submission extends SubmissionPrisma {
+  answers: Answer[]; 
 }
+
 export function mergeSubmissionWithExam(exam: Exam, submission: Submission) {
   const ques = submission.answers.map((answer, index) => {
     let q = exam.questions[index];

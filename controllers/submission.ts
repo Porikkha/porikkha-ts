@@ -13,18 +13,15 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
     return { status: 500 };
   }
   try {
-    const filter = { examID: submission.examID, userID: submission.userID };
+    const filter = { examID: submission.examID, userID: submission.studentID };
 
     await Submission.findOneAndUpdate(filter, submission, { upsert: true });
     console.log('✅ Submission creation successful on Mongo!');
     const prismaSubmission = {
       examID: submission.examID,
-      userID: submission.userID,
-      submissionTime: submission.submissionTime,
-      score: submission.score,
-      answers: {
-        create: submission.answers,
-      },
+      studentID: submission.studentID,
+      integrityScore: submission?.integrityScore,
+      achievedMarks: submission?.achievedMarks,
     };
     // const createdSubmission = await prisma.submission.upsert({
     //   where: {
@@ -57,7 +54,7 @@ const getSubmissionFromDatabase = async (examID: string, userID: string) => {
   try {
     const submission: SubmissionInterface | null = await Submission.findOne({
       examID: examID,
-      userID: userID,
+      studentID: userID,
     });
     console.log('✅ Submission fetch successful from Mongo!');
     console.log("🚀 ~ file: submission.ts:64 ~ getSubmissionFromDatabase ~ submission:", submission)
@@ -77,7 +74,7 @@ const getAllSubmissionsFromDatabase = async (userID: string) => {
     return null;
   }
   try {
-    const submissions = await Submission.find({ userID });
+    const submissions = await Submission.find({ studentID:userID });
     console.log('✅ Submissions fetch successful from Mongo!');
     return submissions;
   } catch (err: any) {
