@@ -1,4 +1,4 @@
-import Random from "@/utils/random";
+import Random from '@/utils/random';
 
 export default interface Choice {
   text: string;
