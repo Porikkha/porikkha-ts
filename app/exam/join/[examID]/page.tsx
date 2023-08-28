@@ -41,6 +41,7 @@ export default function Page({ params }: { params: { examID: string } }) {
 
   const handleMouseLeave = () => {
     setIsMouseInside(false);
+    setIntegrityScore(integrityScore - 10);
     // Also deduct from the integrity score here if needed
   };
 
@@ -107,6 +108,31 @@ export default function Page({ params }: { params: { examID: string } }) {
   };
   useEffect(() => {
     fetchExam(params.examID);
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        document.title = 'Please return to your exam';
+      } else {
+        document.title = 'Your Exam Title'; // Replace with your default title
+        alert('Your score has been deducted');
+        setIntegrityScore((prevScore) => prevScore - 10); // Deduct as needed
+      }
+    };
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === 'c') {
+        alert('Copy is not allowed!');
+      } else if (e.ctrlKey && e.key === 'v') {
+        alert('Paste is not allowed!');
+      }
+      // Can add more here
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      document.addEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   return (
@@ -131,6 +157,7 @@ export default function Page({ params }: { params: { examID: string } }) {
           Cursor location (x , y) = ({mousePosition.x}, {mousePosition.y})
           {!isMouseInside && ' - Please return to your exam.'}
         </p>
+        <p className='text-lg font-bold'>Integrity Score: {integrityScore}</p>
       </div>
       <div className='mx-auto w-4/5'>
         {loading ? (
