@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,11 +6,10 @@
 
 @layer components {
   .sidebar-icon {
-    @apply relative flex items-center justify-center h-12 w-12 mt-2 
-            mx-auto text-purple-500
-            hover:bg-slate-200 hover:text-black hover:rounded-md;
-
-  } 
+    @apply relative mx-auto mt-2 flex h-12 w-12 items-center 
+            justify-center text-purple-500
+            hover:rounded-md hover:bg-slate-200 hover:text-black;
+  }
 }
 
 /* 
@@ -81,7 +80,7 @@
 .main:before {
   background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
   position: absolute;
-  content: "";
+  content: '';
   z-index: 2;
   width: 100%;
   height: 100%;
@@ -89,7 +88,7 @@
 }
 
 .main:after {
-  content: "";
+  content: '';
   /* background-image: url("/assets/images/grid.svg"); */
   z-index: 1;
   position: absolute;
@@ -117,7 +116,7 @@
     radial-gradient(at 33% 50%, hsla(261, 51%, 78%, 1) 0px, transparent 50%),
     radial-gradient(at 79% 53%, hsla(282, 82%, 58%, 1) 0px, transparent 50%);
   position: absolute;
-  content: "";
+  content: '';
   width: 100%;
   height: 100%;
   filter: blur(100px) saturate(150%);
@@ -134,19 +133,19 @@
 /* Tailwind Styles */
 
 .app {
-  @apply relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6;
+  @apply relative z-10 mx-auto flex max-w-7xl flex-col items-center justify-center px-6 sm:px-16;
 }
 
 .black_btn {
-  @apply rounded-full border border-black bg-black py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm font-inter flex items-center justify-center;
+  @apply flex items-center justify-center rounded-full border border-black bg-black px-5 py-1.5 text-center font-inter text-sm text-white transition-all hover:bg-white hover:text-black;
 }
 
 .purple_btn {
-  @apply rounded-full border border-purple-500 bg-purple-700 py-1.5 px-5 text-white transition-all hover:bg-white hover:text-purple-500 text-center text-sm font-inter flex items-center justify-center;
+  @apply flex items-center justify-center rounded-full border border-purple-500 bg-purple-700 px-5 py-1.5 text-center font-inter text-sm text-white transition-all hover:bg-white hover:text-purple-500;
 }
 
 .outline_btn {
-  @apply rounded-full border border-black bg-transparent py-1.5 px-5 text-black transition-all hover:bg-black hover:text-white text-center text-sm font-inter flex items-center justify-center;
+  @apply flex items-center justify-center rounded-full border border-black bg-transparent px-5 py-1.5 text-center font-inter text-sm text-black transition-all hover:bg-black hover:text-white;
 }
 
 .head_text {
@@ -170,21 +169,21 @@
 }
 
 .desc {
-  @apply mt-5 text-lg text-gray-600 sm:text-xl max-w-5xl;
+  @apply mt-5 max-w-5xl text-lg text-gray-600 sm:text-xl;
 }
 
 .search_input {
-  @apply block w-full rounded-md border border-gray-200 bg-white py-2.5 font-satoshi pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
+  @apply block w-full rounded-md border border-gray-200 bg-white py-2.5 pl-5 pr-12 font-satoshi text-sm font-medium shadow-lg focus:border-black focus:outline-none focus:ring-0;
 }
 
 .copy_btn {
-  @apply w-7 h-7 rounded-full bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur flex justify-center items-center cursor-pointer;
+  @apply flex h-7 w-7 cursor-pointer items-center justify-center rounded-full bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur;
 }
 .reminder_btn {
-  @apply bg-transparent transition-all duration-[150ms] ease-out hover:bg-violet-500/50 text-violet-800 font-semibold hover:text-purple-950 py-2 px-4 border border-violet-500 hover:border-transparent rounded mb-4;
+  @apply mb-4 rounded border border-violet-500 bg-transparent px-4 py-2 font-semibold text-violet-800 transition-all duration-[150ms] ease-out hover:border-transparent hover:bg-violet-500/50 hover:text-purple-950;
 }
 .glassmorphism {
-  @apply rounded-xl border border-gray-200 bg-white/20 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur p-5;
+  @apply rounded-xl border border-gray-200 bg-white/20 p-5 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur;
 }
 
 .prompt_layout {
@@ -193,48 +192,114 @@
 
 /* Feed Component */
 .feed {
-  @apply mt-16 mx-auto w-full max-w-xl flex justify-center items-center flex-col gap-2;
+  @apply mx-auto mt-16 flex w-full max-w-xl flex-col items-center justify-center gap-2;
 }
 
 /* Form Component */
 .form_textarea {
-  @apply w-full flex rounded-lg h-[200px] mt-2 p-3 text-sm text-gray-500 outline-0;
+  @apply mt-2 flex h-[200px] w-full rounded-lg p-3 text-sm text-gray-500 outline-0;
 }
 
 .form_input {
-  @apply w-full flex rounded-lg mt-2 p-3 text-sm text-gray-500 outline-0;
+  @apply mt-2 flex w-full rounded-lg p-3 text-sm text-gray-500 outline-0;
 }
 
 /* Nav Component */
 .logo_text {
-  @apply max-sm:hidden font-satoshi font-semibold text-lg text-transparent bg-clip-text bg-gradient-to-r from-purple-800 via-purple-400 to-purple-700 tracking-wide;
+  @apply bg-gradient-to-r from-purple-800 via-purple-400 to-purple-700 bg-clip-text font-satoshi text-lg font-semibold tracking-wide text-transparent max-sm:hidden;
 }
 
 .dropdown {
-  @apply absolute right-0 top-full mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end;
+  @apply absolute right-0 top-full mt-3 flex w-full min-w-[210px] flex-col items-end justify-end gap-2 rounded-lg bg-white p-5;
 }
 
 .dropdown_link {
-  @apply text-sm font-inter text-gray-700 hover:text-gray-500 font-medium;
+  @apply font-inter text-sm font-medium text-gray-700 hover:text-gray-500;
 }
 
 /* PromptCard Component */
 .prompt_card {
-  @apply flex-1 break-inside-avoid rounded-lg border border-gray-300 bg-white/20 bg-clip-padding p-6 pb-4 backdrop-blur-lg backdrop-filter md:w-[360px] w-full h-fit;
+  @apply h-fit w-full flex-1 break-inside-avoid rounded-lg border border-gray-300 bg-white/20 bg-clip-padding p-6 pb-4 backdrop-blur-lg backdrop-filter md:w-[360px];
 }
 
 .flex-center {
-  @apply flex justify-center items-center;
+  @apply flex items-center justify-center;
 }
 
 .flex-start {
-  @apply flex justify-start items-start;
+  @apply flex items-start justify-start;
 }
 
 .flex-end {
-  @apply flex justify-end items-center;
+  @apply flex items-center justify-end;
 }
 
 .flex-between {
-  @apply flex justify-between items-center;
+  @apply flex items-center justify-between;
+}
+
+.gradient-border {
+  position: relative;
+}
+.gradient-border::before,
+.gradient-border::after,
+.gradient-border > .left-gradient,
+.gradient-border > .right-gradient {
+  border-radius: 50%;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, white, #6a5acd, white);
+}
+
+.gradient-border::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, white, #6a5acd, white);
+}
+
+.gradient-border > .left-gradient {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, white, #e58da9, white);
+}
+
+.gradient-border > .right-gradient {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, white, #e58da9, white);
+}
+
+/* Active/Alert border styles */
+.gradient-border.alert::before,
+.gradient-border.alert::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(to right, rgb(255, 255, 255), rgb(220, 21, 21), rgb(255, 255, 255));
+}
+.gradient-border.alert > .left-gradient,
+.gradient-border.alert > .right-gradient {
+  /* Change the colors to make it more noticeable, e.g., a brighter or contrasting color */
+  background: linear-gradient(to bottom, rgb(255, 255, 255), rgb(220, 21, 21), rgb(255, 255, 255));
+  border-radius: 50%;
 }
