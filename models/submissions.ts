@@ -4,11 +4,10 @@ import Submission from '@/interfaces/Submission';
 
 const submissionSchema = new Schema<Submission>({
   examID: { type: String, required: true },
-  userID: { type: String, required: true },
+  studentID: { type: String, required: true },
   answers: [Object],
-  submissionTime: { type: Date, required: true },
-  score: { type: Number, required: true },
-  integrityScore: { type: Number, default: 100, required: true },
+  integrityScore: { type: Number, required: false },
+  achievedMarks: {type: Number, required: false}
 });
 // submissionSchema.index({ examID: 1, userID: 1}, { unique: true });
 

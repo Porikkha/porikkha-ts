@@ -1,6 +1,6 @@
 import { connectMongoDB } from '@/utils/database';
 import Exam from '@/models/exams';
-import ExamInterface, { removeAnswerFromExam } from '@/interfaces/Exam';
+import ExamInterface, { permuteQuestions, removeAnswerFromExam } from '@/interfaces/Exam';
 import { prisma } from '@/utils/database';
 import {
   MultipleChoiceAnswer,
@@ -22,11 +22,11 @@ export const getExamFromDatabase = async (examID: string) => {
     console.log('✅ ~ file: route.ts:9 ~ POST ~ Connected to mongoDB');
   } catch (err) {
     console.log('🚀 ~ file: route.ts:11 ~ POST ~ Error connecting to mongoDB:', err);
-    return {};
+    return null;
   }
   // Attempt to create the exam in the database.
   try {
-    const exam = await Exam.findOne({ examID: examID });
+    const exam:ExamInterface|null = await Exam.findOne({ examID: examID });
     console.log('✅ Exam fetch successful from Mongo!');
     return exam;
   } catch (err: any) {
@@ -51,7 +51,8 @@ export const getExamWithoutAnswer = async (userID: string, examID: string) => {
       return null;
     }
 
-    const exam = removeAnswerFromExam(examWithAnswer);
+    // const exam = removeAnswerFromExam(examWithAnswer);
+    const exam = permuteQuestions(examWithAnswer,userID,true) ; 
 
     if (submission === null) return exam;
 

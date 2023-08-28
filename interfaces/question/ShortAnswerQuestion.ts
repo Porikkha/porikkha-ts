@@ -1,3 +1,4 @@
+import Random from '@/utils/random';
 import { ShortAnswerAnswer } from './Answer';
 import Question from './Question';
 
@@ -6,6 +7,11 @@ export default interface ShortAnswerQuestion extends Question, ShortAnswerAnswer
 export function removeShortQuestionAnswer(question: ShortAnswerQuestion) {
   return { ...question, answer: '' };
 }
+
+export function permuteShortQuestion(question: ShortAnswerQuestion, rand:Random) {
+  return question; 
+}
+
 export const dummyQuestions: ShortAnswerQuestion[] = [
   {
     id: 1,

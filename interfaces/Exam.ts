@@ -1,5 +1,14 @@
-import Question, { dummyQuestions, removeAnswer } from './question/Question';
+import { DefaultArgs } from '@prisma/client/runtime/library';
+import Question, { dummyQuestions, permuteQuestion, removeAnswer } from './question/Question';
+import { Prisma, Exam as ExamPrisma } from '@prisma/client';
+import Random from '@/utils/random';
+import stringToNumber from '@/utils/stringtonumber';
 
+
+// export default interface Exam extends ExamPrisma {
+//   questions: Question[];
+//   allowedAbilities: Object[];
+// }
 export default interface Exam {
   creatorID: string;
   examID: string;
@@ -21,10 +30,28 @@ export const dummyExam: Exam = {
   duration: 60,
   allowedAbilities: [],
 };
-export const removeAnswerFromExam = (exam: Exam) => {
+
+export const removeAnswerFromExam = (exam: Exam, rand?: Random) => {
   let newQuestions = exam.questions.map((question, index) => {
-    return removeAnswer(question);
+    return (rand === undefined) ? removeAnswer(question): permuteQuestion(removeAnswer(question),rand);
   });
   exam.questions = newQuestions;
   return exam;
 };
+
+export const permuteQuestions = (exam: Exam, studentID: string, remove_answer: boolean = true): Exam => {
+  let rand: Random = new Random(stringToNumber(exam.examID+studentID)) ;
+  console.log(`Seed Mapping: ${exam.examID+studentID} --- >  ${stringToNumber(exam.examID+studentID)} `);  
+  console.log("🚀 ~ file: Exam.ts:51 ~ varnewQuestions:Question[]=exam.questions.map ~ exam.questions:", exam.questions)
+  
+  if( remove_answer === true ) exam = removeAnswerFromExam(exam,rand) ;
+
+  exam.questions.map((question, index) => {
+    let i = rand.randrange(index,exam.questions.length-1);
+    console.log(i);
+    [exam.questions[i], exam.questions[index] ] = [exam.questions[index], exam.questions[i]] ;
+  });
+
+  console.log("🚀 ~ file: Exam.ts:54 ~ permuteQuestions ~ newQuestions:", exam.questions)
+  return exam; 
+}

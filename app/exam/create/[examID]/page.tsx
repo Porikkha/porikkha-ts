@@ -3,8 +3,8 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import AddIcon from '@mui/icons-material/Add';
-import EditExamDetailsModal from '@/components/questions/EditExamDetailsModal';
-import ExamBanner from '@/components/questions/ExamBanner';
+import EditExamDetailsModal from '@/components/exam/EditExamDetailsModal';
+import ExamBanner from '@/components/exam/ExamBanner';
 import SuccessAlert from '@/components/ui/SuccessAlert';
 import Question from '@/interfaces/question/Question';
 import ExamInterface from '@/interfaces/Exam';

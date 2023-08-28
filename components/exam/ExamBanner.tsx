@@ -10,12 +10,17 @@ import {
   FormControl,
   FormLabel,
   Button,
+  Card,
+  IconButton,
 } from '@mui/joy';
 import Label from '@/components/ui/Labels';
+import { Edit } from '@mui/icons-material';
+import {EditNote } from '@mui/icons-material';
+
 
 export default function ExamBanner({ values, setters }: any) {
   return (
-    <div className='mx-auto w-4/5 items-center space-x-4 rounded-xl bg-white px-20 py-10'>
+    <Card className='mx-auto w-4/5 items-center space-x-4 rounded-xl bg-white px-20 py-10'>
       <div className='w-full'>
         <div className='w-full'>
           <span className='font-sans text-4xl font-bold text-black'>
@@ -25,12 +30,17 @@ export default function ExamBanner({ values, setters }: any) {
           <button className='bg-light text-pdark hover:border-primary float-right mx-2 rounded border px-4 py-2 font-semibold'>
             <Link href={'/exam/preview/' + values.examID}>Preview</Link>
           </button>
-          <button
+          {/* <button
             onClick={() => setters.setOpen(true)}
             className='bg-light text-pdark hover:border-primary float-right mx-2 rounded border px-4 py-2 font-semibold'
           >
-            Edit{' '}
-          </button>
+          </button> */}
+          <IconButton
+            sx={{color:"var(--clr-purple-1)"}}
+            onClick={() => setters.setOpen(true)}
+          >
+            <EditNote/> 
+          </IconButton>
         </div>
         <p className='text-gray-500'>{values.startTimeFormatted}</p>
 
@@ -76,6 +86,6 @@ export default function ExamBanner({ values, setters }: any) {
           <Label>Description : {values.examDesc}</Label>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
