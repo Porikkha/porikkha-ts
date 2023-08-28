@@ -66,7 +66,7 @@ export default function Page({ params }: { params: { examID: string } }) {
     }
     const submission: Submission = {
       examID: params.examID,
-      userID: session?.user?.id!,
+      studentID: session?.user?.id!,
       answers: questions.map((question: QuestionInterface) => {
         if (question.type === 'short-answer') {
           return {
@@ -89,8 +89,6 @@ export default function Page({ params }: { params: { examID: string } }) {
         }
         return {} as Answer;
       }),
-      submissionTime: new Date(),
-      score: 0,
       integrityScore: integrityScore,
     };
     console.log('🚀 ~ file: page.tsx:138 ~ handleExamSubmit ~ exam:', exam);

@@ -12,13 +12,24 @@ import {
 } from './question/Answer';
 import {Submission as SubmissionPrisma} from "@prisma/client" ;
 
-export default interface Submission extends SubmissionPrisma {
+export default interface Submission {
+    studentID: string;
+    examID: string;
+    integrityScore?: number;
+    achievedMarks?: number;
   answers: Answer[]; 
 }
 
+
 export function mergeSubmissionWithExam(exam: Exam, submission: Submission) {
+  var indexQuestion : number[] = new Array<number>(exam.questions.length+2) ; 
+  
+  exam.questions.map((question,index) => {
+    indexQuestion[question.id] = index; 
+  }); 
+
   const ques = submission.answers.map((answer, index) => {
-    let q = exam.questions[index];
+    let q = exam.questions[indexQuestion[answer.questionId!]];
     if (q.type === 'multiple-choice')
       (q as MultipleChoiceQuestion).answer = (answer as MultipleChoiceAnswer).answer;
     else if (q.type === 'single-choice')

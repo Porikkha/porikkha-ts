@@ -1,19 +1,22 @@
+export default class Random{
+    seed: number; 
 
-var seed:number; 
-
-export function rand_seed(seed2:number){
-    seed = seed2; 
-}
-export default function random():number {
-    return xorshift();    
-}  
-
-
-function xorshift():number {
- var x:number=seed; 
-    x ^= x << 13 ;
-    x ^= x >> 7 ;
-    x ^= x << 17 ;    
-    seed = x;   
-    return x;   
-}
+    constructor(seed:number) {
+      this.seed = seed;
+    }
+    rand():number {
+        var x:number=this.seed; 
+        x ^= x << 13 ;
+        x ^= x >> 7 ;
+        x ^= x << 17 ;    
+        this.seed = x;   
+        return x;   
+    } 
+    randrange(lo:number,hi:number): number {
+        let x = this.rand() ;
+        let len = hi-lo+1;
+        x = x%len; 
+        if( x < 0 ) x = x+len; 
+        return x + lo ;
+    }
+  };

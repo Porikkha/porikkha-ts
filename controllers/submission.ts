@@ -13,7 +13,7 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
     return { status: 500 };
   }
   try {
-    const filter = { examID: submission.examID, userID: submission.studentID };
+    const filter = { examID: submission.examID, studentID: submission.studentID };
 
     await Submission.findOneAndUpdate(filter, submission, { upsert: true });
     console.log('✅ Submission creation successful on Mongo!');

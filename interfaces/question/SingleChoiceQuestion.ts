@@ -1,7 +1,8 @@
 // extend Question
 import Question from './Question';
-import Choice from './Choice';
+import Choice, { permuteChoices } from './Choice';
 import { SingleChoiceAnswer } from './Answer';
+import Random from '@/utils/random';
 
 export default interface SingleChoiceQuestion extends Question, SingleChoiceAnswer {
   choices: Choice[];
@@ -9,6 +10,11 @@ export default interface SingleChoiceQuestion extends Question, SingleChoiceAnsw
 
 export function removeSingleChoiceQuestionAnswer(question: SingleChoiceQuestion) {
   return { ...question, answer: 0 };
+}
+export function permuteSingleChoiceQuestion(question: SingleChoiceQuestion, rand:Random) {
+  let choices: Choice[] = permuteChoices(question.choices,rand) ;
+  question.choices = choices ;
+  return question; 
 }
 
 export const dummyQuestions: SingleChoiceQuestion[] = [

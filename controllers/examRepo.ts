@@ -1,6 +1,6 @@
 import { connectMongoDB } from '@/utils/database';
 import Exam from '@/models/exams';
-import ExamInterface, { removeAnswerFromExam } from '@/interfaces/Exam';
+import ExamInterface, { permuteQuestions, removeAnswerFromExam } from '@/interfaces/Exam';
 import { prisma } from '@/utils/database';
 import {
   MultipleChoiceAnswer,
@@ -51,7 +51,8 @@ export const getExamWithoutAnswer = async (userID: string, examID: string) => {
       return null;
     }
 
-    const exam = removeAnswerFromExam(examWithAnswer);
+    // const exam = removeAnswerFromExam(examWithAnswer);
+    const exam = permuteQuestions(examWithAnswer,userID,true) ; 
 
     if (submission === null) return exam;
 
