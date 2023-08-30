@@ -1,15 +1,13 @@
+'use client';
 import '@/styles/globals.css';
 import '@fontsource/inter';
 import { LayoutProvider } from './LayoutProvider';
 import Provider from './Provider';
 import Footer from '@/components/ui/Footer';
-
-export const metadata = {
-  title: 'Porikkha',
-  description: 'Make Your Online Exams Secure and Intelligent',
-};
+import { usePathname } from 'next/navigation';
 
 const RootLayout = ({ children }: any) => {
+  const pathname = usePathname();
   return (
     <html lang='en'>
       <body>
@@ -18,7 +16,7 @@ const RootLayout = ({ children }: any) => {
             <div className='gradient' />
           </div>
 
-          <main className='app'>
+          <main className={pathname === '/dashboard' ? 'dashboard' : 'app'}>
             <LayoutProvider>{children}</LayoutProvider>
           </main>
           <Footer />
