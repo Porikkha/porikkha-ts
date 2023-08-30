@@ -2,6 +2,10 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
 datasource db {
   provider = "cockroachdb"
   url      = env("DATABASE_URL")
@@ -26,23 +30,23 @@ model Exam {
   examID      String       @id
   creator     User         @relation(fields: [creatorID], references: [userID])
   creatorID   String
-  classroomID Int?
+  classroomID BigInt?
   classroom   Classroom?   @relation(fields: [classroomID], references: [classroomID])
   title       String
   startTime   DateTime     @default(now())
   duration    Int
   description String?
-  updatedAt   DateTime    @default(now())
+  updatedAt   DateTime     @default(now())
   submissions Int          @default(0)
   totalMarks  Int          @default(0)
   isPublished Boolean      @default(false)
   questions   Question[]
   Submission  Submission[]
-  canSubmit   Boolean     @default(true)
+  canSubmit   Boolean      @default(true)
 }
 
 model Question {
-  questionID Int      @default(sequence())
+  questionID BigInt   @default(autoincrement())
   examID     String
   type       String // or use an enum
   points     Int      @default(0)
@@ -53,7 +57,7 @@ model Question {
 }
 
 model Classroom {
-  classroomID Int                @id @default(sequence())
+  classroomID BigInt             @id @default(autoincrement())
   creatorID   String
   creator     User               @relation("createdClassrooms", fields: [creatorID], references: [userID])
   name        String
@@ -64,8 +68,8 @@ model Classroom {
 }
 
 model DiscussionThread {
-  discussionThreadID Int       @id @default(sequence())
-  classroomID        Int
+  discussionThreadID BigInt    @id @default(autoincrement())
+  classroomID        BigInt
   classroom          Classroom @relation(fields: [classroomID], references: [classroomID])
   creatorID          String
   creator            User      @relation(fields: [creatorID], references: [userID])
@@ -76,40 +80,40 @@ model DiscussionThread {
 }
 
 model Post {
-  postID     Int              @id @default(sequence())
+  postID     BigInt           @id @default(autoincrement())
   creatorID  String
   creator    User             @relation(fields: [creatorID], references: [userID])
-  threadID   Int
+  threadID   BigInt
   discussion DiscussionThread @relation(fields: [threadID], references: [discussionThreadID])
   content    String
   Reply      Reply[]
 }
 
 model Reply {
-  replyID   Int    @id @default(sequence())
+  replyID   BigInt @id @default(autoincrement())
   creatorID String
   creator   User   @relation(fields: [creatorID], references: [userID])
-  postID    Int
+  postID    BigInt
   post      Post   @relation(fields: [postID], references: [postID])
   content   String
 }
 
 model Submission {
-  submissionID   Int     @id @default(sequence())
   studentID      String
-  student        User    @relation(fields: [studentID], references: [userID])
+  student        User      @relation(fields: [studentID], references: [userID])
   examID         String
-  exam           Exam    @relation(fields: [examID], references: [examID])
-  integrityScore Int?    @default(100)
-  achievedMarks  Int?    @default(0)
-  submissionTime DateTime?    @default(now())
+  exam           Exam      @relation(fields: [examID], references: [examID])
+  integrityScore Int?      @default(100)
+  achievedMarks  Int?      @default(0)
+  submissionTime DateTime? @default(now())
+  @@id([studentID, examID], name: "student_exam_composite_id")
 }
 
 model Report {
-  reportID    Int      @id @default(sequence())
+  reportID    BigInt   @id @default(autoincrement())
   type        String
   description String
   examID      String
-  questionID  Int
+  questionID  BigInt
   question    Question @relation(fields: [examID, questionID], references: [examID, questionID])
 }
