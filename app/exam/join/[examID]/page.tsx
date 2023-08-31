@@ -21,6 +21,7 @@ import {
 } from '@/interfaces';
 import Loading from '@/components/Loading';
 import { useRouter } from 'next/navigation';
+import LinearAlert from '@/components/anticheat/LinearAlert';
 
 export default function Page({ params }: { params: { examID: string } }) {
   const { data: session } = useSession();
@@ -34,15 +35,40 @@ export default function Page({ params }: { params: { examID: string } }) {
   const mousePosition = useMousePosition();
   const [integrityScore, setIntegrityScore] = useState(100);
   const [isMouseInside, setIsMouseInside] = useState(true);
+  const [showLinearAlert, setShowLinearAlert] = useState(true);
+  const [progress, setProgress] = useState(100);
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
 
   const handleMouseEnter = () => {
     setIsMouseInside(true);
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+    setShowLinearAlert(false);
+    setProgress(100); // Reset the progress
   };
 
   const handleMouseLeave = () => {
     setIsMouseInside(false);
-    setIntegrityScore(integrityScore - 10);
-    // Also deduct from the integrity score here if needed
+    setShowLinearAlert(true);
+
+    const id = setTimeout(() => {
+      setShowLinearAlert(false);
+      setProgress(0); // Set progress to 0
+    }, 3000); // 3 seconds
+
+    setTimeoutId(id);
+
+    let decrement = 100;
+    const interval = setInterval(() => {
+      decrement -= 1;
+      setProgress(decrement);
+      if (decrement <= 0) {
+        clearInterval(interval);
+        setIntegrityScore(integrityScore - 2);
+      }
+    }, 30); // Decrement over 3 seconds
   };
 
   const fetchExam = async (examID: string) => {
@@ -112,7 +138,7 @@ export default function Page({ params }: { params: { examID: string } }) {
       } else {
         document.title = 'Your Exam Title'; // Replace with your default title
         alert('Your score has been deducted');
-        setIntegrityScore((prevScore) => prevScore - 10); // Deduct as needed
+        setIntegrityScore((prevScore) => prevScore - 2); // Deduct as needed
       }
     };
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -187,6 +213,7 @@ export default function Page({ params }: { params: { examID: string } }) {
           </button>
         </form>
       </div>
+      <LinearAlert showLinearAlert={showLinearAlert} progress={progress} />
     </section>
   );
 }

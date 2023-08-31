@@ -130,7 +130,19 @@
 }
 
 /* Tailwind Styles */
+.customAlertBox {
+  background-color: #fdeded;
+  border: 1px solid #e63c3c;
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
 
+.customAlertBox h3 {
+  margin: 0;
+  padding-bottom: 10px;
+  font-size: 18px;
+}
 .app {
   @apply relative z-10 mx-auto flex max-w-7xl flex-col items-center justify-center px-6 sm:px-16;
 }
