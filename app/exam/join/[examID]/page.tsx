@@ -157,7 +157,7 @@ export default function Page({ params }: { params: { examID: string } }) {
         </p>
         <p className='text-lg font-bold'>Integrity Score: {integrityScore}</p>
       </div>
-      <div className='mx-auto w-4/5'>
+      <div className='mx-auto w-4/5 space-y-5'>
         {loading ? (
           <Loading />
         ) : (
