@@ -24,23 +24,25 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
       integrityScore: submission?.integrityScore,
       achievedMarks: submission?.achievedMarks,
     };
-    // const createdSubmission = await prisma.submission.upsert({
-    //   where: {
-    //     id: exam.examId,
-    //   },
-    //   update: prismaExam,
-    //   create: prismaExam,
-    // });
-    // console.log(
-    //   '🚀 ~ file: examCreation.ts:29 ~ createExamOnDatabase ~ createdExam:',
-    //   createdExam
-    // );
-    // console.log('✅ Submission creation successful on Prisma!');
+    const createdSubmission = await prisma.submission.upsert({
+      where: {
+        student_exam_composite_id: {
+          examID: submission.examID,
+          studentID: submission.studentID,
+        },
+      },
+      update: prismaSubmission,
+      create: prismaSubmission,
+    });
+    console.log('✅ Submission creation successful on Prisma!');
+    console.log(
+      '🚀 ~ file: submission.ts:37 ~ createSubmissionOnDatabase ~ createdSubmission:', createdSubmission
+    );
   } catch (err) {
     console.error('🚀 Error during exam creation:', err);
     return { status: 500 };
   }
-  return { status: 200, submissionId: submission.examID };
+  return { status: 200, submissionID: submission.examID };
 };
 
 const getSubmissionFromDatabase = async (examID: string, userID: string) => {
@@ -58,7 +60,10 @@ const getSubmissionFromDatabase = async (examID: string, userID: string) => {
       studentID: userID,
     });
     console.log('✅ Submission fetch successful from Mongo!');
-    console.log("🚀 ~ file: submission.ts:64 ~ getSubmissionFromDatabase ~ submission:", submission)
+    console.log(
+      '🚀 ~ file: submission.ts:64 ~ getSubmissionFromDatabase ~ submission:',
+      submission
+    );
     return submission;
   } catch (err: any) {
     throw new Error('🚀 Error during submission fetch:', err);
@@ -67,15 +72,15 @@ const getSubmissionFromDatabase = async (examID: string, userID: string) => {
 };
 
 const autogradeAndUpdateSubmission = async (examID: string, studentID: string) => {
-  const submission = await getSubmissionFromDatabase(examID, studentID) ;
-  const exam = await getExamFromDatabase(examID) ;
-  
-  if( submission !== null && exam !== null){
-    let newSubmission = autogradeSubmission(exam,submission);
-    await createSubmissionOnDatabase(newSubmission) ;
-    console.log("Autograding successful!")
+  const submission = await getSubmissionFromDatabase(examID, studentID);
+  const exam = await getExamFromDatabase(examID);
+
+  if (submission !== null && exam !== null) {
+    let newSubmission = autogradeSubmission(exam, submission);
+    await createSubmissionOnDatabase(newSubmission);
+    console.log('Autograding successful!');
   }
-}
+};
 
 const getAllSubmissionsFromDatabase = async (userID: string) => {
   try {
@@ -86,7 +91,7 @@ const getAllSubmissionsFromDatabase = async (userID: string) => {
     return null;
   }
   try {
-    const submissions = await Submission.find({ studentID:userID });
+    const submissions = await Submission.find({ studentID: userID });
     console.log('✅ Submissions fetch successful from Mongo!');
     return submissions;
   } catch (err: any) {
