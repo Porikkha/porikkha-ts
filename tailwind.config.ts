@@ -16,6 +16,7 @@ module.exports = {
         'light-purple': '#E2E3FC',
         'fade-purple': '#f3ebff',
         'icon-purple': '#8B5CF6',
+        'light-gray': '#FCFCFC'
       },
     },
   },
