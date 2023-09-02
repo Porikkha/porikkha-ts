@@ -15,6 +15,7 @@ module.exports = {
         'primary-orange': '#FF5722',
         'light-purple': '#E2E3FC',
         'fade-purple': '#f3ebff',
+        'icon-purple': '#8B5CF6',
       },
     },
   },

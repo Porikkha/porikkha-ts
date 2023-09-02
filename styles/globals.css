@@ -7,7 +7,7 @@
 @layer components {
   .sidebar-icon {
     @apply relative mx-auto mt-2 flex h-12 w-12 items-center 
-            justify-center text-purple-500
+            justify-center text-icon-purple
             hover:rounded-md hover:bg-slate-200 hover:text-black;
   }
 }
