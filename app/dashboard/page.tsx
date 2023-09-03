@@ -9,6 +9,7 @@ import Sidebar from '@/components/dashboard/Sidebar';
 import Link from 'next/link';
 import Image from 'next/image';
 import QuickJoin from '@/components/dashboard/QuickJoin';
+import Calendar from '@/components/dashboard/Calendar';
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -44,7 +45,7 @@ export default function Page() {
           </div>
           <div className='col-span-2 bg-light-gray p-3 h-screen'>
             <Typography className='pb-2 text-2xl'>
-              Calendar
+              <Calendar />
             </Typography>
           </div>
 

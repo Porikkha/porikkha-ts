@@ -42,6 +42,7 @@ export default function Page({ params }: { params: { examID: string } }) {
   const handleMouseLeave = () => {
     setIsMouseInside(false);
     setIntegrityScore(integrityScore - 10);
+
     // Also deduct from the integrity score here if needed
   };
 
