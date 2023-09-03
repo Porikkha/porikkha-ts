@@ -13,7 +13,7 @@ CREATE TABLE "User" (
 CREATE TABLE "Exam" (
     "examID" STRING NOT NULL,
     "creatorID" STRING NOT NULL,
-    "classroomID" INT8,
+    "classroomID" STRING,
     "title" STRING NOT NULL,
     "startTime" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "duration" INT4 NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE "Question" (
 
 -- CreateTable
 CREATE TABLE "Classroom" (
-    "classroomID" INT8 NOT NULL DEFAULT unique_rowid(),
+    "classroomID" STRING NOT NULL,
     "creatorID" STRING NOT NULL,
     "name" STRING NOT NULL,
     "description" STRING NOT NULL,
@@ -50,7 +50,7 @@ CREATE TABLE "Classroom" (
 -- CreateTable
 CREATE TABLE "DiscussionThread" (
     "discussionThreadID" INT8 NOT NULL DEFAULT unique_rowid(),
-    "classroomID" INT8 NOT NULL,
+    "classroomID" STRING NOT NULL,
     "creatorID" STRING NOT NULL,
     "title" STRING NOT NULL,
     "content" STRING NOT NULL,
@@ -103,7 +103,7 @@ CREATE TABLE "Report" (
 
 -- CreateTable
 CREATE TABLE "_joinedClassrooms" (
-    "A" INT8 NOT NULL,
+    "A" STRING NOT NULL,
     "B" STRING NOT NULL
 );
 

@@ -2,9 +2,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator erd {
-  provider = "prisma-erd-generator"
-}
+// generator erd {
+//   provider = "prisma-erd-generator"
+// }
 
 datasource db {
   provider = "cockroachdb"
@@ -29,7 +29,7 @@ model User {
 model Exam {
   examID      String       @id
   creatorID   String
-  classroomID BigInt?
+  classroomID String?
   title       String
   startTime   DateTime     @default(now())
   duration    Int
@@ -57,7 +57,7 @@ model Question {
 }
 
 model Classroom {
-  classroomID BigInt             @id @default(autoincrement())
+  classroomID String             @id
   creatorID   String
   name        String
   description String
@@ -69,7 +69,7 @@ model Classroom {
 
 model DiscussionThread {
   discussionThreadID BigInt    @id @default(autoincrement())
-  classroomID        BigInt
+  classroomID        String
   creatorID          String
   title              String
   content            String
@@ -106,6 +106,7 @@ model Submission {
   integrityScore Int?      @default(100)
   achievedMarks  Int?      @default(0)
   submissionTime DateTime? @default(now())
+
   @@id([studentID, examID], name: "student_exam_composite_id")
 }
 
