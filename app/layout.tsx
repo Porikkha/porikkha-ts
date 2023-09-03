@@ -1,4 +1,5 @@
 'use client';
+'use client';
 import '@/styles/globals.css';
 import '@fontsource/inter';
 import { LayoutProvider } from './LayoutProvider';
