@@ -1,12 +1,29 @@
 import formatTime, { formatDuration } from '@/utils/timeUtils';
 import { Button, Divider, Typography } from '@mui/joy';
 import { useRouter } from 'next/navigation';
+import { AiOutlineDelete } from 'react-icons/ai';
 
 const ExamCard = ({ exam }: any) => {
   const router = useRouter();
 
   const editExam = (examID: any) => {
     router.push(`/exam/create/${examID}`);
+  };
+
+  const deleteExam = async (examID: string) => {
+    const res = await fetch(`/api/exams`, {
+      method: 'DELETE',
+      body: JSON.stringify({
+        examID: examID,
+      }),
+    });
+    console.log('🚀 ~ file: ExamCard.tsx:16 ~ deleteExam ~ res:', res);
+    const data = await res.json();
+    if (data.status == 200) {
+      console.log('🆗 Exam deleted successfully');
+    } else {
+      console.log('❌ Failed to delete exam');
+    }
   };
 
   return (
@@ -21,12 +38,18 @@ const ExamCard = ({ exam }: any) => {
       </Typography>
       <Typography className='pt-1 text-xs font-medium'>Submissions : {0} </Typography>
 
-      <div className='flex w-full justify-center'>
+      <div className='flex w-full justify-between'>
         <Button
           className='mt-5 rounded-md border-2 border-purple-500 bg-white text-purple-500 hover:bg-purple-300 hover:text-white'
           onClick={() => editExam(exam.examID)}
         >
           View
+        </Button>
+        <Button
+          className='mt-5 rounded-md border-2 border-purple-500 bg-white text-purple-500 hover:bg-purple-300 hover:text-white'
+          onClick={() => deleteExam(exam.examID)}
+        >
+          <AiOutlineDelete />
         </Button>
       </div>
     </div>

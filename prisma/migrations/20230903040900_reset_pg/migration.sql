@@ -32,7 +32,7 @@ CREATE TABLE "Question" (
     "questionID" INT8 NOT NULL DEFAULT unique_rowid(),
     "examID" STRING NOT NULL,
     "type" STRING NOT NULL,
-    "points" INT4 NOT NULL DEFAULT 0,
+    "points" INT4 NOT NULL,
 
     CONSTRAINT "Question_pkey" PRIMARY KEY ("examID","questionID")
 );
@@ -117,13 +117,13 @@ CREATE UNIQUE INDEX "_joinedClassrooms_AB_unique" ON "_joinedClassrooms"("A", "B
 CREATE INDEX "_joinedClassrooms_B_index" ON "_joinedClassrooms"("B");
 
 -- AddForeignKey
-ALTER TABLE "Exam" ADD CONSTRAINT "Exam_creatorID_fkey" FOREIGN KEY ("creatorID") REFERENCES "User"("userID") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Exam" ADD CONSTRAINT "Exam_classroomID_fkey" FOREIGN KEY ("classroomID") REFERENCES "Classroom"("classroomID") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Exam" ADD CONSTRAINT "Exam_classroomID_fkey" FOREIGN KEY ("classroomID") REFERENCES "Classroom"("classroomID") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Exam" ADD CONSTRAINT "Exam_creatorID_fkey" FOREIGN KEY ("creatorID") REFERENCES "User"("userID") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Question" ADD CONSTRAINT "Question_examID_fkey" FOREIGN KEY ("examID") REFERENCES "Exam"("examID") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Question" ADD CONSTRAINT "Question_examID_fkey" FOREIGN KEY ("examID") REFERENCES "Exam"("examID") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Classroom" ADD CONSTRAINT "Classroom_creatorID_fkey" FOREIGN KEY ("creatorID") REFERENCES "User"("userID") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -150,7 +150,7 @@ ALTER TABLE "Reply" ADD CONSTRAINT "Reply_postID_fkey" FOREIGN KEY ("postID") RE
 ALTER TABLE "Submission" ADD CONSTRAINT "Submission_studentID_fkey" FOREIGN KEY ("studentID") REFERENCES "User"("userID") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Submission" ADD CONSTRAINT "Submission_examID_fkey" FOREIGN KEY ("examID") REFERENCES "Exam"("examID") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Submission" ADD CONSTRAINT "Submission_examID_fkey" FOREIGN KEY ("examID") REFERENCES "Exam"("examID") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Report" ADD CONSTRAINT "Report_examID_questionID_fkey" FOREIGN KEY ("examID", "questionID") REFERENCES "Question"("examID", "questionID") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -38,8 +38,8 @@ model Exam {
   submissions Int          @default(0)
   totalMarks  Int          @default(0)
   isPublished Boolean      @default(false)
-  classroom   Classroom?   @relation(fields: [classroomID], references: [classroomID])
-  creator     User         @relation(fields: [creatorID], references: [userID])
+  classroom   Classroom?   @relation(fields: [classroomID], references: [classroomID], onDelete: Cascade)
+  creator     User         @relation(fields: [creatorID], references: [userID], onDelete: Cascade)
   questions   Question[]
   Submission  Submission[]
   canSubmit   Boolean      @default(true)
@@ -50,7 +50,7 @@ model Question {
   examID     String
   type       String
   points     Int
-  exam       Exam     @relation(fields: [examID], references: [examID])
+  exam       Exam     @relation(fields: [examID], references: [examID], onDelete: Cascade)
   Report     Report[]
 
   @@id([examID, questionID])
@@ -102,7 +102,7 @@ model Submission {
   studentID      String
   student        User      @relation(fields: [studentID], references: [userID])
   examID         String
-  exam           Exam      @relation(fields: [examID], references: [examID])
+  exam           Exam      @relation(fields: [examID], references: [examID], onDelete: Cascade)
   integrityScore Int?      @default(100)
   achievedMarks  Int?      @default(0)
   submissionTime DateTime? @default(now())
