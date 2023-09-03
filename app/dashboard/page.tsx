@@ -29,7 +29,7 @@ export default function Page() {
             <Typography className='pb-2 text-3xl'>
               Welcome, {session?.user.name!}
             </Typography>
-            <Link href='/profile' className='ml-auto float-right'>
+            {/* <Link href='/profile' className='ml-auto float-right'>
               <Image
                 src={session?.user.image as string}
                 width={37}
@@ -37,7 +37,7 @@ export default function Page() {
                 className='rounded-full'
                 alt='profile'
               />
-            </Link>
+            </Link> */}
             </div>
             <QuickJoin />
             <ExamGrid />
