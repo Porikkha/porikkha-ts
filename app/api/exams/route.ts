@@ -2,6 +2,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createExamOnDatabase } from '@/controllers/examCreation';
 import { generateId } from '@/controllers/examCreation';
+import { deleteExamFromDB } from '@/controllers/examRepo';
 
 export async function POST(request: NextRequest) {
   const body = await request.json();
@@ -18,5 +19,12 @@ export async function POST(request: NextRequest) {
   }
 
   const res = await createExamOnDatabase(body.exam);
+  return NextResponse.json(res);
+}
+
+export async function DELETE(request: NextRequest) {
+  const body = await request.json();
+  console.log('At exams/route.js DELETE: ', body);
+  const res = deleteExamFromDB(body.examID);
   return NextResponse.json(res);
 }

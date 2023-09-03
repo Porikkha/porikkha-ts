@@ -26,7 +26,7 @@ export const getExamFromDatabase = async (examID: string) => {
   }
   // Attempt to create the exam in the database.
   try {
-    const exam:ExamInterface|null = await Exam.findOne({ examID: examID });
+    const exam: ExamInterface | null = await Exam.findOne({ examID: examID });
     console.log('✅ Exam fetch successful from Mongo!');
     return exam;
   } catch (err: any) {
@@ -52,7 +52,7 @@ export const getExamWithoutAnswer = async (userID: string, examID: string) => {
     }
 
     // const exam = removeAnswerFromExam(examWithAnswer);
-    const exam = permuteQuestions(examWithAnswer,userID,true) ; 
+    const exam = permuteQuestions(examWithAnswer, userID, true);
 
     if (submission === null) return exam;
 
@@ -69,4 +69,24 @@ export const getExamMetaByUserId = async (userID: string) => {
     },
   });
   return exams;
+};
+
+export const deleteExamFromDB = async (examID: string) => {
+  try {
+    await prisma.exam.delete({
+      where: {
+        examID: examID,
+      },
+    });
+    console.log('Deleted from PG');
+    await connectMongoDB();
+    await Exam.deleteOne({ examID: examID });
+    console.log('Deleted Exam from Mongo');
+    await Submission.deleteMany({ examID: examID });
+    console.log('Deleted all submissions from Mongo');  
+  } catch (err) {
+    console.log('🚀 ~ file: examRepo.ts:83 ~ deleteExamFromDB ~ err:', err);
+    return { status: 500 };
+  }
+  return { status: 200 };
 };

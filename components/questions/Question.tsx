@@ -27,7 +27,7 @@ export function SingleChoices({
       onChange={(e) => handleAnswerChange(e)}
       defaultValue='medium'
       name='radio-buttons-group'
-      className='mx-10 my-3'
+      className='px-10 py-3 flex flex-col space-y-5'
     >
       {choices.map((option, index) => {
         return (
@@ -64,7 +64,7 @@ export function MultipleChoices({
     <>
       {choices.map((option, index) => {
         return (
-          <Box className='mx-10 my-3 flex' key={`${option}+${index}`}>
+          <Box className='mx-5 my-3 flex' key={`${option}+${index}`}>
             <Checkbox
               value={option.id}
               onChange={(e) => handleAnswerChange(e)}
