@@ -51,10 +51,18 @@ export default function EditExamDetailsModal({ open, setOpen, values, setters }:
             </FormControl>
             <FormControl>
               <FormLabel>Start Time</FormLabel>
-              <Input
+              <input
                 type='datetime-local'
                 value={values.startTime}
-                onChange={(e) => setters.setStartTime(e.target.value)}
+                onChange={(e) => {
+                  const pickedDateConverted = new Date(e.target.value);
+                  const curDate = new Date();
+                  if (pickedDateConverted < curDate)
+                    setters.setStartTime(curDate.toISOString());
+                  else 
+                  setters.setStartTime(e.target.value);
+                }}
+                min={new Date().toISOString().slice(0, 16)}
               />
             </FormControl>
             <Button type='submit' variant='soft'>

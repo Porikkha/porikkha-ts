@@ -21,6 +21,8 @@ const dummyQuestions = (dummyMCQs as Question[]).concat(dummySCQs).concat(dummyS
 import Exam from '@/interfaces/Exam';
 import EditQuestionModal from '@/components/questions/EditQuestionModal';
 import { CircularProgress } from '@mui/joy';
+import ErrorAlert from '@/components/ui/ErrorAlert';
+import { Shower } from '@mui/icons-material';
 
 const Home = ({ params }: { params: { examID: string } }) => {
   const setQuestionNumbers = (questions: Question[]) => {
@@ -46,6 +48,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
   const [enableAutoGrading, setEnableAutoGrading] = useState(false);
 
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showErrorAlert, setShowErrorAlert] = useState(false);
   const [quess, setQuess] = useState<Question[]>(setQuestionNumbers(dummyQuestions));
   const { data: session } = useSession();
 
@@ -151,9 +154,13 @@ const Home = ({ params }: { params: { examID: string } }) => {
       }),
     });
     const data = await response.json();
-
+    if (data.status == 1000) {
+      console.log('Please enter a date earlier than current time');
+      setShowErrorAlert(true);
+    } else {
+      router.push('/dashboard?status=success');
+    }
     // setShowSuccessAlert(data.status == 200);
-    router.push('/dashboard?status=success');
   };
 
   const fetchExam = async (examID: string) => {
@@ -170,10 +177,10 @@ const Home = ({ params }: { params: { examID: string } }) => {
       setQuess(setQuestionNumbers(exam.questions));
       setExamDuration(exam.duration?.toString());
       exam.questions.forEach((question: Question) => {
-        setTotalMarks((prev) => prev + question.points);
-      })
+        setTotalMarks((prev) => prev + parseInt(question.points.toString()));
+      });
       console.log('------------------------------');
-      console.log("Total marks: ", totalMarks);
+      console.log('Total marks: ', totalMarks);
     }
     setLoading(false);
   };
@@ -195,6 +202,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
         showSuccessAlert={showSuccessAlert}
         setShowSuccessAlert={setShowSuccessAlert}
       />
+      <ErrorAlert showErrorAlert={showErrorAlert} setShowErrorAlert={setShowErrorAlert} />
 
       <div className='mx-auto w-4/5'>
         {loading && (
