@@ -50,6 +50,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
   const { data: session } = useSession();
 
   const [loading, setLoading] = useState(true);
+  const [totalMarks, setTotalMarks] = useState(0);
   const setters = {
     setExamName,
     setExamDesc,
@@ -60,6 +61,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
     setShuffleQuestions,
     setAllowKeyboardShortcuts,
     setEnableAutoGrading,
+    setTotalMarks,
   };
 
   const values = {
@@ -71,6 +73,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
     shuffleQuestions,
     allowKeyboardShortcuts,
     enableAutoGrading,
+    totalMarks,
   };
 
   const deleteQuestion = (index: number) => {
@@ -166,6 +169,11 @@ const Home = ({ params }: { params: { examID: string } }) => {
       setStartTimeFormatted(new Date(exam.startTime).toLocaleString());
       setQuess(setQuestionNumbers(exam.questions));
       setExamDuration(exam.duration?.toString());
+      exam.questions.forEach((question: Question) => {
+        setTotalMarks((prev) => prev + question.points);
+      })
+      console.log('------------------------------');
+      console.log("Total marks: ", totalMarks);
     }
     setLoading(false);
   };
