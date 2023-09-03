@@ -97,13 +97,16 @@ export const getExamDetailsFromPG = async (examID: string) => {
       where: {
         examID: examID,
       },
-      include: {
-        student: {
-          select: {
+      select:{
+        achievedMarks: true,
+        integrityScore: true,
+        submissionTime: true,
+        student:{
+          select:{
             username: true,
-          },
-        },
-      },
+          }
+        }
+      }
     });
     console.log(
       '🚀 ~ file: examRepo.ts:108 ~ getExamDetailsFromPG ~ allSubmissionsForExamID:',
