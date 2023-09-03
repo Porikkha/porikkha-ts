@@ -151,7 +151,10 @@ const Home = ({ params }: { params: { examID: string } }) => {
     const data = await response.json();
 
     // setShowSuccessAlert(data.status == 200);
-    router.push('/dashboard?status=success');
+    if( data.status != 200 ){
+      alert("Exam creation failed") ;
+    }  
+    else router.push('/dashboard?status=success');
   };
 
   const fetchExam = async (examID: string) => {

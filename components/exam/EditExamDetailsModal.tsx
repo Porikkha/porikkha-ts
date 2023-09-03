@@ -58,6 +58,7 @@ export default function EditExamDetailsModal({ open, setOpen, values, setters }:
                 onChange={(e) => {
                   if( checkPast(new Date(e.target.value) ) ){
                     console.log("Past time inserted !");
+                    alert("Please insert valid time");
                   }
                   else 
                     setters.setStartTime(e.target.value);
