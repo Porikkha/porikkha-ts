@@ -14,6 +14,7 @@ import {
   Button,
 } from '@mui/joy';
 import Label from '@/components/ui/Labels';
+import { getExamTotalMarks } from '@/interfaces/Exam';
 
 export default function ExamViewBanner({ exam }: any) {
   return (
@@ -29,6 +30,7 @@ export default function ExamViewBanner({ exam }: any) {
               <li>Shortcuts : </li>
               <li>Duration : {exam.duration} </li>
               <li>Total Questions : {exam.questions.length} </li>
+              <li>Total Marks: {getExamTotalMarks(exam.questions)} </li>
               {/* <li>Total Points : { exam.questions.} </li> */}
             </ul>
           </div>

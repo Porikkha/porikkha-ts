@@ -7,7 +7,7 @@ import EditExamDetailsModal from '@/components/exam/EditExamDetailsModal';
 import ExamBanner from '@/components/exam/ExamBanner';
 import SuccessAlert from '@/components/ui/SuccessAlert';
 import Question from '@/interfaces/question/Question';
-import ExamInterface from '@/interfaces/Exam';
+import ExamInterface, { getExamTotalMarks } from '@/interfaces/Exam';
 
 import MultipleChoiceQuestion, {
   dummyQuestions as dummyMCQs,
@@ -71,6 +71,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
     shuffleQuestions,
     allowKeyboardShortcuts,
     enableAutoGrading,
+    totalMarks: getExamTotalMarks(quess),
   };
 
   const deleteQuestion = (index: number) => {

@@ -2,6 +2,7 @@ import { connectMongoDB } from '@/utils/database';
 import Exam from '@/models/exams';
 import ExamInterface from '@/interfaces/Exam';
 import { prisma } from '@/utils/database';
+import { checkPast } from '@/utils/timeUtils';
 const createExamOnDatabase = async (exam: ExamInterface) => {
   // Connect to mongoDB
   try {
@@ -13,8 +14,12 @@ const createExamOnDatabase = async (exam: ExamInterface) => {
   }
   // Attempt to create the exam in the database.
   try {
+    if( checkPast(new Date(exam.startTime)) ){
+    console.error('🚀 Error during exam creation: past time inserted.');
+      return { status: 500 } ;
+    }
+    
     const filter = { examID: exam.examID };
-
     await Exam.findOneAndUpdate(filter, exam, { upsert: true });
     console.log('✅ Exam creation successful on Mongo!');
     const prismaExam = {
