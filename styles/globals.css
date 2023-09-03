@@ -147,7 +147,7 @@
   @apply relative z-10 mx-auto flex max-w-7xl flex-col items-center justify-center px-6 sm:px-16;
 }
 .dashboard {
-  @apply relative z-10 mx-0 flex max-w-7xl flex-col items-center justify-center px-6 sm:px-16;
+  @apply relative z-10 mx-0 flex flex-col items-center justify-center;
 }
 
 .black_btn {

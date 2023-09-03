@@ -5,6 +5,7 @@ import { LayoutProvider } from './LayoutProvider';
 import Provider from './Provider';
 import Footer from '@/components/ui/Footer';
 import { usePathname } from 'next/navigation';
+import { showNavBar } from '@/utils/navChecker';
 
 const RootLayout = ({ children }: any) => {
   const pathname = usePathname();
@@ -16,7 +17,7 @@ const RootLayout = ({ children }: any) => {
             <div className='gradient' />
           </div>
 
-          <main className={pathname === '/dashboard' ? 'dashboard' : 'app'}>
+          <main className={showNavBar(pathname) ? 'dashboard' : 'app'}>
             <LayoutProvider>{children}</LayoutProvider>
           </main>
           <Footer />
