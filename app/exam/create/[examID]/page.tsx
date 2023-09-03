@@ -21,6 +21,8 @@ const dummyQuestions = (dummyMCQs as Question[]).concat(dummySCQs).concat(dummyS
 import Exam from '@/interfaces/Exam';
 import EditQuestionModal from '@/components/questions/EditQuestionModal';
 import { CircularProgress } from '@mui/joy';
+import { start } from 'repl';
+import FailedAlert from '@/components/ui/FailedAlert';
 
 const Home = ({ params }: { params: { examID: string } }) => {
   const setQuestionNumbers = (questions: Question[]) => {
@@ -29,6 +31,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
       return question;
     });
   };
+
 
   const [open, setOpen] = useState(false);
   const router = useRouter();
@@ -46,6 +49,8 @@ const Home = ({ params }: { params: { examID: string } }) => {
   const [enableAutoGrading, setEnableAutoGrading] = useState(false);
 
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showFailedAlert, setShowFailedAlert] = useState(false);
+
   const [quess, setQuess] = useState<Question[]>(setQuestionNumbers(dummyQuestions));
   const { data: session } = useSession();
 
@@ -72,6 +77,13 @@ const Home = ({ params }: { params: { examID: string } }) => {
     allowKeyboardShortcuts,
     enableAutoGrading,
   };
+
+  const isStartTimeValid = () => {
+    console.log(startTime);
+    const startTimeDate = new Date(startTime);
+    const now = new Date();
+    return startTimeDate > now;
+  }
 
   const deleteQuestion = (index: number) => {
     let newQuestions = [...quess];
@@ -110,7 +122,15 @@ const Home = ({ params }: { params: { examID: string } }) => {
   };
 
   const handleExamSubmit = async (event: any) => {
+
     event.preventDefault();
+
+    if (!isStartTimeValid()) {
+      console.log("Invalid Time");
+      setShowFailedAlert(true);
+      return;
+    }
+    
     const creatorID = session?.user?.id;
     if (!creatorID) {
       console.log('❌ ~ file: page.tsx:202 : creatorID not found');
@@ -148,6 +168,12 @@ const Home = ({ params }: { params: { examID: string } }) => {
       }),
     });
     const data = await response.json();
+    console.log("🚀 ~ file: page.tsx:165 ~ CHECK CHECK THIS ~ data:", data)
+    if (data.status == "Invalid Time") {
+      console.log("Server Returned Invalid Time");
+      setShowFailedAlert(true);
+      return;
+    }
 
     // setShowSuccessAlert(data.status == 200);
     router.push('/dashboard?status=success');
@@ -166,6 +192,8 @@ const Home = ({ params }: { params: { examID: string } }) => {
       setStartTimeFormatted(new Date(exam.startTime).toLocaleString());
       setQuess(setQuestionNumbers(exam.questions));
       setExamDuration(exam.duration?.toString());
+
+      console.log(isStartTimeValid());
     }
     setLoading(false);
   };
@@ -186,6 +214,10 @@ const Home = ({ params }: { params: { examID: string } }) => {
       <SuccessAlert
         showSuccessAlert={showSuccessAlert}
         setShowSuccessAlert={setShowSuccessAlert}
+      />
+      <FailedAlert 
+        showSuccessAlert={showFailedAlert}
+        setShowSuccessAlert={setShowFailedAlert}
       />
 
       <div className='mx-auto w-4/5'>

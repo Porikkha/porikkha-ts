@@ -19,6 +19,13 @@ import {EditNote } from '@mui/icons-material';
 
 
 export default function ExamBanner({ values, setters }: any) {
+
+  const isStartTimeValid = () => {
+    const startTime = new Date(values.startTime);
+    const now = new Date();
+    return startTime > now;
+  }
+
   return (
     <Card className='mx-auto w-4/5 items-center space-x-4 rounded-xl bg-white px-20 py-10'>
       <div className='w-full'>
@@ -42,7 +49,7 @@ export default function ExamBanner({ values, setters }: any) {
             <EditNote/> 
           </IconButton>
         </div>
-        <p className='text-gray-500'>{values.startTimeFormatted}</p>
+        <p className='text-gray-500'>{values.startTimeFormatted} { !isStartTimeValid() && <span className='text-red-400'> (Invalid Start Time) </span>} </p>
 
         <div className='flex items-center py-5'>
           <div className='flex items-center space-x-4'>

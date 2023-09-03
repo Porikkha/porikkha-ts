@@ -38,6 +38,7 @@ export default function Page({ params }: { params: { examID: string } }) {
   const [showLinearAlert, setShowLinearAlert] = useState(true);
   const [progress, setProgress] = useState(100);
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [totalScore, setTotalScore] = useState(0);
 
   const handleMouseEnter = () => {
     setIsMouseInside(true);

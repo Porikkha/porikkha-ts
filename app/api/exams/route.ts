@@ -17,6 +17,13 @@ export async function POST(request: NextRequest) {
     body.exam.examID = examID;
     console.log('🚀 ~ file: route.ts:13 ~ POST ~ body.exam:', body.exam);
   }
+  let startTime = new Date(body.exam.startTime);
+  let curTime = new Date();
+  if ( startTime <= curTime ) {
+    console.log("🚀 ~ Invalid Start Time : ", startTime)
+    return NextResponse.json({"status" : "Invalid Time"});
+  }
+  console.log(startTime.toTimeString());
 
   const res = await createExamOnDatabase(body.exam);
   return NextResponse.json(res);
