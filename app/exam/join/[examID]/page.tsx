@@ -51,6 +51,11 @@ export default function Page({ params }: { params: { examID: string } }) {
 
   const handleMouseLeave = () => {
     setIsMouseInside(false);
+<<<<<<< HEAD
+    setIntegrityScore(integrityScore - 10);
+
+    // Also deduct from the integrity score here if needed
+=======
     setShowLinearAlert(true);
 
     const id = setTimeout(() => {
@@ -69,6 +74,7 @@ export default function Page({ params }: { params: { examID: string } }) {
         setIntegrityScore(integrityScore - 2);
       }
     }, 30); // Decrement over 3 seconds
+>>>>>>> master
   };
 
   const fetchExam = async (examID: string) => {

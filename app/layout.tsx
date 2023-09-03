@@ -6,6 +6,8 @@ import { LayoutProvider } from './LayoutProvider';
 import Provider from './Provider';
 import Footer from '@/components/ui/Footer';
 import { usePathname } from 'next/navigation';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { showNavBar } from '@/utils/navChecker';
 
 const RootLayout = ({ children }: any) => {
@@ -17,9 +19,10 @@ const RootLayout = ({ children }: any) => {
           <div className='main'>
             <div className='gradient' />
           </div>
-
           <main className={showNavBar(pathname) ? 'dashboard' : 'app'}>
-            <LayoutProvider>{children}</LayoutProvider>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <LayoutProvider>{children}</LayoutProvider>
+            </LocalizationProvider>
           </main>
           <Footer />
         </Provider>
