@@ -25,15 +25,16 @@ model User {
 model Exam {
   examID      String       @id
   creatorID   String
-  classroomID Int?
+  classroomID BigInt?
   title       String
   startTime   DateTime     @default(now())
   duration    Int
   description String?
-  updatedAt   DateTime?
+  updatedAt   DateTime     @default(now())
   submissions Int          @default(0)
   totalMarks  Int          @default(0)
   isPublished Boolean      @default(false)
+  canSubmit   Boolean      @default(true)
   classroom   Classroom?   @relation(fields: [classroomID], references: [classroomID])
   creator     User         @relation(fields: [creatorID], references: [userID])
   questions   Question[]
@@ -41,10 +42,10 @@ model Exam {
 }
 
 model Question {
-  questionID Int      @default(sequence())
+  questionID BigInt   @default(autoincrement())
   examID     String
   type       String
-  points     Int
+  points     Int      @default(0)
   exam       Exam     @relation(fields: [examID], references: [examID])
   Report     Report[]
 
@@ -52,7 +53,7 @@ model Question {
 }
 
 model Classroom {
-  classroomID Int                @id @default(sequence())
+  classroomID BigInt             @id @default(autoincrement())
   creatorID   String
   name        String
   description String
@@ -63,8 +64,8 @@ model Classroom {
 }
 
 model DiscussionThread {
-  discussionThreadID Int       @id @default(sequence())
-  classroomID        Int
+  discussionThreadID BigInt    @id @default(autoincrement())
+  classroomID        BigInt
   creatorID          String
   title              String
   content            String
@@ -75,9 +76,9 @@ model DiscussionThread {
 }
 
 model Post {
-  postID     Int              @id @default(sequence())
+  postID     BigInt           @id @default(autoincrement())
   creatorID  String
-  threadID   Int
+  threadID   BigInt
   content    String
   creator    User             @relation(fields: [creatorID], references: [userID])
   discussion DiscussionThread @relation(fields: [threadID], references: [discussionThreadID])
@@ -85,30 +86,31 @@ model Post {
 }
 
 model Reply {
-  replyID   Int    @id @default(sequence())
+  replyID   BigInt @id @default(autoincrement())
   creatorID String
-  postID    Int
+  postID    BigInt
   content   String
   creator   User   @relation(fields: [creatorID], references: [userID])
   post      Post   @relation(fields: [postID], references: [postID])
 }
 
 model Submission {
-  submissionID   Int     @id @default(sequence())
   studentID      String
   examID         String
-  integrityScore Int     @default(100)
-  achievedMarks  Int
-  canSubmit      Boolean
-  exam           Exam    @relation(fields: [examID], references: [examID])
-  student        User    @relation(fields: [studentID], references: [userID])
+  integrityScore Int?      @default(100)
+  achievedMarks  Int?      @default(0)
+  submissionTime DateTime? @default(now())
+  exam           Exam      @relation(fields: [examID], references: [examID])
+  student        User      @relation(fields: [studentID], references: [userID])
+
+  @@id([studentID, examID])
 }
 
 model Report {
-  reportID    Int      @id @default(sequence())
+  reportID    BigInt   @id @default(autoincrement())
   type        String
   description String
   examID      String
-  questionID  Int
+  questionID  BigInt
   question    Question @relation(fields: [examID, questionID], references: [examID, questionID])
 }

@@ -8,6 +8,7 @@ import { SubmissionGrid } from '@/components/submission/SubmissionGrid';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Link from 'next/link';
 import Image from 'next/image';
+import QuickJoin from '@/components/dashboard/QuickJoin';
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -21,7 +22,7 @@ export default function Page() {
     <>
       <Sidebar />
       <section className='w-full pl-16'>
-        <div className='grid grid-cols-7 gap-2'>
+        <div className='grid grid-cols-7 gap-2 p-5'>
           <div className='col-span-5 rounded-md bg-light-gray p-5 h-screen'>
             <div className='flex'>
             <Typography className='pb-2 text-3xl'>
@@ -36,8 +37,8 @@ export default function Page() {
                 alt='profile'
               />
             </Link>
-
             </div>
+            <QuickJoin />
             <ExamGrid />
             <SubmissionGrid />
           </div>
