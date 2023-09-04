@@ -22,7 +22,7 @@ export default function QuickJoin() {
         <Input className="w-32 my-auto mx-5 h-6 " value={examCode} onChange={
             (e) => setExamCode(e.target.value)
         }/>
-        <button onClick={handleJoin} className="my-auto h-8 px-5 text-icon-purple transition-colors duration-150 border border-icon-purple rounded-md focus:shadow-outline hover:bg-fade-purple ">
+        <button onClick={handleJoin} className="my-auto h-8 px-5 text-icon-purple font-medium transition-colors duration-150 border border-icon-purple rounded-md focus:shadow-outline hover:bg-fade-purple ">
             Join
         </button>
     </div>
