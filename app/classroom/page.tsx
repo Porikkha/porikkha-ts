@@ -12,6 +12,7 @@ import QuickJoin from '@/components/dashboard/QuickJoin';
 import Calendar from '@/components/dashboard/Calendar';
 import BorderedButton from '@/components/ui/BorderedButton';
 import Avatar from '@mui/joy/Avatar';
+import ExamCard from '@/components/classroom/ExamCard';
 
 
 export default function Page() {
@@ -57,12 +58,14 @@ export default function Page() {
             </div>
 
 
-
           </div>
           <div className='col-span-2 bg-light-gray p-3 h-screen'>
             <Typography className='p-2 text-xl font-medium'>
                 Next Exams
             </Typography>
+            <ExamCard />
+            <ExamCard />
+            <ExamCard />
 
           </div>
 
