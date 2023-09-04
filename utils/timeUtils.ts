@@ -41,14 +41,11 @@ export function formatDuration(minutes: string) {
   return `${formattedHours}:${formattedMins}`;
 }
 
-// date1 < date2 -- > -1 
-// date1 > date2 ---> 1 
-// date1 == date2 ---> 0
 export function compareDate(date1:Date,date2:Date):number {
   if(date1.getFullYear() != date2.getFullYear())
     return (date1.getFullYear()<date2.getFullYear()) ? -1:1;
 
-  if(date1.getMonth() != date2.getMonth());
+  if(date1.getMonth() != date2.getMonth())
     return (date1.getMonth()<date2.getMonth()) ? -1:1;
   
   if(date1.getDay() != date2.getDay())
