@@ -1,5 +1,25 @@
 import { connectMongoDB } from '@/utils/database';
 import { prisma } from '@/utils/database';
+import ClassroomInterface from '@/interfaces/Classroom';
+export const upsertClassroom = async (classroom: ClassroomInterface) => {
+  try {
+    await prisma.classroom.upsert({
+      where: {
+        classroomID: classroom.classroomID,
+      },
+      update: classroom,
+      create: classroom,
+    });
+    console.log('✔️ Server: Classroom creation successful on Prisma!');
+    return {
+      status: 200,
+      classroomID: classroom.classroomID,
+    };
+  } catch (e) {
+    console.log('👎 Error invoking createClassroom: ', e);
+  }
+  return { status: 500 };
+};
 
 export const checkIfExamExists = async (examID: string) => {
   try {
