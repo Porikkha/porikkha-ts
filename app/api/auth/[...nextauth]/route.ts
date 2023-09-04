@@ -47,7 +47,7 @@ export const authOptions: AuthOptions = {
       });
       session.user.id = (sessionUser?.userID as string).toString();
       session.user.role = (sessionUser?.role as string).toString();
-      console.log(session.user);
+      // console.log(session.user);
       return session;
     },
     async signIn({ profile, credentials }: any) {
