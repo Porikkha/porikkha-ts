@@ -61,12 +61,6 @@ const Nav = () => {
 
   const handleClassroomCreate = async (e: any) => {
     e.preventDefault();
-    const creatorID = session?.user?.id;
-    if (!creatorID) {
-      console.log('❌ ~ file: Nav.tsx:59 : creatorID not found');
-      return;
-    }
-    dummyClassroom.creatorID = session?.user?.id!;
     const response = await fetch('/api/classroom/create', {
       method: 'POST',
       body: JSON.stringify({
