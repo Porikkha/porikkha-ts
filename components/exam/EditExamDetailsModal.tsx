@@ -56,13 +56,13 @@ export default function EditExamDetailsModal({ open, setOpen, values, setters }:
                 type='datetime-local'
                 value={values.startTime}
                 onChange={(e) => {
-                  if( checkPast(new Date(e.target.value) ) ){
-                    console.log("Past time inserted !");
+                  if( new Date(e.target.value) < new Date() ){
+                    console.log("Please insert valid time");
                     alert("Please insert valid time");
                   }
-                  else 
+                  else{ 
                     setters.setStartTime(e.target.value);
-                
+                  }
                 } 
                 }
               />

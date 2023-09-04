@@ -41,25 +41,7 @@ export function formatDuration(minutes: string) {
   return `${formattedHours}:${formattedMins}`;
 }
 
-export function compareDate(date1:Date,date2:Date):number {
-  if(date1.getFullYear() != date2.getFullYear())
-    return (date1.getFullYear()<date2.getFullYear()) ? -1:1;
-
-  if(date1.getMonth() != date2.getMonth())
-    return (date1.getMonth()<date2.getMonth()) ? -1:1;
-  
-  if(date1.getDay() != date2.getDay())
-    return (date1.getDay()<date2.getDay()) ? -1:1;
-  
-  if(date1.getHours() != date2.getHours())
-    return (date1.getHours()<date2.getHours()) ? -1:1;
- 
-  if(date1.getMinutes() != date2.getMinutes())
-    return (date1.getMinutes()<date2.getMinutes()) ? -1:1;
-
-  return 0 ;
-}
 
 export function checkPast(date:Date):boolean {
-  return compareDate(date,new Date()) == -1;
+  return date < new Date() ;
 }
