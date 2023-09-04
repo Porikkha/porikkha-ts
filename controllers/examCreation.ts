@@ -2,7 +2,6 @@ import { connectMongoDB } from '@/utils/database';
 import Exam from '@/models/exams';
 import ExamInterface from '@/interfaces/Exam';
 import { prisma } from '@/utils/database';
-import { checkPast } from '@/utils/timeUtils';
 const createExamOnDatabase = async (exam: ExamInterface) => {
   // Connect to mongoDB
   try {
