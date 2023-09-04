@@ -10,6 +10,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import QuickJoin from '@/components/dashboard/QuickJoin';
 import Calendar from '@/components/dashboard/Calendar';
+import BorderedButton from '@/components/ui/BorderedButton';
+import Avatar from '@mui/joy/Avatar';
+
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -29,18 +32,32 @@ export default function Page() {
             <Typography className='pb-2 text-3xl font-semibold'>
                 Operating Systems - Classroom
             </Typography>
-            
+            <div className='float-right ml-auto'>
+            <BorderedButton onClick={() => {console.log("Hello")}}> 
+                Leave Room
+            </BorderedButton>
+            </div>
 
             </div>
             <div>
                 <Typography className='py-2 text-xl font-medium'>
                     Join Code : A3C1YT
                 </Typography>
+            </div>
+            <Divider className='bg-slate-200' />
+            <div className='flex gap-1 my-2'>
+                <Avatar size="sm">JG</Avatar>
+                <Avatar size="sm">RM</Avatar>
+                <Avatar size="sm">SB</Avatar>
+                <Avatar size="sm">+9</Avatar>
 
+                <Chip className='float-right ml-auto' color="success" onClick={function(){}} variant='outlined' >
+                    + Invite
+                    </Chip>
             </div>
 
-            <ExamGrid />
-            <SubmissionGrid />
+
+
           </div>
           <div className='col-span-2 bg-light-gray p-3 h-screen'>
             <Typography className='p-2 text-xl font-medium'>
