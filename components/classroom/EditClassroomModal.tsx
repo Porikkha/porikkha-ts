@@ -48,7 +48,7 @@ import {
                 />
               </FormControl>
               <Button type='submit' variant='soft'>
-                OK
+                Save
               </Button>
             </Stack>
           </form>
