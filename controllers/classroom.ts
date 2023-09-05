@@ -27,6 +27,9 @@ export const getClassroom = async (classroomID: string) => {
       where: {
         classroomID: classroomID,
       },
+      include:{
+        exams: true,
+      }
     });
     if (classroom === null) {
       console.log('👎 Error invoking getClassroom: Classroom not found in PrismaDB');
@@ -42,29 +45,17 @@ export const getClassroom = async (classroomID: string) => {
   return { status: 500, message: `Server: Error invoking getClassroom` };
 };
 
-export const checkIfExamExists = async (examID: string) => {
+export const addExamToClassroom = async (params: {
+  examID: string;
+  classroomID: string;
+  userID: string;
+}) => {
+  const { examID, classroomID, userID } = params;
   try {
     const exam = await prisma.exam.findUnique({
       where: {
         examID: examID,
-      },
-    });
-    if (exam === null) {
-      return { status: 404, message: `Server: Exam ${examID} not found in PrismaDB` };
-    }
-    return { status: 200, message: `Server: Exam ${examID} found in PrismaDB` };
-  } catch (e) {
-    console.log('Error invoking checkIfExamExists: ', e);
-  }
-  return { status: 500, message: `Server: Error invoking checkIfExamExists` };
-};
-
-export const addExamToClassroom = async (examID: string, classroomID: string) => {
-  try {
-    await connectMongoDB();
-    const exam = await prisma.exam.findUnique({
-      where: {
-        examID: examID,
+        creatorID: userID,
       },
     });
     if (exam === null) {

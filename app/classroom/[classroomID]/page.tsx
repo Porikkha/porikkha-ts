@@ -19,6 +19,7 @@ import { useEffect, useState } from 'react';
 import { IconButton } from '@mui/joy';
 import { EditNote } from '@mui/icons-material';
 import { dummyClassroom } from '@/interfaces/Classroom';
+import DiscussionCard from '@/components/classroom/DiscussionCard';
 
 export default function Page({ params }: { params: { classroomID: string } }) {
   const searchParams = useSearchParams();
@@ -28,6 +29,7 @@ export default function Page({ params }: { params: { classroomID: string } }) {
   const [classroomName, setClassroomName] = useState('Classroom Name');
   const [classroomDesc, setClassroomDesc] = useState('Classroom Description');
   const [classroomID, setClassroomID] = useState('');
+  const [exams, setExams] = useState([]);
   const values = { classroomName, classroomDesc };
   const setters = { setClassroomName, setClassroomDesc };
 
@@ -38,6 +40,7 @@ export default function Page({ params }: { params: { classroomID: string } }) {
       setClassroomName(data.classroom.name);
       setClassroomDesc(data.classroom.description);
       setClassroomID(data.classroom.classroomID);
+      setExams(data.classroom.exams);
     } else {
       console.log('Something bad happened while fetching classroom data: ', data.message);
     }
@@ -93,7 +96,7 @@ export default function Page({ params }: { params: { classroomID: string } }) {
                 {classroomDesc}
               </Typography>
             </div>
-            <QuickAdd />
+            <QuickAdd classroomID={classroomID} />
             {/* ------------------ */}
             <Divider className='bg-slate-200' />
             <div className='my-2 flex gap-1'>
@@ -111,12 +114,15 @@ export default function Page({ params }: { params: { classroomID: string } }) {
                 + Invite
               </Chip>
             </div>
+            <div className='my-10'>
+              <DiscussionCard />
+            </div>
           </div>
           <div className='col-span-2 h-screen bg-light-gray p-3'>
             <Typography className='p-2 text-xl font-medium'>Next Exams</Typography>
-            <ExamCard />
-            <ExamCard />
-            <ExamCard />
+            {exams.map((exam) => (
+              <ExamCard exam={exam} />
+            ))}
           </div>
         </div>
       </section>
