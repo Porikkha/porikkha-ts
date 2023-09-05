@@ -13,6 +13,7 @@ import Calendar from '@/components/dashboard/Calendar';
 import BorderedButton from '@/components/ui/BorderedButton';
 import Avatar from '@mui/joy/Avatar';
 import ExamCard from '@/components/classroom/ExamCard';
+import DiscussionCard from '@/components/classroom/DiscussionCard';
 
 
 export default function Page() {
@@ -55,6 +56,9 @@ export default function Page() {
                 <Chip className='float-right ml-auto' color="success" onClick={function(){}} variant='outlined' >
                     + Invite
                     </Chip>
+            </div>
+            <div className='my-10'>
+              <DiscussionCard />
             </div>
 
 
