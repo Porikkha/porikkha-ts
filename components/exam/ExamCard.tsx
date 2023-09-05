@@ -45,12 +45,9 @@ const ExamCard = ({ exam }: any) => {
         >
           View
         </Button>
-        <Button
-          className='mt-5 rounded-md border-2 border-purple-500 bg-white text-purple-500 hover:bg-purple-300 hover:text-white'
-          onClick={() => deleteExam(exam.examID)}
-        >
+        <button className='mt-5 text-purple-500' onClick={() => deleteExam(exam.examID)}>
           <AiOutlineDelete />
-        </Button>
+        </button>
       </div>
     </div>
   );

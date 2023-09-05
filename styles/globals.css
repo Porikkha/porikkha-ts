@@ -7,7 +7,7 @@
 @layer components {
   .sidebar-icon {
     @apply relative mx-auto mt-2 flex h-12 w-12 items-center 
-            justify-center text-purple-500
+            justify-center text-icon-purple
             hover:rounded-md hover:bg-slate-200 hover:text-black;
   }
 }
@@ -147,9 +147,8 @@
   @apply relative z-10 mx-auto flex max-w-7xl flex-col items-center justify-center px-6 sm:px-16;
 }
 .dashboard {
-  @apply relative z-10 mx-0 flex max-w-7xl flex-col items-center justify-center px-6 sm:px-16;
+  @apply relative z-10 mx-0 flex flex-col items-center justify-center;
 }
-
 .black_btn {
   @apply flex items-center justify-center rounded-full border border-black bg-black px-5 py-1.5 text-center font-inter text-sm text-white transition-all hover:bg-white hover:text-black;
 }

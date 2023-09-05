@@ -83,10 +83,38 @@ export const deleteExamFromDB = async (examID: string) => {
     await Exam.deleteOne({ examID: examID });
     console.log('Deleted Exam from Mongo');
     await Submission.deleteMany({ examID: examID });
-    console.log('Deleted all submissions from Mongo');  
+    console.log('Deleted all submissions from Mongo');
   } catch (err) {
     console.log('🚀 ~ file: examRepo.ts:83 ~ deleteExamFromDB ~ err:', err);
     return { status: 500 };
   }
   return { status: 200 };
+};
+
+export const getExamDetailsFromPG = async (examID: string) => {
+  try {
+    const allSubmissionsForExamID = await prisma.submission.findMany({
+      where: {
+        examID: examID,
+      },
+      select:{
+        achievedMarks: true,
+        integrityScore: true,
+        submissionTime: true,
+        student:{
+          select:{
+            username: true,
+          }
+        }
+      }
+    });
+    console.log(
+      '🚀 ~ file: examRepo.ts:108 ~ getExamDetailsFromPG ~ allSubmissionsForExamID:',
+      allSubmissionsForExamID
+    );
+    return { status: 200, rows: allSubmissionsForExamID };
+  } catch (err) {
+    console.log('🚀 ~ file: examRepo.ts:109 ~ getExamDetailsFromPG ~ err:', err);
+  }
+  return { status: 500 };
 };
