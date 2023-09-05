@@ -16,6 +16,7 @@ import {
 import Label from '@/components/ui/Labels';
 import { Edit } from '@mui/icons-material';
 import {EditNote } from '@mui/icons-material';
+import { AiOutlineForm } from 'react-icons/ai';
 
 
 export default function ExamBanner({ values, setters }: any) {
@@ -36,10 +37,10 @@ export default function ExamBanner({ values, setters }: any) {
           >
           </button> */}
           <IconButton
-            sx={{color:"var(--clr-purple-1)"}}
+            sx={{color:"var(--clr-purple-1)",fontSize:"2rem",marginLeft:"2rem"}}
             onClick={() => setters.setOpen(true)}
           >
-            <EditNote/> 
+            <AiOutlineForm/>
           </IconButton>
         </div>
         <p className='text-gray-500'>{values.startTimeFormatted}</p>

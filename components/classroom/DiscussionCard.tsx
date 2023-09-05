@@ -1,8 +1,10 @@
-import { Badge, Chip } from '@mui/joy';
-import { Divider, Typography } from '@mui/material';
+import { Badge, IconButton, Chip} from '@mui/joy';
+import {  Divider, Typography } from '@mui/material';
 import { LuCalendar } from 'react-icons/lu';
 import { LiaCommentSolid } from 'react-icons/lia';
 import Avatar from '@mui/joy/Avatar';
+import { MoreVert } from '@mui/icons-material';
+import {BsThreeDotsVertical} from 'react-icons/bs';
 
 export default function DiscussionCard() {
   return (
@@ -13,6 +15,9 @@ export default function DiscussionCard() {
             <Typography className='p-2 text-xs' > By Herper Lee </Typography>
             <Avatar size="sm">JG</Avatar>
         </div>
+         <IconButton>
+          <BsThreeDotsVertical/>
+        </IconButton>
       </div>
       <Divider />
       <div>
@@ -30,6 +35,16 @@ export default function DiscussionCard() {
           <LiaCommentSolid className="my-1 mx-2"/>
           <Typography fontSize="xl"></Typography>
         </Badge>
+        <Chip
+        className='float-right ml-auto px-4'
+      sx={{backgroundColor:"var(--clr-purple-3)",}}
+        onClick={function () {}}
+        size='md'
+        variant='soft'
+      >
+        {' '}
+        View
+      </Chip>
       </div>
     </div>
   );

@@ -45,3 +45,9 @@ export function formatDuration(minutes: string) {
 export function checkPast(date:Date):boolean {
   return date < new Date() ;
 }
+
+export const addMinutes = (date: Date, minutes: number): Date => {
+  const result = new Date(date);
+  result.setMinutes(result.getMinutes() + minutes);
+  return result;
+};

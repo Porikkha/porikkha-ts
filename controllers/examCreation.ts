@@ -14,6 +14,8 @@ const createExamOnDatabase = async (exam: ExamInterface) => {
   // Attempt to create the exam in the database.
   try {
     if( new Date(exam.startTime) < new Date() ){
+      console.log("🚀 ~ file: examCreation.ts:17 ~ createExamOnDatabase ~ Date:", new Date()); 
+      console.log("🚀 ~ file: examCreation.ts:17 ~ createExamOnDatabase ~ startTime:", exam.startTime);
       console.error('🚀 Error during exam creation: past time inserted.');
       throw new Error('Past time inserted.');
     }
@@ -29,6 +31,8 @@ const createExamOnDatabase = async (exam: ExamInterface) => {
       startTime: exam.startTime,
       duration: exam.duration,
     };
+    console.log("🚀 ~ file: examCreation.ts:34 ~ createExamOnDatabase ~ prismaExam.startTime:", prismaExam.startTime)
+    console.log("🚀 ~ file: examCreation.ts:34 ~ createExamOnDatabase ~ prismaExam.startTime:", prismaExam.startTime)
     const createdExam = await prisma.exam.upsert({
       where: {
         examID: exam.examID,
