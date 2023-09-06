@@ -15,6 +15,7 @@ import { BuiltInProviderType } from 'next-auth/providers/index';
 import { useRouter } from 'next/navigation';
 import ErrorAlert from './ui/ErrorAlert';
 import ExamInterface from '@/interfaces/Exam';
+import {dummyClassroom} from '@/interfaces/Classroom';
 
 const Nav = () => {
   const router = useRouter();
@@ -57,6 +58,22 @@ const Nav = () => {
       setShowErrorAlert(true);
     }
   };
+
+  const handleClassroomCreate = async (e: any) => {
+    e.preventDefault();
+    const response = await fetch('/api/classroom/create', {
+      method: 'POST',
+      body: JSON.stringify({
+        classroom: dummyClassroom,
+      }),
+    });
+    const data = await response.json();
+    if (data.status == 200 && data.classroomID) {
+      router.push('/classroom/' + data.classroomID);
+    } else {
+      setShowErrorAlert(true);
+    }
+  };
   const [showErrorAlert, setShowErrorAlert] = useState(false);
   const { data: session } = useSession();
   const [providers, setProviders] = useState<Record<
@@ -94,6 +111,9 @@ const Nav = () => {
           <div className='flex gap-3 md:gap-5'>
             <button className='purple_btn' onClick={handleCreateExam}>
               Create Exam
+            </button>
+            <button className='blue_btn' onClick={handleClassroomCreate}>
+              Create Classroom
             </button>
             <button type='button' onClick={() => signOut()} className='outline_btn'>
               Sign Out

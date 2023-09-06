@@ -1,31 +1,36 @@
+import ExamChip from './ExamChip';
 import { Chip } from '@mui/joy';
 import { Typography } from '@mui/material';
 import { LuCalendar } from 'react-icons/lu';
+import { useRouter } from 'next/navigation';
 
-export default function ExamCard() {
+export default function ExamCard({ exam }: any) {
+  const date = new Date(exam.startTime);
+  const time = date.toLocaleTimeString([], {
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true,
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  });
+  const router = useRouter();
   return (
     <div className='m-2 rounded-md border-2 border-purple-200 p-2'>
-        <div className='flex'>
-            <Typography className='py-2 text-base'>Operating Systems CT - 1</Typography>
-            <Chip
-                className='bg-orange-100 m-2 text-orange-500'
-                color='primary'
-                onClick={function () {}}
-                size='sm'
-                variant='soft'
-            >
-                Upcoming
-                </Chip>
-            
-        </div>
+      <div className='flex'>
+        <Typography className='py-2 text-base'>{exam.title}</Typography>
+        <ExamChip startTime={exam.startTime} duration={exam.duration} />
+      </div>
       <div className='flex '>
         <LuCalendar className='my-auto' />
-        <p className='px-3 text-sm'> 2:00 PM, 4th September </p>
+        <p className='px-3 text-sm'>{time}</p>
       </div>
       <Chip
-        className='bg-sky-100 m-2'
+        className='m-2 bg-sky-100'
         color='primary'
-        onClick={function () {}}
+        onClick={() => {
+          router.push('/exam/create/' + exam.examID);
+        }}
         size='sm'
         variant='soft'
       >
@@ -33,7 +38,7 @@ export default function ExamCard() {
         View
       </Chip>
       <Chip
-        className='bg-sky-100 m-2'
+        className='m-2 bg-sky-100'
         color='primary'
         onClick={function () {}}
         size='sm'
