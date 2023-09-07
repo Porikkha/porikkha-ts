@@ -13,7 +13,8 @@ import type {
   ShortAnswerAnswer,
   SingleChoiceAnswer,
 } from '@/interfaces';
-import SuccessAlert from '@/components/ui/SuccessAlert';
+import GenericAlert from '@/components/ui/GenericAlert';
+import { AlertColor } from '@mui/material';
 import {
   MultipleChoiceQuestion,
   ShortAnswerQuestion,
@@ -29,7 +30,9 @@ export default function Page({ params }: { params: { examID: string } }) {
     removeAnswerFromExam(dummyExam).questions
   );
   const [exam, setExam] = useState(dummyExam);
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState<AlertColor>('success'); // 'success', 'info', 'warning', 'error'
+  const [alertText, setAlertText] = useState<string>('Exam saved successfully!');
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const mousePosition = useMousePosition();
@@ -85,14 +88,9 @@ export default function Page({ params }: { params: { examID: string } }) {
   };
   const handleAnswerSubmit = async (event: any) => {
     event.preventDefault();
-    const userID = session?.user?.id;
-    if (!userID) {
-      console.log('❌ ~ file: page.tsx:202 : creatorID not found');
-      return;
-    }
     const submission: Submission = {
       examID: params.examID,
-      studentID: session?.user?.id!,
+      studentID: '',
       answers: questions.map((question: QuestionInterface) => {
         if (question.type === 'short-answer') {
           return {
@@ -126,8 +124,9 @@ export default function Page({ params }: { params: { examID: string } }) {
       }),
     });
     const data = await response.json();
-    setShowSuccessAlert(data.status == 200);
-
+    setShowAlert(true);
+    setAlertType(data.type);
+    setAlertText(data.message);
     if (data.status === 200) router.push('/dashboard?status=success');
   };
   useEffect(() => {
@@ -167,9 +166,11 @@ export default function Page({ params }: { params: { examID: string } }) {
     >
       <div className='left-gradient'></div>
       <div className='right-gradient'></div>
-      <SuccessAlert
-        showSuccessAlert={showSuccessAlert}
-        setShowSuccessAlert={setShowSuccessAlert}
+      <GenericAlert
+        show={showAlert}
+        setShow={setShowAlert}
+        type={alertType}
+        text={alertText}
       />
       <ExamViewBanner exam={exam} />
       <div className='text-center'>

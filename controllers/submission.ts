@@ -4,6 +4,42 @@ import { prisma } from '@/utils/database';
 import Submission from '@/models/submissions';
 import { getExamFromDatabase } from './examRepo';
 
+export const checkSubmissionDeadline = async (examID: string) => {
+  try {
+    const examTimeData = await prisma.exam.findUnique({
+      where: {
+        examID: examID,
+      },
+      select: {
+        startTime: true,
+        duration: true,
+      },
+    });
+    if (examTimeData === null) {
+      return { status: 404, type: 'error', message: 'Invalid examID' };
+    }
+    const result = (await prisma.$queryRaw`SELECT CURRENT_TIMESTAMP`) as unknown as {
+      current_timestamp: string;
+    }[];
+    const currentTime = new Date(result[0].current_timestamp);
+
+    const examStartTime = new Date(examTimeData.startTime);
+    const duration = examTimeData.duration;
+    const examEndTime = new Date(examStartTime.getTime() + duration * 60000);
+    console.log('Exam end time:', examEndTime);
+    console.log('Current time:', currentTime);
+    if (currentTime > examEndTime) {
+      return { status: 403, type: 'warning', message: 'Submission deadline has passed' };
+    }
+    if (currentTime < examStartTime) {
+      return { status: 403, type: 'info', message: 'Exam has not started yet' };
+    }
+    return { status: 200 };
+  } catch (err) {
+    return { status: 500, type: 'error', message: 'Error checking submission deadline' };
+  }
+};
+
 const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
   // Connect to mongoDB
   try {
@@ -11,7 +47,7 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
     console.log('✅ ~ file: route.ts:9 ~ POST ~ Connected to mongoDB');
   } catch (err) {
     console.log('🚀 ~ file: route.ts:11 ~ POST ~ Error connecting to mongoDB:', err);
-    return { status: 500 };
+    return { status: 500, type: 'error', message: 'Error connecting to mongoDB' };
   }
   try {
     const filter = { examID: submission.examID, studentID: submission.studentID };
@@ -35,14 +71,15 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
       create: prismaSubmission,
     });
     console.log('✅ Submission creation successful on Prisma!');
-    console.log(
-      '🚀 ~ file: submission.ts:37 ~ createSubmissionOnDatabase ~ createdSubmission:', createdSubmission
-    );
   } catch (err) {
-    console.error('🚀 Error during exam creation:', err);
-    return { status: 500 };
+    console.error('🚀 Error when creating submission on prisma:', err);
+    return {
+      status: 500,
+      type: 'error',
+      message: 'Error when creating submission on prisma',
+    };
   }
-  return { status: 200, submissionID: submission.examID };
+  return { status: 200, type: 'success', message: 'Submission saved successfully!' };
 };
 
 const getSubmissionFromDatabase = async (examID: string, userID: string) => {
