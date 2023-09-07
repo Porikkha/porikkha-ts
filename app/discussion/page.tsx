@@ -21,14 +21,13 @@ export default function Page() {
                     Operating Systems - Classroom
                   </Typography>
                 </Box>
-                <UserMini userID={'123'} />
               </div>
 
               <div className='float-right ml-auto'>
             </div>
            
             <Divider className='bg-slate-200' /> 
-            <div style={{display:"flex",padding:"20px"}}>
+            <div className='px-3 py-5 m-auto w-3/4'>
               <BorderedButton
                   onClick={() => {
                     console.log('Hello');
@@ -37,11 +36,11 @@ export default function Page() {
                   Back to Classroom
                 </BorderedButton>
 
-                <Typography sx={{marginLeft:"20px"}}>
+                <Typography className='text-3xl py-2'>
                     Thread: Solutions of 1st CT
                 </Typography>
             </div>
-            <div className='my-10'>
+            <div className='m-auto w-3/4'>
               <Thread />
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { Badge, IconButton, Chip, Input, Button, Box } from '@mui/joy';
+import { Badge, IconButton, Chip, Input, Button, Box, Textarea } from '@mui/joy';
 import { Divider, Typography } from '@mui/material';
 import { LuCalendar } from 'react-icons/lu';
 import { LiaCommentSolid } from 'react-icons/lia';
@@ -12,6 +12,7 @@ export default function DiscussionCard() {
   return (
     <div className='m-2 rounded-md border border-purple-200 p-2'>
       <div className='flex px-2'> 
+                <Avatar size='sm'>JG</Avatar>
       </div>
       <div>
         <Typography className='p-2 text-md'>
@@ -25,7 +26,6 @@ export default function DiscussionCard() {
         <p className='px-3 text-sm'> 2:00 PM, 4th September </p>
         <div className='float-right ml-auto flex'>
           <Typography className='p-2 text-xs'> By Herper Lee </Typography>
-          <Avatar size='sm'>JG</Avatar>
         </div>
       </div>
       <Divider/> 
@@ -36,9 +36,8 @@ export default function DiscussionCard() {
       <Reply/>
 
 
-      <Box sx={{width:"100%",display:"flex",flexDirection:"row"}}>
-      <Input>
-      </Input>
+      <Box className="px-3">
+      <Textarea />
       <BorderedButton>
        Send 
       </BorderedButton>
