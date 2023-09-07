@@ -40,13 +40,13 @@ export default function Page({ params }: { params: { examID: string } }) {
   const [isMouseInside, setIsMouseInside] = useState(true);
   const [showLinearAlert, setShowLinearAlert] = useState(true);
   const [progress, setProgress] = useState(100);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null); // New state for interval ID
 
   const handleMouseEnter = () => {
     setIsMouseInside(true);
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(null);
     }
     setShowLinearAlert(false);
     setProgress(100); // Reset the progress
@@ -55,14 +55,6 @@ export default function Page({ params }: { params: { examID: string } }) {
   const handleMouseLeave = () => {
     setIsMouseInside(false);
     setShowLinearAlert(true);
-
-    const id = setTimeout(() => {
-      setShowLinearAlert(false);
-      setProgress(0); // Set progress to 0
-    }, 3000); // 3 seconds
-
-    setTimeoutId(id);
-
     let decrement = 100;
     const interval = setInterval(() => {
       decrement -= 1;
@@ -70,8 +62,11 @@ export default function Page({ params }: { params: { examID: string } }) {
       if (decrement <= 0) {
         clearInterval(interval);
         setIntegrityScore(integrityScore - 2);
+        setShowLinearAlert(false);
       }
     }, 30); // Decrement over 3 seconds
+
+    setIntervalId(interval); // Store the interval ID
   };
 
   const fetchExam = async (examID: string) => {
