@@ -73,12 +73,16 @@ export default function Page({ params }: { params: { examID: string } }) {
     const response = await fetch(`/api/exams/join/${params.examID}`, {
       method: 'GET',
     });
-    const data = await response.json();
-    if (data.status == 200 && data.exam) {
-      const exam = data.exam;
-      setExam(exam);
-      setQuestions(exam.questions);
-      setLoading(false);
+    if (response.redirected) {
+      router.push(response.url);
+    } else {
+      const data = await response.json();
+      if (data.status == 200 && data.exam) {
+        const exam = data.exam;
+        setExam(exam);
+        setQuestions(exam.questions);
+        setLoading(false);
+      }
     }
   };
   const handleAnswerSubmit = async (event: any) => {

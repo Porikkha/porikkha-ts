@@ -33,6 +33,33 @@ export const getExamFromDatabase = async (examID: string) => {
     throw new Error('🚀 Error during exam fetch:', err);
   }
 };
+
+export const canJoinExam = async (examID: string) => {
+  try {
+    const exam = await prisma.exam.findUnique({
+      where: {
+        examID: examID,
+      },
+      select: {
+        startTime: true,
+        duration: true,
+      },
+    });
+    if (exam === null) {
+      return { status: 404, message: `Exam ${examID} not found`, type: 'error' };
+    }
+    const startTime = new Date(exam.startTime);
+    const endTime = new Date(startTime.getTime() + exam.duration * 60000);
+    const now = new Date().getTime();
+    if (now < startTime.getTime() || now > endTime.getTime()) {
+      return { status: 403, message: 'Exam not started or already ended', type: 'info' };
+    }
+    return { status: 200 };
+  } catch (err) {
+    console.log('Error invoking canJoinExam', err);
+  }
+  return { status: 500, message: 'Error invoking canJoinExam', type: 'error' };
+};
 export const getExamWithoutAnswer = async (userID: string, examID: string) => {
   // Connect to mongoDB
   try {
