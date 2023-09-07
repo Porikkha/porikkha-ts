@@ -41,7 +41,7 @@ const ExamBanner = ({ params }: { params: { examID: string } }) => {
   };
   useEffect(() => {
     fetchExamMetadata();
-  }, [endTime]);
+  }, []);
   return (
     <section className='m-8 w-4/5 rounded-xl bg-purple-100'>
       <div className='rounded-xl bg-purple-400/20 p-4 text-violet-900'>
