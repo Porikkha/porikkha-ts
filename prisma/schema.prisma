@@ -69,7 +69,7 @@ model DiscussionThread {
   creatorID          String
   title              String
   content            String
-  timePosted         DateTime  @default(now())
+  timeCreated        DateTime  @default(now())
   classroom          Classroom @relation(fields: [classroomID], references: [classroomID])
   creator            User      @relation(fields: [creatorID], references: [userID])
   Post               Post[]
@@ -80,18 +80,20 @@ model Post {
   creatorID  String
   threadID   BigInt
   content    String
+  timePosted DateTime         @default(now())
   creator    User             @relation(fields: [creatorID], references: [userID])
   discussion DiscussionThread @relation(fields: [threadID], references: [discussionThreadID])
   Reply      Reply[]
 }
 
 model Reply {
-  replyID   BigInt @id @default(autoincrement())
-  creatorID String
-  postID    BigInt
-  content   String
-  creator   User   @relation(fields: [creatorID], references: [userID])
-  post      Post   @relation(fields: [postID], references: [postID])
+  replyID     BigInt   @id @default(autoincrement())
+  creatorID   String
+  postID      BigInt
+  content     String
+  timeReplied DateTime @default(now())
+  creator     User     @relation(fields: [creatorID], references: [userID])
+  post        Post     @relation(fields: [postID], references: [postID])
 }
 
 model Submission {
