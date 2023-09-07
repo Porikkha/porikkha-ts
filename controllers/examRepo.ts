@@ -97,16 +97,16 @@ export const getExamDetailsFromPG = async (examID: string) => {
       where: {
         examID: examID,
       },
-      select:{
+      select: {
         achievedMarks: true,
         integrityScore: true,
         submissionTime: true,
-        student:{
-          select:{
+        student: {
+          select: {
             username: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
     console.log(
       '🚀 ~ file: examRepo.ts:108 ~ getExamDetailsFromPG ~ allSubmissionsForExamID:',
@@ -117,4 +117,26 @@ export const getExamDetailsFromPG = async (examID: string) => {
     console.log('🚀 ~ file: examRepo.ts:109 ~ getExamDetailsFromPG ~ err:', err);
   }
   return { status: 500 };
+};
+
+// Needed for exam preview data, returns only the exam metadata
+export const getExamFromPG = async (examID: string) => {
+  try {
+    const examMetadata = await prisma.exam.findUnique({
+      where: {
+        examID: examID,
+      },
+    });
+    if (examMetadata === null) {
+      return { status: 404, message: `Invalid exam id: ${examID}`, type: 'error' };
+    }
+    return { status: 200, exam: examMetadata };
+  } catch (err) {
+    console.log('Server: Error invoking getExamFromPG', err);
+  }
+  return {
+    status: 500,
+    message: 'Error invoking getExamFromPG',
+    type: 'error',
+  };
 };

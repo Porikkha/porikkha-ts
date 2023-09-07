@@ -50,6 +50,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
   const { data: session } = useSession();
 
   const [loading, setLoading] = useState(true);
+  const examID = params.examID;
   const setters = {
     setExamName,
     setExamDesc,
@@ -71,6 +72,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
     shuffleQuestions,
     allowKeyboardShortcuts,
     enableAutoGrading,
+    examID,
   };
 
   const deleteQuestion = (index: number) => {
