@@ -27,7 +27,7 @@ import LinearAlert from '@/components/anticheat/LinearAlert';
 export default function Page({ params }: { params: { examID: string } }) {
   const { data: session } = useSession();
   const [questions, setQuestions] = useState<QuestionInterface[]>(
-    removeAnswerFromExam(dummyExam).questions
+    // removeAnswerFromExam(dummyExam).questions
   );
   const [exam, setExam] = useState(dummyExam);
   const [showAlert, setShowAlert] = useState(false);
@@ -79,6 +79,7 @@ export default function Page({ params }: { params: { examID: string } }) {
       const data = await response.json();
       if (data.status == 200 && data.exam) {
         const exam = data.exam;
+        console.log(exam);
         setExam(exam);
         setQuestions(exam.questions);
         setLoading(false);
@@ -90,22 +91,22 @@ export default function Page({ params }: { params: { examID: string } }) {
     const submission: Submission = {
       examID: params.examID,
       studentID: '',
-      answers: questions.map((question: QuestionInterface) => {
+      answers: questions!.map((question: QuestionInterface) => {
         if (question.type === 'short-answer') {
           return {
-            questionId: question.id,
+            questionId: (question as ShortAnswerQuestion).questionId,
             type: 'short-answer',
             answer: (question as ShortAnswerQuestion).answer,
           } as Answer;
         } else if (question.type === 'multiple-choice') {
           return {
-            questionId: question.id,
+            questionId: (question as MultipleChoiceQuestion).questionId,
             type: 'multiple-choice',
             answer: (question as MultipleChoiceQuestion).answer,
           } as MultipleChoiceAnswer;
         } else if (question.type === 'single-choice') {
           return {
-            questionId: question.id,
+            questionId: (question as SingleChoiceQuestion).questionId,
             type: 'single-choice',
             answer: (question as SingleChoiceQuestion).answer,
           } as SingleChoiceAnswer;
@@ -187,7 +188,7 @@ export default function Page({ params }: { params: { examID: string } }) {
         {loading ? (
           <Loading />
         ) : (
-          questions.map((question, index) => {
+          questions?.map((question, index) => {
             return (
               <Question
                 qdata={question}

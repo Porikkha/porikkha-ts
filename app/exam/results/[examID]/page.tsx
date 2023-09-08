@@ -36,7 +36,7 @@ export default function Page({ params }: { params: { examID: string } }) {
 
   const fetchSubmissions = async () => {
     const response = await fetch(
-      'http://localhost:3000/api/exams/results/' + params.examID,
+      '/api/exams/results/' + params.examID,
       {
         method: 'GET',
       }

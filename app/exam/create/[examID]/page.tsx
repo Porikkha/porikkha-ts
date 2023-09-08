@@ -21,11 +21,13 @@ const dummyQuestions = (dummyMCQs as Question[]).concat(dummySCQs).concat(dummyS
 import Exam from '@/interfaces/Exam';
 import EditQuestionModal from '@/components/questions/EditQuestionModal';
 import { CircularProgress } from '@mui/joy';
+import { Answer } from '@/interfaces';
 
 const Home = ({ params }: { params: { examID: string } }) => {
   const setQuestionNumbers = (questions: Question[]) => {
     return questions.map((question, index) => {
       question.id = index + 1;
+      (question as Answer).questionId = question.id ;
       return question;
     });
   };

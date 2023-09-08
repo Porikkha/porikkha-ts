@@ -50,10 +50,12 @@ export const permuteQuestions = (exam: Exam, studentID: string, remove_answer: b
 
   exam.questions.map((question, index) => {
     let i = rand.randrange(index,exam.questions.length-1);
-    console.log(i);
+    // console.log(i);
     [exam.questions[i], exam.questions[index] ] = [exam.questions[index], exam.questions[i]] ;
   });
-
+  exam.questions.map((question, index) => {
+    question.id = index+1;
+  });
   // console.log("🚀 ~ file: Exam.ts:54 ~ permuteQuestions ~ newQuestions:", exam.questions)
   return exam; 
 }
