@@ -11,6 +11,7 @@ import Image from 'next/image';
 import SubmissionTable from '@/components/results/SubmissionTable';
 import { LineChart } from '@mui/x-charts/LineChart';
 import { useEffect, useState } from 'react';
+import { Paper } from '@mui/material';
 
 export default function Page({ params }: { params: { examID: string } }) {
   function createData(name: string, answered: number, correct: number, marks: number) {
@@ -75,16 +76,18 @@ export default function Page({ params }: { params: { examID: string } }) {
               <Typography className='pb-2 text-3xl font-semibold'>{examTitle}</Typography>
             </div>
             <div>
-              <LineChart
-                xAxis={[{ data: arange(1, totalMarks, 10) }]}
-                series={[
-                  {
-                    data: [2, 5.5, 2, 8.5, 1.5],
-                  },
-                ]}
-                width={600}
-                height={300}
-              />
+              <Paper>
+                <LineChart
+                  xAxis={[{ data: arange(1, totalMarks, 10) }]}
+                  series={[
+                    {
+                      data: [2, 5.5, 2, 8.5, 1.5],
+                    },
+                  ]}
+                  width={600}
+                  height={300}
+                />
+              </Paper>
             </div>
           </div>
         </div>
