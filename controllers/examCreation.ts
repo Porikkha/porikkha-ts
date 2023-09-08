@@ -24,6 +24,7 @@ const createExamOnDatabase = async (exam: ExamInterface) => {
       description: exam.description,
       startTime: exam.startTime,
       duration: exam.duration,
+      totalMarks: exam.totalMarks
     };
     const createdExam = await prisma.exam.upsert({
       where: {

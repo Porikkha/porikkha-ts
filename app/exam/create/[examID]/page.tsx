@@ -129,6 +129,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
       questions: quess,
       startTime: new Date(startTimeFormatted),
       duration: parseInt(examDuration?.trim()),
+      totalMarks: totalScore,
       allowedAbilities: [
         {
           type: 'shuffle',

@@ -17,6 +17,7 @@ export default interface Exam {
   questions: Question[];
   startTime: Date;
   duration: number;
+  totalMarks: number;
   allowedAbilities: Object[];
 }
 
@@ -28,6 +29,7 @@ export const dummyExam: Exam = {
   questions: dummyQuestions,
   startTime: new Date(),
   duration: 60,
+  totalMarks: 0,
   allowedAbilities: [],
 };
 

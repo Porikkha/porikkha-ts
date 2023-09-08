@@ -34,6 +34,7 @@ const Nav = () => {
       questions: [],
       startTime: new Date(),
       duration: 30,
+      totalMarks: 0,
       allowedAbilities: [
         {
           type: 'copy',
