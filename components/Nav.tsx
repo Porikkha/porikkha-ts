@@ -35,6 +35,7 @@ const Nav = () => {
       questions: [],
       startTime: addMinutes(new Date(),60),
       duration: 30,
+      totalMarks: 0,
       allowedAbilities: [
         {
           type: 'copy',

@@ -144,7 +144,7 @@ export function QuestionContent({
           {qdata.title}
         </Typography>
         <Typography sx={{ alignSelf: 'center' }} className='order-last'>
-          Points : {qdata.points} 
+          Points : {qdata.points}
         </Typography>
       </CardContent>
       <Divider sx={{ width: '100%', alignSelf: 'center' }} />

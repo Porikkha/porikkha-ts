@@ -18,7 +18,6 @@ import { Edit } from '@mui/icons-material';
 import {EditNote } from '@mui/icons-material';
 import { AiOutlineForm } from 'react-icons/ai';
 
-
 export default function ExamBanner({ values, setters }: any) {
   return (
     <Card className='mx-auto w-4/5 items-center space-x-4 rounded-xl bg-white px-20 py-10'>
@@ -81,8 +80,8 @@ export default function ExamBanner({ values, setters }: any) {
             value={values.examDuration}
             onChange={(e) => setters.setExamDuration(e.target.value)}
           />
-         <div className='py-2'>
-            <Label>Total Marks : {values.totalMarks}</Label>
+          <div className='py-2'>
+            <Label>Total Points: {values.totalScore}</Label>
           </div>
         </div>
 

@@ -48,8 +48,10 @@ const Home = ({ params }: { params: { examID: string } }) => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [quess, setQuess] = useState<Question[]>(setQuestionNumbers(dummyQuestions));
   const { data: session } = useSession();
+  const [totalScore, setTotalScore] = useState(0);
 
   const [loading, setLoading] = useState(true);
+  const examID = params.examID;
   const setters = {
     setExamName,
     setExamDesc,
@@ -60,6 +62,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
     setShuffleQuestions,
     setAllowKeyboardShortcuts,
     setEnableAutoGrading,
+    setTotalScore,
   };
 
   const values = {
@@ -71,7 +74,8 @@ const Home = ({ params }: { params: { examID: string } }) => {
     shuffleQuestions,
     allowKeyboardShortcuts,
     enableAutoGrading,
-    totalMarks: getExamTotalMarks(quess),
+    examID,
+    totalScore,
   };
 
   const deleteQuestion = (index: number) => {
@@ -125,6 +129,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
       questions: quess,
       startTime: new Date(startTimeFormatted),
       duration: parseInt(examDuration?.trim()),
+      totalMarks: totalScore,
       allowedAbilities: [
         {
           type: 'shuffle',
@@ -170,6 +175,9 @@ const Home = ({ params }: { params: { examID: string } }) => {
       setStartTimeFormatted(new Date(exam.startTime).toLocaleString());
       setQuess(setQuestionNumbers(exam.questions));
       setExamDuration(exam.duration?.toString());
+      exam.questions.forEach((question: Question) => {
+        setTotalScore((prev) => prev + parseInt(question.points.toString()));
+      });
     }
     setLoading(false);
   };
@@ -178,6 +186,13 @@ const Home = ({ params }: { params: { examID: string } }) => {
     fetchExam(params.examID);
   }, []);
 
+  useEffect(() => {
+    setTotalScore(0);
+    quess.forEach((question: Question) => {
+      setTotalScore((prev) => prev + parseInt(question.points.toString()));
+    });
+  }, [quess]);
+  
   return (
     <section className='w-full'>
       <ExamBanner values={values} setters={setters} />
