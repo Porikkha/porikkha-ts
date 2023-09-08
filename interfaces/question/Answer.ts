@@ -15,6 +15,23 @@ export interface ShortAnswerAnswer extends Answer {
   answer: string;
 }
 
+export const exampleMultipleChoiceAnswer: MultipleChoiceAnswer = {
+  questionId: 1,
+  type: 'multiple-choice',
+  answer: [1, 2],
+}
+
+export const exampleSingleChoiceAnswer: SingleChoiceAnswer = {
+  questionId: 2,
+  type: 'single-choice',
+  answer: 1,
+}
+
+export const exampleShortAnswerAnswer: ShortAnswerAnswer = {
+  questionId: 3,
+  type: 'short-answer',
+  answer: 'This is a short answer',
+}
 
 export function autogradeMultipleChoice(answer1 : MultipleChoiceAnswer, answer2: MultipleChoiceAnswer) {
   const dict = new Map();

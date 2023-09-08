@@ -13,7 +13,8 @@ import type {
   ShortAnswerAnswer,
   SingleChoiceAnswer,
 } from '@/interfaces';
-import SuccessAlert from '@/components/ui/SuccessAlert';
+import GenericAlert from '@/components/ui/GenericAlert';
+import { AlertColor } from '@mui/material';
 import {
   MultipleChoiceQuestion,
   ShortAnswerQuestion,
@@ -29,7 +30,9 @@ export default function Page({ params }: { params: { examID: string } }) {
     removeAnswerFromExam(dummyExam).questions
   );
   const [exam, setExam] = useState(dummyExam);
-  const [showSuccessAlert, setShowSuccessAlert] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState<AlertColor>('success'); // 'success', 'info', 'warning', 'error'
+  const [alertText, setAlertText] = useState<string>('Exam saved successfully!');
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const mousePosition = useMousePosition();
@@ -37,13 +40,13 @@ export default function Page({ params }: { params: { examID: string } }) {
   const [isMouseInside, setIsMouseInside] = useState(true);
   const [showLinearAlert, setShowLinearAlert] = useState(true);
   const [progress, setProgress] = useState(100);
-  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const [intervalId, setIntervalId] = useState<NodeJS.Timeout | null>(null); // New state for interval ID
 
   const handleMouseEnter = () => {
     setIsMouseInside(true);
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-      setTimeoutId(null);
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIntervalId(null);
     }
     setShowLinearAlert(false);
     setProgress(100); // Reset the progress
@@ -52,14 +55,6 @@ export default function Page({ params }: { params: { examID: string } }) {
   const handleMouseLeave = () => {
     setIsMouseInside(false);
     setShowLinearAlert(true);
-
-    const id = setTimeout(() => {
-      setShowLinearAlert(false);
-      setProgress(0); // Set progress to 0
-    }, 3000); // 3 seconds
-
-    setTimeoutId(id);
-
     let decrement = 100;
     const interval = setInterval(() => {
       decrement -= 1;
@@ -67,32 +62,34 @@ export default function Page({ params }: { params: { examID: string } }) {
       if (decrement <= 0) {
         clearInterval(interval);
         setIntegrityScore(integrityScore - 2);
+        setShowLinearAlert(false);
       }
     }, 30); // Decrement over 3 seconds
+
+    setIntervalId(interval); // Store the interval ID
   };
 
   const fetchExam = async (examID: string) => {
     const response = await fetch(`/api/exams/join/${params.examID}`, {
       method: 'GET',
     });
-    const data = await response.json();
-    if (data.status == 200 && data.exam) {
-      const exam = data.exam;
-      setExam(exam);
-      setQuestions(exam.questions);
-      setLoading(false);
+    if (response.redirected) {
+      router.push(response.url);
+    } else {
+      const data = await response.json();
+      if (data.status == 200 && data.exam) {
+        const exam = data.exam;
+        setExam(exam);
+        setQuestions(exam.questions);
+        setLoading(false);
+      }
     }
   };
   const handleAnswerSubmit = async (event: any) => {
     event.preventDefault();
-    const userID = session?.user?.id;
-    if (!userID) {
-      console.log('❌ ~ file: page.tsx:202 : creatorID not found');
-      return;
-    }
     const submission: Submission = {
       examID: params.examID,
-      studentID: session?.user?.id!,
+      studentID: '',
       answers: questions.map((question: QuestionInterface) => {
         if (question.type === 'short-answer') {
           return {
@@ -126,8 +123,9 @@ export default function Page({ params }: { params: { examID: string } }) {
       }),
     });
     const data = await response.json();
-    setShowSuccessAlert(data.status == 200);
-
+    setShowAlert(true);
+    setAlertType(data.type);
+    setAlertText(data.message);
     if (data.status === 200) router.push('/dashboard?status=success');
   };
   useEffect(() => {
@@ -167,9 +165,11 @@ export default function Page({ params }: { params: { examID: string } }) {
     >
       <div className='left-gradient'></div>
       <div className='right-gradient'></div>
-      <SuccessAlert
-        showSuccessAlert={showSuccessAlert}
-        setShowSuccessAlert={setShowSuccessAlert}
+      <GenericAlert
+        show={showAlert}
+        setShow={setShowAlert}
+        type={alertType}
+        text={alertText}
       />
       <ExamViewBanner exam={exam} />
       <div className='text-center'>

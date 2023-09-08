@@ -10,6 +10,9 @@ import {
   ShortAnswerAnswer,
   SingleChoiceAnswer,
   autogradeAnswer,
+  exampleMultipleChoiceAnswer,
+  exampleShortAnswerAnswer,
+  exampleSingleChoiceAnswer,
 } from './question/Answer';
 import {Submission as SubmissionPrisma} from "@prisma/client" ;
 
@@ -21,6 +24,17 @@ export default interface Submission {
   answers: Answer[]; 
 }
 
+export const exampleSubmission: Submission = {
+  studentID: '123456789',
+  examID: '123456789',
+  integrityScore: 0,
+  achievedMarks: 0,
+  answers: [
+    exampleMultipleChoiceAnswer, 
+    exampleSingleChoiceAnswer,
+    exampleShortAnswerAnswer,
+  ],
+};
 
 export function mergeSubmissionWithExam(exam: Exam, submission: Submission) {
   var indexQuestion : number[] = new Array<number>(exam.questions.length+2) ; 

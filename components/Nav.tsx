@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import ErrorAlert from './ui/ErrorAlert';
 import ExamInterface from '@/interfaces/Exam';
 import { addMinutes } from '@/utils/timeUtils';
+import {dummyClassroom} from '@/interfaces/Classroom';
 
 const Nav = () => {
   const router = useRouter();
@@ -34,6 +35,7 @@ const Nav = () => {
       questions: [],
       startTime: addMinutes(new Date(),60),
       duration: 30,
+      totalMarks: 0,
       allowedAbilities: [
         {
           type: 'copy',
@@ -54,6 +56,22 @@ const Nav = () => {
     const data = await response.json();
     if (data.status == 200 && data.examID) {
       router.push('/exam/create/' + data.examID);
+    } else {
+      setShowErrorAlert(true);
+    }
+  };
+
+  const handleClassroomCreate = async (e: any) => {
+    e.preventDefault();
+    const response = await fetch('/api/classroom/create', {
+      method: 'POST',
+      body: JSON.stringify({
+        classroom: dummyClassroom,
+      }),
+    });
+    const data = await response.json();
+    if (data.status == 200 && data.classroomID) {
+      router.push('/classroom/' + data.classroomID);
     } else {
       setShowErrorAlert(true);
     }
@@ -95,6 +113,9 @@ const Nav = () => {
           <div className='flex gap-3 md:gap-5'>
             <button className='purple_btn' onClick={handleCreateExam}>
               Create Exam
+            </button>
+            <button className='blue_btn' onClick={handleClassroomCreate}>
+              Create Classroom
             </button>
             <button type='button' onClick={() => signOut()} className='outline_btn'>
               Sign Out

@@ -158,6 +158,10 @@
   @apply flex items-center justify-center rounded-full border border-purple-500 bg-purple-700 px-5 py-1.5 text-center font-inter text-sm text-white transition-all hover:bg-white hover:text-purple-500;
 }
 
+.blue_btn {
+  @apply flex items-center justify-center rounded-full border border-blue-300 bg-blue-500 px-5 py-1.5 text-center font-inter text-sm text-white transition-all hover:bg-white hover:text-blue-500;
+}
+
 .outline_btn {
   @apply flex items-center justify-center rounded-full border border-black bg-transparent px-5 py-1.5 text-center font-inter text-sm text-black transition-all hover:bg-black hover:text-white;
 }

@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Modal,
   Typography,
@@ -10,16 +10,38 @@ import {
   Button,
 } from '@mui/joy';
 
+import { getTimeDifference } from '@/utils/helper';
+
 const ExamBanner = ({ params }: { params: { examID: string } }) => {
-  const title = 'Operating Systems - Quiz I';
-  const totalTime = '30:00';
-  const startTime = '10:00 AM';
-  const endTime = '10:30 AM';
+  const [title, setTitle] = useState<string>('Loading data...');
+  const [totalTime, setTotalTime] = useState<string>('00 Minutes');
+  const [startTime, setStartTime] = useState<string>('00:00 AM');
+  const [endTime, setEndTime] = useState<string>('00:00 AM');
+  const [remainingTime, setRemainingTime] = useState<string>('00:00');
+  const [open, setOpen] = useState(false);
   const description =
     "Once you start, you can't pause the timer. Don't worry, Forms gives you a final minute reminder before submission. Your answers will be automatically submitted when the time is up. Please prepare before you begin to help manage your submission time.";
-  const remainingTime = '15:00';
-  const [open, setOpen] = useState(false);
-
+  const fetchExamMetadata = async () => {
+    const res = await fetch(`/api/exams/preview/${params.examID}`, {
+      method: 'GET',
+    });
+    const data = await res.json();
+    if (data.status === 200) {
+      const exam = data.exam;
+      setTitle(exam.title);
+      setTotalTime(exam.duration.toString() + ' Minutes');
+      setStartTime(new Date(exam.startTime).toLocaleTimeString());
+      const endTime = new Date(exam.startTime).getTime() + exam.duration * 60 * 1000;
+      setEndTime(new Date(endTime).toLocaleTimeString());
+      const interval = setInterval(() => {
+        setRemainingTime(getTimeDifference(new Date(endTime)));
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  };
+  useEffect(() => {
+    fetchExamMetadata();
+  }, []);
   return (
     <section className='m-8 w-4/5 rounded-xl bg-purple-100'>
       <div className='rounded-xl bg-purple-400/20 p-4 text-violet-900'>

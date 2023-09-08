@@ -29,32 +29,11 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(name: string, answered: number, correct: number, marks: number) {
-  return { name, answered, correct, marks };
-}
-
-export default function CustomizedTables({ examID }: { examID: string }) {
-  const [rows, setRows] = useState([createData('Deuce', 0, 0, 0)]);
-
-  const fetchSubmissions = async () => {
-    const response = await fetch('http://localhost:3000/api/exams/results/' + examID, {
-      method: 'GET',
-    });
-    const data = await response.json();
-    console.log("🚀 ~ file: SubmissionTable.tsx:44 ~ fetchSubmissions ~ data:", data);
-    setRows([]);
-    data.rows.forEach((sub: any) => {
-      // first clear all previous rows
-      setRows((prev) => [
-        ...prev,
-        createData(sub.student.username, 0, 0, sub.achievedMarks),
-      ]);
-    });
-  };
-
-  useEffect(() => {
-    fetchSubmissions();
-  }, []);
+export default function SubmissionTable({
+  rows,
+}: {
+  rows: { name: string; answered: number; correct: number; marks: number }[];
+}) {
   return (
     <TableContainer component={Paper}>
       <Table aria-label='customized table'>

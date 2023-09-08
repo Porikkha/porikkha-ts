@@ -33,6 +33,33 @@ export const getExamFromDatabase = async (examID: string) => {
     throw new Error('🚀 Error during exam fetch:', err);
   }
 };
+
+export const canJoinExam = async (examID: string) => {
+  try {
+    const exam = await prisma.exam.findUnique({
+      where: {
+        examID: examID,
+      },
+      select: {
+        startTime: true,
+        duration: true,
+      },
+    });
+    if (exam === null) {
+      return { status: 404, message: `Exam ${examID} not found`, type: 'error' };
+    }
+    const startTime = new Date(exam.startTime);
+    const endTime = new Date(startTime.getTime() + exam.duration * 60000);
+    const now = new Date().getTime();
+    if (now < startTime.getTime() || now > endTime.getTime()) {
+      return { status: 403, message: 'Exam not started or already ended', type: 'info' };
+    }
+    return { status: 200 };
+  } catch (err) {
+    console.log('Error invoking canJoinExam', err);
+  }
+  return { status: 500, message: 'Error invoking canJoinExam', type: 'error' };
+};
 export const getExamWithoutAnswer = async (userID: string, examID: string) => {
   // Connect to mongoDB
   try {
@@ -93,28 +120,70 @@ export const deleteExamFromDB = async (examID: string) => {
 
 export const getExamDetailsFromPG = async (examID: string) => {
   try {
+    const examMeta = await prisma.exam.findUnique({
+      where: {
+        examID: examID,
+      },
+      select: {
+        title: true,
+        totalMarks: true,
+      },
+    });
+    if (examMeta === null) {
+      return { status: 404, message: `Invalid exam id: ${examID}`, type: 'error' };
+    }
+
     const allSubmissionsForExamID = await prisma.submission.findMany({
       where: {
         examID: examID,
       },
-      select:{
+      select: {
         achievedMarks: true,
         integrityScore: true,
         submissionTime: true,
-        student:{
-          select:{
+        totalAnswered: true,
+        totalCorrect: true,
+        student: {
+          select: {
             username: true,
-          }
-        }
-      }
+          },
+        },
+      },
     });
     console.log(
       '🚀 ~ file: examRepo.ts:108 ~ getExamDetailsFromPG ~ allSubmissionsForExamID:',
       allSubmissionsForExamID
     );
-    return { status: 200, rows: allSubmissionsForExamID };
+    return {
+      status: 200,
+      rows: allSubmissionsForExamID,
+      examTitle: examMeta.title,
+      totalMarks: examMeta.totalMarks,
+    };
   } catch (err) {
     console.log('🚀 ~ file: examRepo.ts:109 ~ getExamDetailsFromPG ~ err:', err);
   }
-  return { status: 500 };
+  return { status: 500, message: 'Error invoking getExamDetailsFromPG', type: 'error' };
+};
+
+// Needed for exam preview data, returns only the exam metadata
+export const getExamFromPG = async (examID: string) => {
+  try {
+    const examMetadata = await prisma.exam.findUnique({
+      where: {
+        examID: examID,
+      },
+    });
+    if (examMetadata === null) {
+      return { status: 404, message: `Invalid exam id: ${examID}`, type: 'error' };
+    }
+    return { status: 200, exam: examMetadata };
+  } catch (err) {
+    console.log('Server: Error invoking getExamFromPG', err);
+  }
+  return {
+    status: 500,
+    message: 'Error invoking getExamFromPG',
+    type: 'error',
+  };
 };

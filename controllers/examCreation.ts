@@ -30,6 +30,7 @@ const createExamOnDatabase = async (exam: ExamInterface) => {
       description: exam.description,
       startTime: exam.startTime,
       duration: exam.duration,
+      totalMarks: exam.totalMarks
     };
     console.log("🚀 ~ file: examCreation.ts:34 ~ createExamOnDatabase ~ prismaExam.startTime:", prismaExam.startTime)
     console.log("🚀 ~ file: examCreation.ts:34 ~ createExamOnDatabase ~ prismaExam.startTime:", prismaExam.startTime)

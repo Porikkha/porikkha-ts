@@ -69,7 +69,7 @@ model DiscussionThread {
   creatorID          String
   title              String
   content            String
-  timePosted         DateTime  @default(now())
+  timeCreated        DateTime  @default(now())
   classroom          Classroom @relation(fields: [classroomID], references: [classroomID])
   creator            User      @relation(fields: [creatorID], references: [userID])
   Post               Post[]
@@ -81,17 +81,19 @@ model Post {
   threadID   BigInt
   content    String
   creator    User             @relation(fields: [creatorID], references: [userID])
+  timePosted DateTime         @default(now())
   discussion DiscussionThread @relation(fields: [threadID], references: [discussionThreadID])
   Reply      Reply[]
 }
 
 model Reply {
-  replyID   BigInt @id @default(autoincrement())
-  creatorID String
-  postID    BigInt
-  content   String
-  creator   User   @relation(fields: [creatorID], references: [userID])
-  post      Post   @relation(fields: [postID], references: [postID])
+  replyID     BigInt   @id @default(autoincrement())
+  creatorID   String
+  postID      BigInt
+  content     String
+  creator     User     @relation(fields: [creatorID], references: [userID])
+  timeReplied DateTime @default(now())
+  post        Post     @relation(fields: [postID], references: [postID])
 }
 
 model Submission {
@@ -99,6 +101,8 @@ model Submission {
   examID         String
   integrityScore Int?      @default(100)
   achievedMarks  Int?      @default(0)
+  totalAnswered  Int?      @default(0)
+  totalCorrect   Int?      @default(0)
   submissionTime DateTime? @default(now())
   exam           Exam      @relation(fields: [examID], references: [examID], onDelete: Cascade)
   student        User      @relation(fields: [studentID], references: [userID])
