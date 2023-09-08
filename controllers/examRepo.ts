@@ -80,6 +80,7 @@ export const getExamWithoutAnswer = async (userID: string, examID: string) => {
 
     // const exam = removeAnswerFromExam(examWithAnswer);
     const exam = permuteQuestions(examWithAnswer, userID, true);
+    console.log("🚀 ~ file: examRepo.ts:83 ~ getExamWithoutAnswer ~ exam:", exam)
 
     if (submission === null) return exam;
 

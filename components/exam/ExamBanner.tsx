@@ -80,8 +80,8 @@ export default function ExamBanner({ values, setters }: any) {
             value={values.examDuration}
             onChange={(e) => setters.setExamDuration(e.target.value)}
           />
-          <div className='py-2'>
-            <Label>Total Points: {values.totalScore}</Label>
+         <div className='py-2'>
+            <Label>Total Marks : {values.totalMarks}</Label>
           </div>
         </div>
 
