@@ -50,7 +50,10 @@ export const canJoinExam = async (examID: string) => {
     }
     const startTime = new Date(exam.startTime);
     const endTime = new Date(startTime.getTime() + exam.duration * 60000);
-    const now = new Date().getTime();
+    const result = (await prisma.$queryRaw`SELECT CURRENT_TIMESTAMP`) as unknown as {
+      current_timestamp: string;
+    }[];
+    const now = new Date(result[0].current_timestamp).getTime();
     if (now < startTime.getTime() || now > endTime.getTime()) {
       return { status: 403, message: 'Exam not started or already ended', type: 'info' };
     }
