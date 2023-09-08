@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Chip, Divider, Typography } from '@mui/joy';
+import Typography from '@mui/material/Typography';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ExamGrid } from '@/components/exam/ExamGrid';
@@ -101,7 +101,9 @@ export default function Page({ params }: { params: { examID: string } }) {
           </div>
           <div className='col-span-4 flex h-screen flex-col space-y-6 bg-light-gray p-3'>
             <div>
-              <Typography className='pb-2 text-3xl font-semibold'>{examTitle}</Typography>
+              <Typography align='center' className='pb-2 text-3xl font-inter text-slate-700'>
+                {examTitle}
+              </Typography>
             </div>
             <div>
               <Paper>
@@ -119,9 +121,9 @@ export default function Page({ params }: { params: { examID: string } }) {
             </div>
             <div>
               <Paper>
-                <CustomCircularProgress value={90}/>
-                <CustomCircularProgress value={40}/>
-                <CustomCircularProgress value={60}/>
+                <CustomCircularProgress value={90} label={'Integrity Score'} />
+                <CustomCircularProgress value={40} label={'Marks'} />
+                <CustomCircularProgress value={60} label={'Answered'} />
               </Paper>
             </div>
           </div>

@@ -42,13 +42,17 @@ function CircularProgressWithLabel(
           fontSize={30}
         >{`${Math.round(props.value)}%`}</Typography>
       </Box>
-      <Typography variant='h6' align='center'>
-        {props.label}
-      </Typography>
+      <Typography align='center'>{props.label}</Typography>
     </Box>
   );
 }
 
-export default function CustomCircularProgress({ value }: { value: number }) {
-  return <CircularProgressWithLabel value={value} label={'label'} />;
+export default function CustomCircularProgress({
+  value,
+  label,
+}: {
+  value: number;
+  label: string;
+}) {
+  return <CircularProgressWithLabel value={value} label={label} />;
 }
