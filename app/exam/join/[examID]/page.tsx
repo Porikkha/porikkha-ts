@@ -84,9 +84,15 @@ export default function Page({ params }: { params: { examID: string } }) {
         setLoading(false);
       }
     }
+    // const interval = setInterval(() => {
+    //   console.log('Saving exam...');
+    //   submitAnswers();
+    // }, 60000);
+    // return () => clearInterval(interval);
   };
-  const handleAnswerSubmit = async (event: any) => {
-    event.preventDefault();
+
+
+  const submitAnswers = async () => {
     const submission: Submission = {
       examID: params.examID,
       studentID: '',
@@ -123,7 +129,13 @@ export default function Page({ params }: { params: { examID: string } }) {
       }),
     });
     const data = await response.json();
+    return data;
+  }
+
+  const handleAnswerSubmit = async (event: any) => {
+    event.preventDefault();
     setShowAlert(true);
+    const data = await submitAnswers();
     setAlertType(data.type);
     setAlertText(data.message);
     if (data.status === 200) router.push('/dashboard?status=success');

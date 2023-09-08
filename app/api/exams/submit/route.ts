@@ -7,6 +7,7 @@ import {
   getSubmissionFromDatabase,
   checkSubmissionDeadline,
 } from '@/controllers/submission';
+import { getSubmission, saveAllSubmissionstoDB, saveSubmission } from '@/utils/redis';
 
 export async function POST(request: NextRequest) {
   const session = await getServerSession(authOptions);
@@ -23,6 +24,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(deadline);
   }
   body.submission.studentID = session?.user.id!;
+
+  // await saveSubmission(body.submission);
+  // const redisSubmission: any = await getSubmission(body.submission.studentID, body.submission.examID);
+  // console.log('🚀 ~ file: route.ts:11 ~ POST ~ redisSubmission:', redisSubmission);
+  // const allSubs = await getAllSubmissions();
+  // console.log(allSubs);
+  // saveAllSubmissionstoDB();
+
+
   const res = await createSubmissionOnDatabase(body.submission);
   return NextResponse.json(res);
 }
