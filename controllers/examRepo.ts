@@ -128,6 +128,8 @@ export const getExamDetailsFromPG = async (examID: string) => {
         achievedMarks: true,
         integrityScore: true,
         submissionTime: true,
+        totalAnswered: true,
+        totalCorrect: true,
         student: {
           select: {
             username: true,

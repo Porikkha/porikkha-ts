@@ -8,7 +8,7 @@ import { SubmissionGrid } from '@/components/submission/SubmissionGrid';
 import Sidebar from '@/components/dashboard/Sidebar';
 import Link from 'next/link';
 import Image from 'next/image';
-import CustomizedTables from '@/components/results/SubmissionTable';
+import SubmissionTable from '@/components/results/SubmissionTable';
 
 export default function Page({ params }: { params: { examID: string } }) {
   const searchParams = useSearchParams();
@@ -24,7 +24,7 @@ export default function Page({ params }: { params: { examID: string } }) {
       <section className='w-full pl-16'>
         <div className='grid grid-cols-8 gap-7 p-5'>
           <div className='bg-light-gray col-span-4 h-screen rounded-md p-5'>
-            <CustomizedTables examID={params.examID} />
+            <SubmissionTable examID={params.examID} />
           </div>
           <div className='bg-light-gray col-span-4 h-screen p-3'>
             <Typography className='pb-2 text-2xl'>Calendar</Typography>
