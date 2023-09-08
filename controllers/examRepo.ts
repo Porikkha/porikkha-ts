@@ -120,6 +120,19 @@ export const deleteExamFromDB = async (examID: string) => {
 
 export const getExamDetailsFromPG = async (examID: string) => {
   try {
+    const examMeta = await prisma.exam.findUnique({
+      where: {
+        examID: examID,
+      },
+      select: {
+        title: true,
+        totalMarks: true,
+      },
+    });
+    if (examMeta === null) {
+      return { status: 404, message: `Invalid exam id: ${examID}`, type: 'error' };
+    }
+
     const allSubmissionsForExamID = await prisma.submission.findMany({
       where: {
         examID: examID,
@@ -141,11 +154,16 @@ export const getExamDetailsFromPG = async (examID: string) => {
       '🚀 ~ file: examRepo.ts:108 ~ getExamDetailsFromPG ~ allSubmissionsForExamID:',
       allSubmissionsForExamID
     );
-    return { status: 200, rows: allSubmissionsForExamID };
+    return {
+      status: 200,
+      rows: allSubmissionsForExamID,
+      examTitle: examMeta.title,
+      totalMarks: examMeta.totalMarks,
+    };
   } catch (err) {
     console.log('🚀 ~ file: examRepo.ts:109 ~ getExamDetailsFromPG ~ err:', err);
   }
-  return { status: 500 };
+  return { status: 500, message: 'Error invoking getExamDetailsFromPG', type: 'error' };
 };
 
 // Needed for exam preview data, returns only the exam metadata

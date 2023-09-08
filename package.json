@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@devexpress/dx-react-chart-material-ui": "^4.0.5",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@fontsource/inter": "^5.0.8",
     "@mui/icons-material": "^5.14.3",
     "@mui/joy": "^5.0.0-beta.1",
     "@mui/material": "^5.14.7",
+    "@mui/x-charts": "^6.0.0-alpha.9",
     "@mui/x-date-pickers": "^6.12.1",
     "@prisma/client": "^5.1.1",
     "@types/node": "20.4.9",
