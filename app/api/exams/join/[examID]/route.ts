@@ -25,5 +25,6 @@ export async function GET(request: NextRequest, { params }: any) {
     return NextResponse.redirect(homeUrl + '/exam/preview/' + examID);
   }
   const exam = await getExamWithoutAnswer(userID, examID);
+  console.log("🚀 ~ file: route.ts:28 ~ GET ~ exam:", exam);
   return NextResponse.json({ status: 200, exam: exam });
 }

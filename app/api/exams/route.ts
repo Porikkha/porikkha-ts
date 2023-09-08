@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     body.exam.examID = examID;
     console.log('🚀 ~ file: route.ts:13 ~ POST ~ body.exam:', body.exam);
   }
-
+  
   const res = await createExamOnDatabase(body.exam);
   return NextResponse.json(res);
 }

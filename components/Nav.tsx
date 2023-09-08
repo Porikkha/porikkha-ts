@@ -15,6 +15,7 @@ import { BuiltInProviderType } from 'next-auth/providers/index';
 import { useRouter } from 'next/navigation';
 import ErrorAlert from './ui/ErrorAlert';
 import ExamInterface from '@/interfaces/Exam';
+import { addMinutes } from '@/utils/timeUtils';
 import {dummyClassroom} from '@/interfaces/Classroom';
 
 const Nav = () => {
@@ -32,7 +33,7 @@ const Nav = () => {
       title: 'Exam Title',
       description: 'Exam Description',
       questions: [],
-      startTime: new Date(),
+      startTime: addMinutes(new Date(),60),
       duration: 30,
       totalMarks: 0,
       allowedAbilities: [

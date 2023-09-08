@@ -1,3 +1,4 @@
+import { checkPast } from '@/utils/timeUtils';
 import {
   Input,
   Typography,
@@ -54,7 +55,14 @@ export default function EditExamDetailsModal({ open, setOpen, values, setters }:
               <Input
                 type='datetime-local'
                 value={values.startTime}
-                onChange={(e) => setters.setStartTime(e.target.value)}
+                onChange={(e) => {
+                  if (new Date(e.target.value) < new Date()) {
+                    console.log('Please insert valid time');
+                    alert('Please insert valid time');
+                  } else {
+                    setters.setStartTime(e.target.value);
+                  }
+                }}
               />
             </FormControl>
             <Button type='submit' variant='soft'>

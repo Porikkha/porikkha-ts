@@ -40,7 +40,7 @@ export function mergeSubmissionWithExam(exam: Exam, submission: Submission) {
   var indexQuestion : number[] = new Array<number>(exam.questions.length+2) ; 
   
   exam.questions.map((question,index) => {
-    indexQuestion[question.id] = index; 
+    indexQuestion[(question as Answer).questionId!] = index; 
   }); 
 
   const ques = submission.answers.map((answer, index) => {

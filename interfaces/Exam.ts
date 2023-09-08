@@ -43,17 +43,29 @@ export const removeAnswerFromExam = (exam: Exam, rand?: Random) => {
 
 export const permuteQuestions = (exam: Exam, studentID: string, remove_answer: boolean = true): Exam => {
   let rand: Random = new Random(stringToNumber(exam.examID+studentID)) ;
-  console.log(`Seed Mapping: ${exam.examID+studentID} --- >  ${stringToNumber(exam.examID+studentID)} `);  
-  console.log("🚀 ~ file: Exam.ts:51 ~ varnewQuestions:Question[]=exam.questions.map ~ exam.questions:", exam.questions)
+  // console.log(`Seed Mapping: ${exam.examID+studentID} --- >  ${stringToNumber(exam.examID+studentID)} `);  
+  // console.log("🚀 ~ file: Exam.ts:51 ~ varnewQuestions:Question[]=exam.questions.map ~ exam.questions:", exam.questions)
   
   if( remove_answer === true ) exam = removeAnswerFromExam(exam,rand) ;
 
   exam.questions.map((question, index) => {
     let i = rand.randrange(index,exam.questions.length-1);
-    console.log(i);
+    // console.log(i);
     [exam.questions[i], exam.questions[index] ] = [exam.questions[index], exam.questions[i]] ;
   });
-
-  console.log("🚀 ~ file: Exam.ts:54 ~ permuteQuestions ~ newQuestions:", exam.questions)
+  exam.questions.map((question, index) => {
+    question.id = index+1;
+  });
+  // console.log("🚀 ~ file: Exam.ts:54 ~ permuteQuestions ~ newQuestions:", exam.questions)
   return exam; 
+}
+
+export const getExamTotalMarks = (questions:Question[]):number => {
+  let totalMarks:number = 0 ;
+  
+  questions.map((question) => {
+    totalMarks += question.points ;
+  });
+
+  return totalMarks; 
 }

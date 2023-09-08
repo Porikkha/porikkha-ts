@@ -7,7 +7,7 @@ import EditExamDetailsModal from '@/components/exam/EditExamDetailsModal';
 import ExamBanner from '@/components/exam/ExamBanner';
 import SuccessAlert from '@/components/ui/SuccessAlert';
 import Question from '@/interfaces/question/Question';
-import ExamInterface from '@/interfaces/Exam';
+import ExamInterface, { getExamTotalMarks } from '@/interfaces/Exam';
 
 import MultipleChoiceQuestion, {
   dummyQuestions as dummyMCQs,
@@ -21,11 +21,13 @@ const dummyQuestions = (dummyMCQs as Question[]).concat(dummySCQs).concat(dummyS
 import Exam from '@/interfaces/Exam';
 import EditQuestionModal from '@/components/questions/EditQuestionModal';
 import { CircularProgress } from '@mui/joy';
+import { Answer } from '@/interfaces';
 
 const Home = ({ params }: { params: { examID: string } }) => {
   const setQuestionNumbers = (questions: Question[]) => {
     return questions.map((question, index) => {
       question.id = index + 1;
+      (question as Answer).questionId = question.id ;
       return question;
     });
   };
@@ -48,7 +50,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
   const [showSuccessAlert, setShowSuccessAlert] = useState(false);
   const [quess, setQuess] = useState<Question[]>(setQuestionNumbers(dummyQuestions));
   const { data: session } = useSession();
-  const [totalScore, setTotalScore] = useState(0);
+  const [totalMarks, setTotalMarks] = useState(0);
 
   const [loading, setLoading] = useState(true);
   const examID = params.examID;
@@ -62,7 +64,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
     setShuffleQuestions,
     setAllowKeyboardShortcuts,
     setEnableAutoGrading,
-    setTotalScore,
+    setTotalMarks,
   };
 
   const values = {
@@ -75,7 +77,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
     allowKeyboardShortcuts,
     enableAutoGrading,
     examID,
-    totalScore,
+    totalMarks,
   };
 
   const deleteQuestion = (index: number) => {
@@ -129,7 +131,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
       questions: quess,
       startTime: new Date(startTimeFormatted),
       duration: parseInt(examDuration?.trim()),
-      totalMarks: totalScore,
+      totalMarks: totalMarks,
       allowedAbilities: [
         {
           type: 'shuffle',
@@ -156,7 +158,10 @@ const Home = ({ params }: { params: { examID: string } }) => {
     const data = await response.json();
 
     // setShowSuccessAlert(data.status == 200);
-    router.push('/dashboard?status=success');
+    if( data.status != 200 ){
+      alert("Exam creation failed") ;
+    }  
+    else router.push('/dashboard?status=success');
   };
 
   const fetchExam = async (examID: string) => {
@@ -173,7 +178,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
       setQuess(setQuestionNumbers(exam.questions));
       setExamDuration(exam.duration?.toString());
       exam.questions.forEach((question: Question) => {
-        setTotalScore((prev) => prev + parseInt(question.points.toString()));
+        setTotalMarks((prev) => prev + parseInt(question.points.toString()));
       });
     }
     setLoading(false);
@@ -184,9 +189,9 @@ const Home = ({ params }: { params: { examID: string } }) => {
   }, []);
 
   useEffect(() => {
-    setTotalScore(0);
+    setTotalMarks(0);
     quess.forEach((question: Question) => {
-      setTotalScore((prev) => prev + parseInt(question.points.toString()));
+      setTotalMarks((prev) => prev + parseInt(question.points.toString()));
     });
   }, [quess]);
   

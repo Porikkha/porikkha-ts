@@ -11,6 +11,7 @@ import {
 } from '@mui/joy';
 
 import { getTimeDifference } from '@/utils/helper';
+import { useRouter } from 'next/navigation';
 
 const ExamBanner = ({ params }: { params: { examID: string } }) => {
   const [title, setTitle] = useState<string>('Loading data...');
@@ -19,6 +20,7 @@ const ExamBanner = ({ params }: { params: { examID: string } }) => {
   const [endTime, setEndTime] = useState<string>('00:00 AM');
   const [remainingTime, setRemainingTime] = useState<string>('00:00');
   const [open, setOpen] = useState(false);
+  const router = useRouter();
   const description =
     "Once you start, you can't pause the timer. Don't worry, Forms gives you a final minute reminder before submission. Your answers will be automatically submitted when the time is up. Please prepare before you begin to help manage your submission time.";
   const fetchExamMetadata = async () => {
@@ -33,10 +35,26 @@ const ExamBanner = ({ params }: { params: { examID: string } }) => {
       setStartTime(new Date(exam.startTime).toLocaleTimeString());
       const endTime = new Date(exam.startTime).getTime() + exam.duration * 60 * 1000;
       setEndTime(new Date(endTime).toLocaleTimeString());
-      const interval = setInterval(() => {
-        setRemainingTime(getTimeDifference(new Date(endTime)));
-      }, 1000);
-      return () => clearInterval(interval);
+      const remainingTime = getTimeDifference(new Date(exam.startTime), endTime);
+      setRemainingTime(remainingTime);
+
+      if (remainingTime.includes('started')) {
+        router.push(`/exam/join/${params.examID}`);
+        return;
+      } else if (remainingTime.includes('passed')) {
+        return;
+      } else {
+        const interval = setInterval(() => {
+          const remainingTime = getTimeDifference(new Date(exam.startTime), endTime);
+          if (remainingTime.includes('started')) {
+            clearInterval(interval);
+            alert('Please reload page to join exam');
+            return;
+          }
+          setRemainingTime(remainingTime);
+        }, 1000);
+        return () => clearInterval(interval);
+      }
     }
   };
   useEffect(() => {

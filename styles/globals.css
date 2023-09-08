@@ -18,13 +18,14 @@
 
 :root {
   /* colors */
-  --clr-purple-1: #562685;
+  --clr-purple-2: #562685;
   --clr-primary: rgb(30, 174, 47);
   --clr-gray-02-70: #757575;
   --clr-gray-100: #242424;
   --clr-gray-02-100: #0a0a0a;
   --clr-ghostwhite-100: #f6f6ff;
   --clr-purple-1: #694df9;
+  --clr-purple-3: #b1a3f5;
   --clr-blueviolet-100: rgba(124, 58, 237, 0.63);
   --clr-lavender-100: #e2e3fc;
   --clr-purple-primary-focus: #e2dcff;

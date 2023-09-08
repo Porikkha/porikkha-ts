@@ -1,3 +1,5 @@
+import NoWorkResult from 'postcss/lib/no-work-result';
+
 export const generateId = (length = 6) => {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   let result = '';
@@ -7,12 +9,16 @@ export const generateId = (length = 6) => {
   return result;
 };
 
-export function getTimeDifference(targetDate: Date): string {
-  const now = new Date();
-  let difference = targetDate.getTime() - now.getTime();
+export function getTimeDifference(targetDate: Date, endTime: number): string {
+  const now = new Date().getTime();
+  let difference = targetDate.getTime() - now;
 
   if (difference < 0) {
-    return 'Event has passed';
+    if (now < endTime) {
+      return 'Exam has started';
+    } else if (now > endTime) {
+      return 'Event has passed';
+    }
   }
 
   const days = Math.floor(difference / (1000 * 60 * 60 * 24));

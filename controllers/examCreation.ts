@@ -13,8 +13,14 @@ const createExamOnDatabase = async (exam: ExamInterface) => {
   }
   // Attempt to create the exam in the database.
   try {
+    if( new Date(exam.startTime) < new Date() ){
+      console.log("🚀 ~ file: examCreation.ts:17 ~ createExamOnDatabase ~ Date:", new Date()); 
+      console.log("🚀 ~ file: examCreation.ts:17 ~ createExamOnDatabase ~ startTime:", exam.startTime);
+      console.error('🚀 Error during exam creation: past time inserted.');
+      throw new Error('Past time inserted.');
+    }
+    
     const filter = { examID: exam.examID };
-
     await Exam.findOneAndUpdate(filter, exam, { upsert: true });
     console.log('✅ Exam creation successful on Mongo!');
     const prismaExam = {
@@ -26,6 +32,8 @@ const createExamOnDatabase = async (exam: ExamInterface) => {
       duration: exam.duration,
       totalMarks: exam.totalMarks
     };
+    console.log("🚀 ~ file: examCreation.ts:34 ~ createExamOnDatabase ~ prismaExam.startTime:", prismaExam.startTime)
+    console.log("🚀 ~ file: examCreation.ts:34 ~ createExamOnDatabase ~ prismaExam.startTime:", prismaExam.startTime)
     const createdExam = await prisma.exam.upsert({
       where: {
         examID: exam.examID,
@@ -40,7 +48,7 @@ const createExamOnDatabase = async (exam: ExamInterface) => {
     console.log('✅ Exam creation successful on Prisma!');
   } catch (err) {
     console.error('🚀 Error during exam creation:', err);
-    return { status: 500 };
+    return { status: 500, error:err };
   }
   return { status: 200, examID: exam.examID };
 };

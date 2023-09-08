@@ -2,10 +2,6 @@ generator client {
   provider = "prisma-client-js"
 }
 
-// generator erd {
-//   provider = "prisma-erd-generator"
-// }
-
 datasource db {
   provider = "cockroachdb"
   url      = env("DATABASE_URL")
@@ -38,11 +34,11 @@ model Exam {
   submissions Int          @default(0)
   totalMarks  Int          @default(0)
   isPublished Boolean      @default(false)
+  canSubmit   Boolean      @default(true)
   classroom   Classroom?   @relation(fields: [classroomID], references: [classroomID], onDelete: Cascade)
   creator     User         @relation(fields: [creatorID], references: [userID], onDelete: Cascade)
   questions   Question[]
   Submission  Submission[]
-  canSubmit   Boolean      @default(true)
 }
 
 model Question {
@@ -102,14 +98,14 @@ model Reply {
 
 model Submission {
   studentID      String
-  student        User      @relation(fields: [studentID], references: [userID])
   examID         String
-  exam           Exam      @relation(fields: [examID], references: [examID], onDelete: Cascade)
   integrityScore Int?      @default(100)
   achievedMarks  Int?      @default(0)
   totalAnswered  Int?      @default(0)
   totalCorrect   Int?      @default(0)
   submissionTime DateTime? @default(now())
+  exam           Exam      @relation(fields: [examID], references: [examID], onDelete: Cascade)
+  student        User      @relation(fields: [studentID], references: [userID])
 
   @@id([studentID, examID], name: "student_exam_composite_id")
 }

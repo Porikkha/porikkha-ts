@@ -58,12 +58,9 @@ export default function Page({ params }: { params: { examID: string } }) {
   }
 
   const fetchSubmissions = async () => {
-    const response = await fetch(
-      'http://localhost:3000/api/exams/results/' + params.examID,
-      {
-        method: 'GET',
-      }
-    );
+    const response = await fetch('/api/exams/results/' + params.examID, {
+      method: 'GET',
+    });
     const data = await response.json();
     console.log('🚀 ~ file: SubmissionTable.tsx:44 ~ fetchSubmissions ~ data:', data);
     setExamTitle(data.examTitle);
@@ -101,7 +98,10 @@ export default function Page({ params }: { params: { examID: string } }) {
           </div>
           <div className='col-span-4 flex h-screen flex-col space-y-6 bg-light-gray p-3'>
             <div>
-              <Typography align='center' className='pb-2 text-3xl font-inter text-slate-700'>
+              <Typography
+                align='center'
+                className='pb-2 font-inter text-3xl text-slate-700'
+              >
                 {examTitle}
               </Typography>
             </div>
