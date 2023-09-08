@@ -26,6 +26,7 @@ export function ExamGrid() {
         creatorID: exam.creatorID,
         description: exam.description,
         duration: exam.duration,
+        totalMarks: exam.totalMarks,
         startTime: new Date(exam.startTime),
         title: exam.title,
         questions: [],
