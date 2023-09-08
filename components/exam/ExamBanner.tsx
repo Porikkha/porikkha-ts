@@ -15,8 +15,7 @@ import {
 } from '@mui/joy';
 import Label from '@/components/ui/Labels';
 import { Edit } from '@mui/icons-material';
-import {EditNote } from '@mui/icons-material';
-
+import { EditNote } from '@mui/icons-material';
 
 export default function ExamBanner({ values, setters }: any) {
   return (
@@ -36,10 +35,10 @@ export default function ExamBanner({ values, setters }: any) {
           >
           </button> */}
           <IconButton
-            sx={{color:"var(--clr-purple-1)"}}
+            sx={{ color: 'var(--clr-purple-1)' }}
             onClick={() => setters.setOpen(true)}
           >
-            <EditNote/> 
+            <EditNote />
           </IconButton>
         </div>
         <p className='text-gray-500'>{values.startTimeFormatted}</p>
@@ -80,6 +79,9 @@ export default function ExamBanner({ values, setters }: any) {
             value={values.examDuration}
             onChange={(e) => setters.setExamDuration(e.target.value)}
           />
+          <div className='py-2'>
+            <Label>Total Points: {values.totalScore}</Label>
+          </div>
         </div>
 
         <div className='pt-2'>

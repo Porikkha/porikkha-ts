@@ -251,7 +251,7 @@ export default function EditQuestion({
               onChange={(e) => {
                 setQuestion({
                   ...qdata,
-                  points: e.target.value as unknown as number,
+                  points: Number(e.target.value),
                 });
               }}
             />
