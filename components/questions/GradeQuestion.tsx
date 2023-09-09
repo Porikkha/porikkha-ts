@@ -217,9 +217,12 @@ export default function GradeQuestion({
   adata: Answer;
   setScore: any;
 }) {
+
+  const [curScore, setCurScore] = React.useState(adata.score);
+
   return (
     <Card
-      className='my-3'
+      className='p-3'
       variant='outlined'
       color='primary'
       sx={{ stroke: '#E2E3FC', margin: 'auto' }}
@@ -228,8 +231,9 @@ export default function GradeQuestion({
       <Box sx={{display:"flex",flexDirection:"row",width:"125px",marginLeft:"auto"}}>
         <Typography>Score:</Typography>
         <Input
-          value={adata.score}
+          value={curScore}
           onChange={(e) => {
+            setCurScore( Number(e.target.value)) ;
             setScore(e.target.value);
           }}
         />

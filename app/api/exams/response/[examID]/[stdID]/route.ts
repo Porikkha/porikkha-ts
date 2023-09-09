@@ -23,7 +23,7 @@ export async function GET(request: NextRequest, { params }: any) {
   const stdID = params.stdID;
   const examID = params.examID;
 
-  await autogradeAndUpdateSubmission(examID, stdID);
+  // await autogradeAndUpdateSubmission(examID, stdID);
   const exam = await getExamWithSubmission(stdID, examID);
   if (exam == null) {
     return NextResponse.redirect(homeUrl);

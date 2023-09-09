@@ -8,20 +8,20 @@ datasource db {
 }
 
 model User {
-  userID                String             @id @default(uuid())
-  username              String             @db.String(255)
-  email                 String             @unique @db.String(255)
-  image                 String?            @db.String(255)
-  role                  String             @default("examiner")
-  createdClassrooms     Classroom[]        @relation("createdClassrooms")
-  discussions           DiscussionThread[]
-  Exam                  Exam[]
-  posts                 Post[]
-  replies               Reply[]
-  submissions           Submission[]
-  joinedClassrooms      Classroom[]        @relation("joinedClassrooms")
-  sentNotifications     Notification[]     @relation("NotificationSender")
-  receivedNotifications Notification[]     @relation("NotificationReceiver")
+  userID                                        String             @id @default(uuid())
+  username                                      String             @db.String(255)
+  email                                         String             @unique @db.String(255)
+  image                                         String?            @db.String(255)
+  role                                          String             @default("examiner")
+  createdClassrooms                             Classroom[]        @relation("createdClassrooms")
+  discussions                                   DiscussionThread[]
+  Exam                                          Exam[]
+  Notification_Notification_fromUserEmailToUser Notification[]     @relation("Notification_fromUserEmailToUser")
+  Notification_Notification_toUserEmailToUser   Notification[]     @relation("Notification_toUserEmailToUser")
+  posts                                         Post[]
+  replies                                       Reply[]
+  submissions                                   Submission[]
+  joinedClassrooms                              Classroom[]        @relation("joinedClassrooms")
 }
 
 model Exam {
@@ -93,8 +93,8 @@ model Reply {
   creatorID   String
   postID      BigInt
   content     String
-  creator     User     @relation(fields: [creatorID], references: [userID])
   timeReplied DateTime @default(now())
+  creator     User     @relation(fields: [creatorID], references: [userID])
   post        Post     @relation(fields: [postID], references: [postID])
 }
 
@@ -103,10 +103,10 @@ model Submission {
   examID         String
   integrityScore Int?      @default(100)
   achievedMarks  Int?      @default(0)
+  submissionTime DateTime? @default(now())
   totalAnswered  Int?      @default(0)
   totalCorrect   Int?      @default(0)
   graded         Boolean?  @default(false)
-  submissionTime DateTime? @default(now())
   exam           Exam      @relation(fields: [examID], references: [examID], onDelete: Cascade)
   student        User      @relation(fields: [studentID], references: [userID])
 
@@ -123,13 +123,12 @@ model Report {
 }
 
 model Notification {
-  notificationID String   @id @default(uuid())
-  fromUserID     String // User who sends the notification
-  toUserID       String // User who receives the notification
-  content        String // Content of the notification, e.g., the exam code or a message
-  timestamp      DateTime @default(now()) // When the notification was sent
-  isRead         Boolean  @default(false) // Whether the notification has been read by the recipient
-
-  fromUser User @relation("NotificationSender", fields: [fromUserID], references: [userID])
-  toUser   User @relation("NotificationReceiver", fields: [toUserID], references: [userID])
+  notificationID                        String   @id @default(uuid())
+  content                               String
+  timestamp                             DateTime @default(now())
+  isRead                                Boolean  @default(false)
+  fromUserEmail                         String
+  toUserEmail                           String
+  User_Notification_fromUserEmailToUser User     @relation("Notification_fromUserEmailToUser", fields: [fromUserEmail], references: [email])
+  User_Notification_toUserEmailToUser   User     @relation("Notification_toUserEmailToUser", fields: [toUserEmail], references: [email])
 }

@@ -53,7 +53,9 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
     const filter = { examID: submission.examID, studentID: submission.studentID };
 
     await Submission.findOneAndUpdate(filter, submission, { upsert: true });
+    console.log('--------------------------------------------');
     console.log('✅ Submission creation successful on Mongo!');
+    console.log(submission);
     const prismaSubmission = {
       examID: submission.examID,
       studentID: submission.studentID,
