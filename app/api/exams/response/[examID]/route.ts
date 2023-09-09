@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, { params }: any) {
 
   const userID = session?.user.id!; 
 
-  const stdID = params.stdID;
+  const stdID = session?.user.id!; 
   const examID = params.examID;
 
   // await autogradeAndUpdateSubmission(examID, stdID);

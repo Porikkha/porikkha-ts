@@ -61,6 +61,7 @@ const createSubmissionOnDatabase = async (submission: SubmissionInterface) => {
       studentID: submission.studentID,
       integrityScore: submission?.integrityScore,
       achievedMarks: submission?.achievedMarks,
+      graded: submission?.graded,
     };
     const createdSubmission = await prisma.submission.upsert({
       where: {
