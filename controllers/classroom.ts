@@ -157,7 +157,11 @@ export const getClassroom = async (classroomID: string, userID: string) => {
         message: `Classroom ${classroomID} not found in PrismaDB`,
       };
     }
-    return { status: 200, classroom: classroom, isCreator: classroom.creatorID === userID };
+    return {
+      status: 200,
+      classroom: classroom,
+      isCreator: classroom.creatorID === userID,
+    };
   } catch (e) {
     console.log('Error invoking getClassroom: ', e);
   }
@@ -211,4 +215,40 @@ export const addExamToClassroom = async (params: {
     console.log('Error invoking addExamToClassroom: ', e);
   }
   return { status: 500, message: `Server: Error invoking addExamToClassroom` };
+};
+
+export const inviteUserToClassroom = async (params: {
+  toUserEmail: string;
+  fromUserEmail: string;
+  content: string;
+}) => {
+  try {
+    const toUserExists = await prisma.user.findFirst({
+      where: {
+        email: params.toUserEmail,
+      },
+    });
+    if (toUserExists === null) {
+      return {
+        status: 404,
+        message: `No user with email ${params.toUserEmail} found`,
+        type: 'warning',
+      };
+    }
+    await prisma.notification.create({
+      data: {
+        content: params.content,
+        fromUserEmail: params.fromUserEmail,
+        toUserEmail: params.toUserEmail,
+      },
+    });
+    return { status: 200, message: 'Invitation sent successfully', type: 'success' };
+  } catch (err) {
+    console.log('Error invoking inviteUserToClassroom: ', err);
+  }
+  return {
+    status: 500,
+    message: `Server: Error invoking inviteUserToClassroom`,
+    type: 'error',
+  };
 };

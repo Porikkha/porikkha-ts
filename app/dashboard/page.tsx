@@ -11,6 +11,7 @@ import Image from 'next/image';
 import QuickJoin from '@/components/dashboard/QuickJoin';
 import Calendar from '@/components/dashboard/Calendar';
 import PublishedResults from '@/components/dashboard/PublishedResults';
+import TabsSegmentedControls from '@/components/dashboard/TabSegmentedControls';
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -25,12 +26,12 @@ export default function Page() {
       <Sidebar />
       <section className='w-full pl-16'>
         <div className='grid grid-cols-7 gap-2 p-5'>
-          <div className='col-span-5 rounded-md bg-light-gray p-5 h-screen'>
+          <div className='col-span-5 h-screen rounded-md bg-light-gray p-5'>
             <div className='flex'>
-            <Typography className='pb-2 text-3xl'>
-              Welcome, {session?.user.name!}
-            </Typography>
-            {/* <Link href='/profile' className='ml-auto float-right'>
+              <Typography className='pb-2 text-3xl'>
+                Welcome, {session?.user.name!}
+              </Typography>
+              {/* <Link href='/profile' className='ml-auto float-right'>
               <Image
                 src={session?.user.image as string}
                 width={37}
@@ -44,13 +45,9 @@ export default function Page() {
             <ExamGrid />
             <SubmissionGrid />
           </div>
-          <div className='col-span-2 bg-light-gray p-3 h-screen'>
-              <Calendar />
-              <PublishedResults />
+          <div className='col-span-2 h-screen bg-light-gray p-3'>
+            <TabsSegmentedControls />
           </div>
-
-
-
         </div>
       </section>
     </>
