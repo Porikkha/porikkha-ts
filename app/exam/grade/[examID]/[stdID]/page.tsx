@@ -63,13 +63,7 @@ export default function Page({ params }: { params: { examID: string; stdID: stri
         });
         const body = await response.json();
         if (response.redirected) {
-            // router.push(response.url);
-        }
-        else {
-            // const data = await response.json();
-            // if (data.status == 200 ) {
-            //     console.log(data);
-            // }
+            router.push(response.url);
         }
     }
     useEffect(() => {
@@ -80,7 +74,11 @@ export default function Page({ params }: { params: { examID: string; stdID: stri
     <>
     <div className='w-full'>
         <ExamGradingBanner exam={exam} submission={submission} />
-
+        {
+            exam.questions.map( (question: QuestionInterface, index: number) => {
+                return (<p>{question.title}</p>);
+            })
+        }
 
       <div className='mx-auto w-4/5'>
         <form className='float-right py-5' onSubmit={handleSubmission}>
