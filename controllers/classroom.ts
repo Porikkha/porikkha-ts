@@ -139,7 +139,7 @@ export const upsertClassroom = async (classroom: ClassroomInterface) => {
   return { status: 500 };
 };
 
-export const getClassroom = async (classroomID: string) => {
+export const getClassroom = async (classroomID: string, userID: string) => {
   try {
     const classroom = await prisma.classroom.findUnique({
       where: {
@@ -153,14 +153,15 @@ export const getClassroom = async (classroomID: string) => {
       console.log('👎 Error invoking getClassroom: Classroom not found in PrismaDB');
       return {
         status: 404,
-        message: `Server: Classroom ${classroomID} not found in PrismaDB`,
+        type: 'error',
+        message: `Classroom ${classroomID} not found in PrismaDB`,
       };
     }
-    return { status: 200, classroom: classroom };
+    return { status: 200, classroom: classroom, isCreator: classroom.creatorID === userID };
   } catch (e) {
     console.log('Error invoking getClassroom: ', e);
   }
-  return { status: 500, message: `Server: Error invoking getClassroom` };
+  return { status: 500, type: 'error', message: `Error invoking getClassroom` };
 };
 
 export const addExamToClassroom = async (params: {

@@ -20,6 +20,8 @@ import { IconButton } from '@mui/joy';
 import { EditNote } from '@mui/icons-material';
 import { dummyClassroom } from '@/interfaces/Classroom';
 import DiscussionCard from '@/components/classroom/DiscussionCard';
+import GenericAlert from '@/components/ui/GenericAlert';
+import { AlertColor } from '@mui/material';
 
 export default function Page({ params }: { params: { classroomID: string } }) {
   const searchParams = useSearchParams();
@@ -29,6 +31,10 @@ export default function Page({ params }: { params: { classroomID: string } }) {
   const [classroomName, setClassroomName] = useState('Classroom Name');
   const [classroomDesc, setClassroomDesc] = useState('Classroom Description');
   const [classroomID, setClassroomID] = useState('');
+  const [isCreator, setIsCreator] = useState(true);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertType, setAlertType] = useState<AlertColor>('success');
+  const [alertText, setAlertText] = useState('Initial Alert Text');
   const [exams, setExams] = useState([]);
   const values = { classroomName, classroomDesc };
   const setters = { setClassroomName, setClassroomDesc };
@@ -41,8 +47,12 @@ export default function Page({ params }: { params: { classroomID: string } }) {
       setClassroomDesc(data.classroom.description);
       setClassroomID(data.classroom.classroomID);
       setExams(data.classroom.exams);
+      setIsCreator(data.isCreator);
     } else {
       console.log('Something bad happened while fetching classroom data: ', data.message);
+      setAlertType(data.type);
+      setAlertText(data.message);
+      setShowAlert(true);
     }
   };
 
@@ -53,6 +63,12 @@ export default function Page({ params }: { params: { classroomID: string } }) {
     <>
       <Sidebar />
       <section className='w-full pl-16'>
+        <GenericAlert
+          show={showAlert}
+          setShow={setShowAlert}
+          type={alertType}
+          text={alertText}
+        />
         {/* ---------Added by shuaib---------*/}
         <EditClassroomModal
           open={open}
@@ -96,7 +112,7 @@ export default function Page({ params }: { params: { classroomID: string } }) {
                 {classroomDesc}
               </Typography>
             </div>
-            <QuickAdd classroomID={classroomID} />
+            {isCreator && <QuickAdd classroomID={classroomID} />}
             {/* ------------------ */}
             <Divider className='bg-slate-200' />
             <div className='my-2 flex gap-1'>

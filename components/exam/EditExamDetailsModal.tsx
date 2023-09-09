@@ -56,15 +56,13 @@ export default function EditExamDetailsModal({ open, setOpen, values, setters }:
                 type='datetime-local'
                 value={values.startTime}
                 onChange={(e) => {
-                  if( new Date(e.target.value) < new Date() ){
-                    console.log("Please insert valid time");
-                    alert("Please insert valid time");
-                  }
-                  else{ 
+                  if (new Date(e.target.value) < new Date()) {
+                    console.log('Please insert valid time');
+                    alert('Please insert valid time');
+                  } else {
                     setters.setStartTime(e.target.value);
                   }
-                } 
-                }
+                }}
               />
             </FormControl>
             <Button type='submit' variant='soft'>
