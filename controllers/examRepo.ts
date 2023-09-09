@@ -55,13 +55,13 @@ export const hasExamEnded = async (examID: string) => {
     }[];
     const now = new Date(result[0].current_timestamp).getTime();
     if (now < endTime.getTime()) {
-      return { status: 403, message: 'Exam not ended', type: 'info' };
+      return false;
     }
-    return { status: 200 };
+    return true;
   } catch (err) {
-    console.log('Error invoking canJoinExam', err);
+    return false;
   }
-  return { status: 500, message: 'Error invoking canJoinExam', type: 'error' };
+  return false;
 }
 
 export const canJoinExam = async (examID: string) => {
