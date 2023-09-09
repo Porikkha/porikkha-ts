@@ -31,16 +31,16 @@ export const addUserToClassroom = async (classroomID: string, userID: string) =>
     if (classroom === null) {
       return {
         status: 404,
-        type: 'error',
-        message: `Server: Classroom ${classroomID} does not exist`,
+        type: 'warning',
+        message: `Classroom ${classroomID} does not exist`,
       };
     }
     const alreadyExists = await checkAlreadyExisting(classroomID, userID);
     if (alreadyExists) {
       return {
         status: 404,
-        type: 'error',
-        message: `Cannot add: User ${userID} already exists in Classroom ${classroomID}`,
+        type: 'info',
+        message: `You are already in Classroom ${classroomID}`,
       };
     }
     const res = await prisma.classroom.update({
@@ -57,8 +57,8 @@ export const addUserToClassroom = async (classroomID: string, userID: string) =>
     });
     return {
       status: 200,
-      type: 'info',
-      message: `Server: User ${userID} added to Classroom ${classroomID}`,
+      type: 'success',
+      message: `You have been added to Classroom ${classroomID}`,
     };
   } catch (err) {
     console.log('👎 Error invoking addUserToClassroom: ', err);

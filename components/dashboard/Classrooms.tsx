@@ -1,5 +1,6 @@
 import ClassroomCard from './ClassroomCard';
 import { useState, useEffect } from 'react';
+import QuickJoinClassroom from './QuickJoinClassroom';
 export default function Classrooms() {
   type Classroom = {
     name: string;
@@ -8,15 +9,16 @@ export default function Classrooms() {
     classroomID: string;
   };
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
-  const fetchClassrooms = async () => {
-    
-  };
+  const fetchClassrooms = async () => {};
   return (
-    <ClassroomCard
-      name='Classroom 1'
-      description='Sample description'
-      creator='Shuaib'
-      classroomID='123456'
-    />
+    <>
+      <QuickJoinClassroom />
+      <ClassroomCard
+        name='Classroom 1'
+        description='Sample description'
+        creator='Shuaib'
+        classroomID='123456'
+      />
+    </>
   );
 }
