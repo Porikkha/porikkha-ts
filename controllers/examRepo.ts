@@ -1,6 +1,10 @@
 import { connectMongoDB } from '@/utils/database';
 import Exam from '@/models/exams';
-import ExamInterface, { permuteQuestions, removeAnswerFromExam } from '@/interfaces/Exam';
+import ExamInterface, {
+  ExamResponse,
+  permuteQuestions,
+  removeAnswerFromExam,
+} from '@/interfaces/Exam';
 import { prisma } from '@/utils/database';
 import {
   MultipleChoiceAnswer,
@@ -99,7 +103,7 @@ export const canJoinExam = async (examID: string) => {
 export const getExamWithoutAnswer = async (
   userID: string,
   examID: string
-): Promise<ExamInterface | null> => {
+): Promise<ExamResponse | null> => {
   // Connect to mongoDB
   try {
     await connectMongoDB();
@@ -121,9 +125,9 @@ export const getExamWithoutAnswer = async (
     const exam = permuteQuestions(examWithAnswer, userID, true);
     console.log('🚀 ~ file: examRepo.ts:83 ~ getExamWithoutAnswer ~ exam:', exam);
 
-    if (submission === null) return exam;
+    if (submission === null) return { exam: exam, integrityScore: 100 };
 
-    return mergeSubmissionWithExam(exam, submission);
+    return { exam: mergeSubmissionWithExam(exam, submission), integrityScore: submission.integrityScore! };
   } catch (err: any) {
     throw new Error('🚀 Error during exam fetch:', err);
   }

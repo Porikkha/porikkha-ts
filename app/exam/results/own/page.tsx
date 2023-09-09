@@ -37,7 +37,6 @@ export default function Page({ params }: { params: { examID: string } }) {
       method: 'GET',
     });
     const data = await response.json();
-    console.log(data);
     setExamTitle('Your Analytics');
     // first clear all previous rows
     setRows([]);

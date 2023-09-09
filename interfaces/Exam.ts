@@ -21,6 +21,11 @@ export default interface Exam {
   allowedAbilities: Object[];
 }
 
+export interface ExamResponse {
+  exam: Exam;
+  integrityScore: number;
+}
+
 export const dummyExam: Exam = {
   creatorID: '1',
   examID: '123456',

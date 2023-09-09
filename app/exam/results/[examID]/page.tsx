@@ -41,7 +41,6 @@ export default function Page({ params }: { params: { examID: string } }) {
     setExamTitle(data.examTitle);
     // first clear all previous rows
     setRows([]);
-    console.log('---------', data.rows);
     data.rows.forEach((sub: any) => {
       setRows((prev) => [
         ...prev,
