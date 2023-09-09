@@ -63,9 +63,12 @@ export default function Page({ params }: { params: { examID: string; stdID: stri
             body: JSON.stringify(submission),
         });
         const body = await response.json();
-        if (response.redirected) {
-            router.push(response.url);
+        if (body.status == 200) {
+            router.push(`/exam/results/${params.examID}`);
         }
+        // if (response.redirected) {
+        //     router.push(response.url);
+        // }
     }
     useEffect(() => {
         fetchExam(params.examID);
@@ -76,15 +79,24 @@ export default function Page({ params }: { params: { examID: string; stdID: stri
     <>
     <div className='w-full'>
         {submission && ( <><ExamGradingBanner exam={exam} submission={submission} />
+        <div className='w-4/5 m-auto'>
         {
             exam.questions.map((question: QuestionInterface, index: number) => {
                 return <GradeQuestion qdata={question} adata={submission.answers[index]} setScore={(score: number) => {
-                    // let newSubmission = {...submission};
-                    // newSubmission.answers[index] = answer;
-                    // setSubmission(newSubmission);
+                    console.log("Score: ", score) 
+                    let newSubmission = {...submission};
+                    newSubmission.answers[index].score = Number(score);
+                    newSubmission.achievedMarks = newSubmission.answers.reduce((acc, cur) => acc + cur.score! , 0);
+                    setSubmission(newSubmission);
+                    console.log(submission);
+                    // submission.answers[index].score = score;
+                    // submission.achievedMarks
                 }}/>
             })
-        } </>)
+        } 
+        </div>
+        
+        </>)
       }
       <div className='mx-auto w-4/5'>
         <form className='float-right py-5' onSubmit={handleSubmission}>
