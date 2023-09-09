@@ -71,12 +71,12 @@ export function mergeSubmissionWithExamRef(exam: Exam, submission: Submission) {
     if (q.type === 'multiple-choice'){
       console.log("Actual Answer : " , (q as MultipleChoiceQuestion).answer);
       (q as MultipleChoiceQuestion).ref= (q as MultipleChoiceQuestion).answer;
-      (q as MultipleChoiceQuestion).answer = (answer as MultipleChoiceAnswer).answer;
+      // (q as MultipleChoiceQuestion).answer = (answer as MultipleChoiceAnswer).answer;
       console.log("Submitted Answer : " , (q as MultipleChoiceQuestion).answer);
     }
     else if (q.type === 'single-choice'){
       (q as SingleChoiceQuestion).ref = (q as SingleChoiceQuestion).answer;
-      (q as SingleChoiceQuestion).answer = (answer as SingleChoiceAnswer).answer;
+      // (q as SingleChoiceQuestion).answer = (answer as SingleChoiceAnswer).answer;
     }
     else if (q.type === 'short-answer')
       (q as ShortAnswerQuestion).answer = (answer as ShortAnswerAnswer).answer;

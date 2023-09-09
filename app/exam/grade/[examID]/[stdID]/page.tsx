@@ -26,13 +26,14 @@ import LinearAlert from '@/components/anticheat/LinearAlert';
 import { Typography } from '@mui/joy';
 import ExamGradingBanner from '@/components/exam/ExamGradingBanner';
 import { exampleSubmission } from '@/interfaces/Submission';
+import GradeQuestion from '@/components/questions/GradeQuestion';
 
 export default function Page({ params }: { params: { examID: string; stdID: string } }) {
   console.log(params.examID, params.stdID);
 
   const router = useRouter();
   const [exam, setExam] = useState(dummyExam);
-  const [submission, setSubmission] = useState<Submission >(exampleSubmission);
+  const [submission, setSubmission] = useState<Submission >(); // exampleSubmission);
 
   const fetchExam = async (examID: string) => {
     const response = await fetch(`/api/exams/response/${params.examID}/${params.stdID}`, {
@@ -55,7 +56,7 @@ export default function Page({ params }: { params: { examID: string; stdID: stri
 
     const handleSubmission = async (e: any) => {
         console.log("Clicked");
-        submission.achievedMarks=20;
+        // submission.achievedMarks=20;
         e.preventDefault();
         const response = await fetch(`/api/exams/response/`, {
             method: 'POST',
@@ -75,13 +76,22 @@ export default function Page({ params }: { params: { examID: string; stdID: stri
     useEffect(() => {
         fetchExam(params.examID);
     }, []);
-
+  // console.log(exam);
+  // console.log(submission);
   return (
     <>
     <div className='w-full'>
-        <ExamGradingBanner exam={exam} submission={submission} />
-
-
+        {submission && ( <><ExamGradingBanner exam={exam} submission={submission} />
+        {
+            exam.questions.map((question: QuestionInterface, index: number) => {
+                return <GradeQuestion qdata={question} adata={submission.answers[index]} setScore={(score: number) => {
+                    // let newSubmission = {...submission};
+                    // newSubmission.answers[index] = answer;
+                    // setSubmission(newSubmission);
+                }}/>
+            })
+        } </>)
+      }
       <div className='mx-auto w-4/5'>
         <form className='float-right py-5' onSubmit={handleSubmission}>
           <button
