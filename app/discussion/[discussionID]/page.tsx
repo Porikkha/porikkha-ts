@@ -5,10 +5,18 @@ import Sidebar from '@/components/dashboard/Sidebar';
 import Thread from '@/components/discussion/Thread';
 import BorderedButton from '@/components/ui/BorderedButton';
 import UserMini from '@/components/user/UserMini';
+import { DiscussionThreadInterface } from '@/interfaces/DiscussionThread';
 import { Avatar, Box, Card, CardContent, Chip, Divider } from '@mui/joy';
 import { CardHeader, Typography } from '@mui/material';
+import { useState } from 'react';
+import { dummyDiscussionThread } from '@/interfaces/DiscussionThread';
 
-export default function Page() {
+
+export default function Page({ params }: { params: { discussionID: string } }) {
+  console.log(params.discussionID);
+  const [discussion, setDiscussion] = useState<DiscussionThreadInterface>(dummyDiscussionThread);
+  const [classRoomName, setClassRoomName] = useState<string>("Physics - Classroom");
+
   return (
     <>
       <Sidebar />
@@ -18,17 +26,16 @@ export default function Page() {
             <div className='flex' style={{justifyContent:"space-between"}}>
                 <Box>
                   <Typography className='pb-2 text-3xl font-semibold'>
-                    Operating Systems - Classroom
+                    {classRoomName}
                   </Typography>
                 </Box>
-                <UserMini userID={'123'} />
               </div>
 
               <div className='float-right ml-auto'>
             </div>
            
             <Divider className='bg-slate-200' /> 
-            <div style={{display:"flex",padding:"20px"}}>
+            <div className='px-3 py-5 m-auto w-3/4'>
               <BorderedButton
                   onClick={() => {
                     console.log('Hello');
@@ -37,12 +44,12 @@ export default function Page() {
                   Back to Classroom
                 </BorderedButton>
 
-                <Typography sx={{marginLeft:"20px"}}>
-                    Thread: Solutions of 1st CT
+                <Typography className='text-3xl py-2'>
+                  {discussion.title}
                 </Typography>
             </div>
-            <div className='my-10'>
-              <Thread />
+            <div className='m-auto w-3/4'>
+              <Thread discussion={discussion}/>
             </div>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { Badge, IconButton, Chip, Input, Button, Box } from '@mui/joy';
+import { Badge, IconButton, Chip, Input, Button, Box, Textarea } from '@mui/joy';
 import { Divider, Typography } from '@mui/material';
 import { LuCalendar } from 'react-icons/lu';
 import { LiaCommentSolid } from 'react-icons/lia';
@@ -8,15 +8,15 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import Reply from './Reply';
 import BorderedButton from '../ui/BorderedButton';
 
-export default function DiscussionCard() {
+export default function Thread({ discussion }: any) {
+
   return (
     <div className='m-2 rounded-md border border-purple-200 p-2'>
       <div className='flex px-2'> 
       </div>
       <div>
         <Typography className='p-2 text-md'>
-          2 CT overlap on the same day. It would be great if you could postpone this CT to
-          other day. We have an empty slot on Wednesday, 8AM to 10AM.
+          { discussion.content }
         </Typography>
       </div>
 
@@ -36,9 +36,8 @@ export default function DiscussionCard() {
       <Reply/>
 
 
-      <Box sx={{width:"100%",display:"flex",flexDirection:"row"}}>
-      <Input>
-      </Input>
+      <Box className="px-3">
+      <Textarea />
       <BorderedButton>
        Send 
       </BorderedButton>

@@ -10,6 +10,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import QuickJoin from '@/components/dashboard/QuickJoin';
 import Calendar from '@/components/dashboard/Calendar';
+import PublishedResults from '@/components/dashboard/PublishedResults';
 
 export default function Page() {
   const searchParams = useSearchParams();
@@ -44,10 +45,11 @@ export default function Page() {
             <SubmissionGrid />
           </div>
           <div className='col-span-2 bg-light-gray p-3 h-screen'>
-            <Typography className='pb-2 text-2xl'>
               <Calendar />
-            </Typography>
+              <PublishedResults />
           </div>
+
+
 
         </div>
       </section>

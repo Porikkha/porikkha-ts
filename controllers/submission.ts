@@ -108,7 +108,7 @@ const getSubmissionFromDatabase = async (examID: string, userID: string) => {
   }
 };
 
-const autogradeAndUpdateSubmission = async (examID: string, studentID: string) => {
+export const autogradeAndUpdateSubmission = async (examID: string, studentID: string) => {
   const submission = await getSubmissionFromDatabase(examID, studentID);
   const exam = await getExamFromDatabase(examID);
 
