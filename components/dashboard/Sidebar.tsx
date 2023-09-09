@@ -35,7 +35,9 @@ export default function Sidebar() {
       <SideBarIcon icon={<LuUser />} />
       </Link>
       <SideBarIcon icon={<LuSettings />} />
+      <Link href='/exam/results/own'>
       <SideBarIcon icon={<LuBarChart4 />} />
+      </Link>
       <div onClick={handleLogout}>
       <SideBarIcon icon={<LuLogOut />} />
       </div>
