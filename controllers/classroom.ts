@@ -119,14 +119,20 @@ export const removeUserFromClassroom = async (classroomID: string, userID: strin
   };
 };
 
-export const upsertClassroom = async (classroom: ClassroomInterface) => {
+export const createClassroom = async (classroom: ClassroomInterface) => {
   try {
-    await prisma.classroom.upsert({
-      where: {
+    await prisma.classroom.create({
+      data: {
         classroomID: classroom.classroomID,
+        creatorID: classroom.creatorID,
+        name: classroom.name,
+        description: classroom.description,
+        users: {
+          connect: {
+            userID: classroom.creatorID,
+          },
+        },
       },
-      update: classroom,
-      create: classroom,
     });
     console.log('✔️ Server: Classroom upsert successful on Prisma!');
     return {
@@ -134,7 +140,7 @@ export const upsertClassroom = async (classroom: ClassroomInterface) => {
       classroomID: classroom.classroomID,
     };
   } catch (e) {
-    console.log('👎 Error invoking upsertClassroom: ', e);
+    console.log('👎 Error invoking createClassroom: ', e);
   }
   return { status: 500 };
 };

@@ -1,7 +1,7 @@
 'use server';
 import { NextRequest, NextResponse } from 'next/server';
 import { generateId } from '@/utils/helper';
-import { upsertClassroom } from '@/controllers/classroom';
+import { createClassroom } from '@/controllers/classroom';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
 export async function POST(request: NextRequest) {
@@ -16,6 +16,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.error();
   }
   classroom.creatorID = session?.user.id;
-  const res = await upsertClassroom(classroom);
+  const res = await createClassroom(classroom);
   return NextResponse.json(res);
 }
