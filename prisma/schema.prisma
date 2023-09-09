@@ -8,18 +8,20 @@ datasource db {
 }
 
 model User {
-  userID            String             @id @default(uuid())
-  username          String             @db.String(255)
-  email             String             @unique @db.String(255)
-  image             String?            @db.String(255)
-  role              String             @default("examiner")
-  createdClassrooms Classroom[]        @relation("createdClassrooms")
-  discussions       DiscussionThread[]
-  Exam              Exam[]
-  posts             Post[]
-  replies           Reply[]
-  submissions       Submission[]
-  joinedClassrooms  Classroom[]        @relation("joinedClassrooms")
+  userID                String             @id @default(uuid())
+  username              String             @db.String(255)
+  email                 String             @unique @db.String(255)
+  image                 String?            @db.String(255)
+  role                  String             @default("examiner")
+  createdClassrooms     Classroom[]        @relation("createdClassrooms")
+  discussions           DiscussionThread[]
+  Exam                  Exam[]
+  posts                 Post[]
+  replies               Reply[]
+  submissions           Submission[]
+  joinedClassrooms      Classroom[]        @relation("joinedClassrooms")
+  sentNotifications     Notification[]     @relation("NotificationSender")
+  receivedNotifications Notification[]     @relation("NotificationReceiver")
 }
 
 model Exam {
@@ -118,4 +120,16 @@ model Report {
   examID      String
   questionID  BigInt
   question    Question @relation(fields: [examID, questionID], references: [examID, questionID])
+}
+
+model Notification {
+  notificationID String   @id @default(uuid())
+  fromUserID     String // User who sends the notification
+  toUserID       String // User who receives the notification
+  content        String // Content of the notification, e.g., the exam code or a message
+  timestamp      DateTime @default(now()) // When the notification was sent
+  isRead         Boolean  @default(false) // Whether the notification has been read by the recipient
+
+  fromUser User @relation("NotificationSender", fields: [fromUserID], references: [userID])
+  toUser   User @relation("NotificationReceiver", fields: [toUserID], references: [userID])
 }
