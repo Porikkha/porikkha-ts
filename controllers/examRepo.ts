@@ -13,7 +13,7 @@ import {
 } from '@/interfaces';
 import Submission from '@/models/submissions';
 import { getSubmissionFromDatabase } from './submission';
-import SubmissionInterface, { mergeSubmissionWithExam } from '@/interfaces/Submission';
+import SubmissionInterface, { mergeSubmissionWithExam, mergeSubmissionWithExamRef } from '@/interfaces/Submission';
 
 export const getExamFromDatabase = async (examID: string) => {
   // Connect to mongoDB
@@ -33,6 +33,36 @@ export const getExamFromDatabase = async (examID: string) => {
     throw new Error('🚀 Error during exam fetch:', err);
   }
 };
+
+export const hasExamEnded = async (examID: string) => {
+  try {
+    const exam = await prisma.exam.findUnique({
+      where: {
+        examID: examID,
+      },
+      select: {
+        startTime: true,
+        duration: true,
+      },
+    });
+    if (exam === null) {
+      return { status: 404, message: `Exam ${examID} not found`, type: 'error' };
+    }
+    const startTime = new Date(exam.startTime);
+    const endTime = new Date(startTime.getTime() + exam.duration * 60000);
+    const result = (await prisma.$queryRaw`SELECT CURRENT_TIMESTAMP`) as unknown as {
+      current_timestamp: string;
+    }[];
+    const now = new Date(result[0].current_timestamp).getTime();
+    if (now < endTime.getTime()) {
+      return { status: 403, message: 'Exam not ended', type: 'info' };
+    }
+    return { status: 200 };
+  } catch (err) {
+    console.log('Error invoking canJoinExam', err);
+  }
+  return { status: 500, message: 'Error invoking canJoinExam', type: 'error' };
+}
 
 export const canJoinExam = async (examID: string) => {
   try {
@@ -63,14 +93,14 @@ export const canJoinExam = async (examID: string) => {
   }
   return { status: 500, message: 'Error invoking canJoinExam', type: 'error' };
 };
-export const getExamWithoutAnswer = async (userID: string, examID: string) => {
+export const getExamWithoutAnswer = async (userID: string, examID: string) : Promise<ExamInterface | null> => {
   // Connect to mongoDB
   try {
     await connectMongoDB();
     console.log('✅ ~ file: route.ts:9 ~ POST ~ Connected to mongoDB');
   } catch (err) {
     console.log('🚀 ~ file: route.ts:11 ~ POST ~ Error connecting to mongoDB:', err);
-    return {};
+    return null;
   }
   try {
     const examWithAnswer = await Exam.findOne({ examID });
@@ -88,6 +118,38 @@ export const getExamWithoutAnswer = async (userID: string, examID: string) => {
     if (submission === null) return exam;
 
     return mergeSubmissionWithExam(exam, submission);
+  } catch (err: any) {
+    throw new Error('🚀 Error during exam fetch:', err);
+  }
+};
+
+export const getExamWithSubmission = async (userID: string, examID: string) : Promise<ExamInterface | null> => {
+  // Connect to mongoDB
+  try {
+    await connectMongoDB();
+    console.log('✅ ~ file: route.ts:9 ~ POST ~ Connected to mongoDB');
+  } catch (err) {
+    console.log('🚀 ~ file: route.ts:11 ~ POST ~ Error connecting to mongoDB:', err);
+    return null;
+  }
+  try {
+    const examWithAnswer = await Exam.findOne({ examID });
+    const submission = await getSubmissionFromDatabase(examID, userID);
+
+    console.log("🚀 ~ file: examRepo.ts:138 ~ getExamWithSubmission ~ answers:", submission?.answers)
+
+    if (examWithAnswer === null) {
+      console.log('❌❌❌ Error during exam fetch: Exam not found');
+      return null;
+    }
+
+    // const exam = removeAnswerFromExam(examWithAnswer);
+    const exam = permuteQuestions(examWithAnswer, userID, false);
+    console.log("🚀 ~ file: examRepo.ts:83 ~ getExamWithoutAnswer ~ exam:", exam)
+
+    if (submission === null) return exam;
+
+    return mergeSubmissionWithExamRef(exam, submission);
   } catch (err: any) {
     throw new Error('🚀 Error during exam fetch:', err);
   }

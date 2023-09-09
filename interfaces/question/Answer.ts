@@ -6,10 +6,12 @@ export interface Answer {
 
 export interface MultipleChoiceAnswer extends Answer {
   answer: number[];
+  ref?: number[];
 }
 
 export interface SingleChoiceAnswer extends Answer {
   answer: number;
+  ref?: number;
 }
 
 export interface ShortAnswerAnswer extends Answer {

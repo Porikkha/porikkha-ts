@@ -6,6 +6,7 @@ import {
   createSubmissionOnDatabase,
   getSubmissionFromDatabase,
   checkSubmissionDeadline,
+  autogradeAndUpdateSubmission,
 } from '@/controllers/submission';
 import { getSubmission, saveAllSubmissionstoDB, saveSubmission } from '@/utils/redis';
 
@@ -37,6 +38,7 @@ export async function POST(request: NextRequest) {
   
 
   const res = await createSubmissionOnDatabase(body.submission);
+  await autogradeAndUpdateSubmission(body.submission.examID, body.submission.studentID);
   return NextResponse.json(res);
 }
 
