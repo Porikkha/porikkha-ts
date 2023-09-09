@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -39,6 +40,8 @@ export default function SubmissionTable({
     correct: number;
     marks: number;
     totalMarks: number;
+    examID: string;
+    studentID: string;
   }[];
   header: string;
 }) {
@@ -56,9 +59,11 @@ export default function SubmissionTable({
         <TableBody>
           {rows.map((row) => (
             <StyledTableRow key={row.name}>
-              <StyledTableCell component='th' scope='row'>
-                {row.name}
-              </StyledTableCell>
+              <TableCell component='th' scope='row'>
+                <Link href={`/exam/grade/${row.examID}/${row.studentID}`}>
+                  {row.name}
+                </Link>
+              </TableCell>
               <StyledTableCell>{row.answered}</StyledTableCell>
               <StyledTableCell>{row.correct}</StyledTableCell>
               <StyledTableCell>{`${row.marks} / ${row.totalMarks}`}</StyledTableCell>

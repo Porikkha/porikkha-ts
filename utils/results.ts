@@ -4,9 +4,11 @@ export function createData(
   correct: number,
   marks: number,
   integrityScore: number,
-  totalMarks: number
+  totalMarks: number,
+  examID: string,
+  studentID: string
 ) {
-  return { name, answered, correct, marks, integrityScore, totalMarks };
+  return { name, answered, correct, marks, integrityScore, totalMarks, examID, studentID };
 }
 export function arange(start: number, stop: number, step = 1) {
   if (arguments.length === 1) {

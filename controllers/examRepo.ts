@@ -13,7 +13,10 @@ import {
 } from '@/interfaces';
 import Submission from '@/models/submissions';
 import { getSubmissionFromDatabase } from './submission';
-import SubmissionInterface, { mergeSubmissionWithExam, mergeSubmissionWithExamRef } from '@/interfaces/Submission';
+import SubmissionInterface, {
+  mergeSubmissionWithExam,
+  mergeSubmissionWithExamRef,
+} from '@/interfaces/Submission';
 
 export const getExamFromDatabase = async (examID: string) => {
   // Connect to mongoDB
@@ -93,7 +96,10 @@ export const canJoinExam = async (examID: string) => {
   }
   return { status: 500, message: 'Error invoking canJoinExam', type: 'error' };
 };
-export const getExamWithoutAnswer = async (userID: string, examID: string) : Promise<ExamInterface | null> => {
+export const getExamWithoutAnswer = async (
+  userID: string,
+  examID: string
+): Promise<ExamInterface | null> => {
   // Connect to mongoDB
   try {
     await connectMongoDB();
@@ -123,7 +129,10 @@ export const getExamWithoutAnswer = async (userID: string, examID: string) : Pro
   }
 };
 
-export const getExamWithSubmission = async (userID: string, examID: string) : Promise<ExamInterface | null> => {
+export const getExamWithSubmission = async (
+  userID: string,
+  examID: string
+): Promise<ExamInterface | null> => {
   // Connect to mongoDB
   try {
     await connectMongoDB();
@@ -136,7 +145,10 @@ export const getExamWithSubmission = async (userID: string, examID: string) : Pr
     const examWithAnswer = await Exam.findOne({ examID });
     const submission = await getSubmissionFromDatabase(examID, userID);
 
-    console.log("🚀 ~ file: examRepo.ts:138 ~ getExamWithSubmission ~ answers:", submission?.answers)
+    console.log(
+      '🚀 ~ file: examRepo.ts:138 ~ getExamWithSubmission ~ answers:',
+      submission?.answers
+    );
 
     if (examWithAnswer === null) {
       console.log('❌❌❌ Error during exam fetch: Exam not found');
@@ -145,7 +157,7 @@ export const getExamWithSubmission = async (userID: string, examID: string) : Pr
 
     // const exam = removeAnswerFromExam(examWithAnswer);
     const exam = permuteQuestions(examWithAnswer, userID, false);
-    console.log("🚀 ~ file: examRepo.ts:83 ~ getExamWithoutAnswer ~ exam:", exam)
+    console.log('🚀 ~ file: examRepo.ts:83 ~ getExamWithoutAnswer ~ exam:', exam);
 
     if (submission === null) return exam;
 
@@ -211,11 +223,13 @@ export const getExamDetailsFromPG = async (examID: string) => {
         student: {
           select: {
             username: true,
+            userID: true,
           },
         },
         exam: {
           select: {
             totalMarks: true,
+            examID: true,
           },
         },
       },
@@ -265,6 +279,11 @@ export const getParticipatedExamPG = async (userID: string) => {
       },
       include: {
         exam: true,
+        student: {
+          select: {
+            userID: true,
+          },
+        },
       },
     });
     return { status: 200, rows: submissions };

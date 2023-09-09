@@ -26,6 +26,7 @@ export default function TabsSegmentedControls() {
         <Tab disableIndicator>Calendar</Tab>
         <Tab disableIndicator>Notifications</Tab>
         <Tab disableIndicator>Results</Tab>
+        <Tab disableIndicator>Rooms</Tab>
       </TabList>
       <TabPanel value={0}>
         <Calendar />
