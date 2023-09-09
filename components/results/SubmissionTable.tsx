@@ -31,15 +31,23 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 export default function SubmissionTable({
   rows,
+  header,
 }: {
-  rows: { name: string; answered: number; correct: number; marks: number }[];
+  rows: {
+    name: string;
+    answered: number;
+    correct: number;
+    marks: number;
+    totalMarks: number;
+  }[];
+  header: string;
 }) {
   return (
     <TableContainer component={Paper}>
       <Table aria-label='customized table'>
         <TableHead>
           <TableRow>
-            <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell>{header}</StyledTableCell>
             <StyledTableCell>Answered</StyledTableCell>
             <StyledTableCell>Correct</StyledTableCell>
             <StyledTableCell>Marks</StyledTableCell>
@@ -53,7 +61,7 @@ export default function SubmissionTable({
               </StyledTableCell>
               <StyledTableCell>{row.answered}</StyledTableCell>
               <StyledTableCell>{row.correct}</StyledTableCell>
-              <StyledTableCell>{row.marks}</StyledTableCell>
+              <StyledTableCell>{`${row.marks} / ${row.totalMarks}`}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

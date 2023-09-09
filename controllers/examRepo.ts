@@ -83,7 +83,7 @@ export const getExamWithoutAnswer = async (userID: string, examID: string) => {
 
     // const exam = removeAnswerFromExam(examWithAnswer);
     const exam = permuteQuestions(examWithAnswer, userID, true);
-    console.log("🚀 ~ file: examRepo.ts:83 ~ getExamWithoutAnswer ~ exam:", exam)
+    console.log('🚀 ~ file: examRepo.ts:83 ~ getExamWithoutAnswer ~ exam:', exam);
 
     if (submission === null) return exam;
 
@@ -130,7 +130,6 @@ export const getExamDetailsFromPG = async (examID: string) => {
       },
       select: {
         title: true,
-        totalMarks: true,
       },
     });
     if (examMeta === null) {
@@ -152,6 +151,11 @@ export const getExamDetailsFromPG = async (examID: string) => {
             username: true,
           },
         },
+        exam: {
+          select: {
+            totalMarks: true,
+          },
+        },
       },
     });
     console.log(
@@ -162,7 +166,6 @@ export const getExamDetailsFromPG = async (examID: string) => {
       status: 200,
       rows: allSubmissionsForExamID,
       examTitle: examMeta.title,
-      totalMarks: examMeta.totalMarks,
     };
   } catch (err) {
     console.log('🚀 ~ file: examRepo.ts:109 ~ getExamDetailsFromPG ~ err:', err);
@@ -190,4 +193,21 @@ export const getExamFromPG = async (examID: string) => {
     message: 'Error invoking getExamFromPG',
     type: 'error',
   };
+};
+
+export const getParticipatedExamPG = async (userID: string) => {
+  try {
+    const submissions = await prisma.submission.findMany({
+      where: {
+        studentID: userID,
+      },
+      include: {
+        exam: true,
+      },
+    });
+    return { status: 200, rows: submissions };
+  } catch (err) {
+    console.log('Error invoking getParticipatedExamPG', err);
+  }
+  return { status: 500, message: 'Error invoking getParticipatedExamPG', type: 'error' };
 };

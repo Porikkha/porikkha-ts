@@ -33,19 +33,19 @@ export default function Page({ params }: { params: { examID: string } }) {
   };
 
   const fetchSubmissions = async () => {
-    const response = await fetch('/api/exams/results/' + params.examID, {
+    const response = await fetch('/api/exams/results/own', {
       method: 'GET',
     });
     const data = await response.json();
-    console.log('🚀 ~ file: SubmissionTable.tsx:44 ~ fetchSubmissions ~ data:', data);
-    setExamTitle(data.examTitle);
+    console.log(data);
+    setExamTitle('Your Analytics');
     // first clear all previous rows
     setRows([]);
     data.rows.forEach((sub: any) => {
       setRows((prev) => [
         ...prev,
         createData(
-          sub.student.username,
+          sub.exam.title,
           sub.totalAnswered,
           sub.totalCorrect,
           sub.achievedMarks,
@@ -70,7 +70,7 @@ export default function Page({ params }: { params: { examID: string } }) {
       <section className='w-full pl-16'>
         <div className='grid grid-cols-8 gap-7 p-5'>
           <div className='col-span-4 h-screen rounded-md bg-light-gray p-5'>
-            <SubmissionTable rows={rows} header={'Student Name'}/>
+            <SubmissionTable rows={rows} header={'Exam Name'}/>
           </div>
           <div className='col-span-4 flex h-screen flex-col space-y-6 bg-light-gray p-3'>
             <Analytics values={values} />

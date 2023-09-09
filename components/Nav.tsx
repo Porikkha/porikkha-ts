@@ -16,7 +16,7 @@ import { useRouter } from 'next/navigation';
 import ErrorAlert from './ui/ErrorAlert';
 import ExamInterface from '@/interfaces/Exam';
 import { addMinutes } from '@/utils/timeUtils';
-import {dummyClassroom} from '@/interfaces/Classroom';
+import { dummyClassroom } from '@/interfaces/Classroom';
 
 const Nav = () => {
   const router = useRouter();
@@ -33,7 +33,7 @@ const Nav = () => {
       title: 'Exam Title',
       description: 'Exam Description',
       questions: [],
-      startTime: addMinutes(new Date(),60),
+      startTime: addMinutes(new Date(), 60),
       duration: 30,
       totalMarks: 0,
       allowedAbilities: [
@@ -96,7 +96,7 @@ const Nav = () => {
 
   return (
     <nav className='flex-between mb-16 w-full pt-3'>
-      <Link href='/' className='flex-center flex gap-2'>
+      <Link href={session?.user ? '/dashboard' : '/'} className='flex-center flex gap-2'>
         <Image
           src='/assets/images/porikkha-logo.svg'
           alt='Porikkha Logo'
