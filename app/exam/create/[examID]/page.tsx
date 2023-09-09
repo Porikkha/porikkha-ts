@@ -168,6 +168,7 @@ const Home = ({ params }: { params: { examID: string } }) => {
     const response = await fetch(`/api/exams/${params.examID}`, {
       method: 'GET',
     });
+    if(response.redirected) router.push(response.url);
     const data = await response.json();
     if (data.status == 200 && data.exam) {
       const exam = data.exam;
