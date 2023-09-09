@@ -23,6 +23,15 @@ export default interface Question {
   points: number;
 }
 
+export function questionMethods(question: Question) {
+  if (question.type === 'multiple-choice')
+    return { removeAnswer: removeMultipleChoiceQuestionAnswer, permuteQuestion: permuteMultipleChoiceQuestion };
+  else if (question.type === 'single-choice')
+    return { removeAnswer: removeSingleChoiceQuestionAnswer, permuteQuestion: permuteSingleChoiceQuestion };
+  else if (question.type === 'short-answer')
+    return { removeAnswer: removeShortQuestionAnswer, permuteQuestion: permuteShortQuestion };
+}
+
 export function removeAnswer(question: Question) {
   if (question.type === 'multiple-choice')
     return removeMultipleChoiceQuestionAnswer(question as MultipleChoiceQuestion);
