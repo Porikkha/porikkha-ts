@@ -64,13 +64,7 @@ export default function Page({ params }: { params: { examID: string; stdID: stri
         });
         const body = await response.json();
         if (response.redirected) {
-            // router.push(response.url);
-        }
-        else {
-            // const data = await response.json();
-            // if (data.status == 200 ) {
-            //     console.log(data);
-            // }
+            router.push(response.url);
         }
     }
     useEffect(() => {
