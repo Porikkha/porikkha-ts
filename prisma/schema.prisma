@@ -124,12 +124,12 @@ model Report {
 
 model Notification {
   notificationID String   @id @default(uuid())
-  fromUserID     String // User who sends the notification
-  toUserID       String // User who receives the notification
+  fromUserEmail  String // User who sends the notification
+  toUserEmail    String // User who receives the notification
   content        String // Content of the notification, e.g., the exam code or a message
   timestamp      DateTime @default(now()) // When the notification was sent
   isRead         Boolean  @default(false) // Whether the notification has been read by the recipient
 
-  fromUser User @relation("NotificationSender", fields: [fromUserID], references: [userID])
-  toUser   User @relation("NotificationReceiver", fields: [toUserID], references: [userID])
+  fromUser User @relation("NotificationSender", fields: [fromUserEmail], references: [email])
+  toUser   User @relation("NotificationReceiver", fields: [toUserEmail], references: [email])
 }

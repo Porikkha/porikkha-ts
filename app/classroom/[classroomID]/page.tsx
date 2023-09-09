@@ -22,12 +22,14 @@ import { dummyClassroom } from '@/interfaces/Classroom';
 import DiscussionCard from '@/components/classroom/DiscussionCard';
 import GenericAlert from '@/components/ui/GenericAlert';
 import { AlertColor } from '@mui/material';
+import InviteModal from '@/components/classroom/InviteModal';
 
 export default function Page({ params }: { params: { classroomID: string } }) {
   const searchParams = useSearchParams();
   const { data: session } = useSession();
 
   const [open, setOpen] = useState(false);
+  const [openInvite, setOpenInvite] = useState(false);
   const [classroomName, setClassroomName] = useState('Classroom Name');
   const [classroomDesc, setClassroomDesc] = useState('Classroom Description');
   const [classroomID, setClassroomID] = useState('');
@@ -36,8 +38,14 @@ export default function Page({ params }: { params: { classroomID: string } }) {
   const [alertType, setAlertType] = useState<AlertColor>('success');
   const [alertText, setAlertText] = useState('Initial Alert Text');
   const [exams, setExams] = useState([]);
-  const values = { classroomName, classroomDesc };
-  const setters = { setClassroomName, setClassroomDesc };
+  const values = { classroomName, classroomDesc, classroomID: params.classroomID };
+  const setters = {
+    setClassroomName,
+    setClassroomDesc,
+    setAlertType,
+    setAlertText,
+    setShowAlert,
+  };
 
   const fetchClassroomData = async () => {
     const res = await fetch(`/api/classroom/${params.classroomID}`);
@@ -73,6 +81,12 @@ export default function Page({ params }: { params: { classroomID: string } }) {
         <EditClassroomModal
           open={open}
           setOpen={setOpen}
+          values={values}
+          setters={setters}
+        />
+        <InviteModal
+          open={openInvite}
+          setOpen={setOpenInvite}
           values={values}
           setters={setters}
         />
@@ -124,7 +138,9 @@ export default function Page({ params }: { params: { classroomID: string } }) {
               <Chip
                 className='float-right ml-auto'
                 color='success'
-                onClick={function () {}}
+                onClick={() => {
+                  setOpenInvite(true);
+                }}
                 variant='outlined'
               >
                 + Invite
