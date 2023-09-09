@@ -32,6 +32,9 @@ export async function POST(request: NextRequest) {
   // console.log(allSubs);
   // saveAllSubmissionstoDB();
 
+  console.log(" ----------------------------------------------------------------- ");
+  console.log("🚀 ~ file: route.ts:38 ~ POST ~ body.submission:", body.submission)
+  
 
   const res = await createSubmissionOnDatabase(body.submission);
   return NextResponse.json(res);

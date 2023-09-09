@@ -69,6 +69,22 @@ export default function Page({ params }: { params: { examID: string } }) {
     setIntervalId(interval); // Store the interval ID
   };
 
+  const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    if (submitted) return;
+    if (!questions) return;
+    console.log("Use Effect Called. ", integrityScore);
+
+    submitAnswers();
+    setSubmitted(true);
+    setTimeout(() => {
+      console.log('30 seconds passed. Flag Cleared');
+      setSubmitted(false);
+    }, 10000);
+
+  }, [questions, integrityScore, submitted]);
+
   const fetchExam = async (examID: string) => {
     const response = await fetch(`/api/exams/join/${params.examID}`, {
       method: 'GET',
@@ -85,11 +101,6 @@ export default function Page({ params }: { params: { examID: string } }) {
         setLoading(false);
       }
     }
-    // const interval = setInterval(() => {
-    //   console.log('Saving exam...');
-    //   submitAnswers();
-    // }, 60000);
-    // return () => clearInterval(interval);
   };
 
 
@@ -121,7 +132,7 @@ export default function Page({ params }: { params: { examID: string } }) {
       }),
       integrityScore: integrityScore,
     };
-    console.log('🚀 ~ file: page.tsx:138 ~ handleExamSubmit ~ exam:', exam);
+    console.log('🚀 ~ file: page.tsx:138 ~ handleExamSubmit ~ answers:', submission.answers);
 
     const response = await fetch('/api/exams/submit', {
       method: 'POST',
@@ -130,6 +141,7 @@ export default function Page({ params }: { params: { examID: string } }) {
       }),
     });
     const data = await response.json();
+    console.log(data);
     return data;
   }
 
