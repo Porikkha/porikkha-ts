@@ -82,7 +82,6 @@ model Post {
   content    String
   timePosted DateTime         @default(now())
   creator    User             @relation(fields: [creatorID], references: [userID])
-  timePosted DateTime         @default(now())
   discussion DiscussionThread @relation(fields: [threadID], references: [discussionThreadID])
   Reply      Reply[]
 }
@@ -104,6 +103,7 @@ model Submission {
   achievedMarks  Int?      @default(0)
   totalAnswered  Int?      @default(0)
   totalCorrect   Int?      @default(0)
+  graded         Boolean?  @default(false)
   submissionTime DateTime? @default(now())
   exam           Exam      @relation(fields: [examID], references: [examID], onDelete: Cascade)
   student        User      @relation(fields: [studentID], references: [userID])

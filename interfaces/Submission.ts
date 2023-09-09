@@ -21,7 +21,8 @@ export default interface Submission {
     examID: string;
     integrityScore?: number;
     achievedMarks?: number;
-  answers: Answer[]; 
+    graded?: boolean;
+    answers: Answer[]; 
 }
 
 export const exampleSubmission: Submission = {

@@ -1,5 +1,6 @@
 export interface Answer {
   questionId?: number;
+  score?: number;
   type: 'single-choice' | 'multiple-choice' | 'short-answer';
 }
 
