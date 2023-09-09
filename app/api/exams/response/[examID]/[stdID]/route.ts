@@ -36,24 +36,3 @@ export async function GET(request: NextRequest, { params }: any) {
   return NextResponse.json({ status: 200, exam: exam, submission: submission });
 }
 
-export async function POST(request: NextRequest,{params} : any ) {
-  const session = await getServerSession(authOptions);
-  const homeUrl = request.nextUrl.origin;
-  if (!session?.user) {
-    return NextResponse.redirect(homeUrl);
-  }
-  const userID = session?.user.id!; 
-  const body = await request.json();
-
-
-
-  const exam = await getExamWithSubmission(body.submission.stdID, body.submission.examID);
-  if (exam == null) {
-    return NextResponse.redirect(homeUrl);
-  }
-    if (exam?.creatorID != userID) {
-        return NextResponse.redirect(homeUrl);
-    }
-    const res = await createSubmissionOnDatabase(body.submission);
-  return NextResponse.json(res);
-}

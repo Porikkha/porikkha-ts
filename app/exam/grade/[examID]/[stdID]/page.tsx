@@ -54,13 +54,16 @@ export default function Page({ params }: { params: { examID: string; stdID: stri
   };
 
     const handleSubmission = async (e: any) => {
+        console.log("Clicked");
+        submission.achievedMarks=20;
         e.preventDefault();
         const response = await fetch(`/api/exams/response/`, {
             method: 'POST',
             body: JSON.stringify(submission),
         });
+        const body = await response.json();
         if (response.redirected) {
-            router.push(response.url);
+            // router.push(response.url);
         }
         else {
             // const data = await response.json();
