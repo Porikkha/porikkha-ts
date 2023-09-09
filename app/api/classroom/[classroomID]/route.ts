@@ -9,6 +9,7 @@ export async function GET(request: NextRequest, { params }: any) {
     return NextResponse.redirect('/');
   }
   const classroomID = params.classroomID;
-  const res = await getClassroom(classroomID);
+  const userID = session?.user.id!;
+  const res = await getClassroom(classroomID, userID);
   return NextResponse.json(res);
 }
