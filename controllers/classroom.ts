@@ -145,11 +145,41 @@ export const createClassroom = async (classroom: ClassroomInterface) => {
   return { status: 500 };
 };
 
+export const getAllJoinedClassrooms = async (userID: string) => {
+  try {
+    const classrooms = await prisma.classroom.findMany({
+      where: {
+        users: {
+          some: {
+            userID: userID,
+          },
+        },
+      },
+      include: {
+        creator: true,
+      },
+    });
+    return { status: 200, classrooms: classrooms };
+  } catch (err) {
+    console.log('Error invoking getAllJoinedClassrooms: ', err);
+  }
+  return {
+    status: 500,
+    message: 'There was an error fetching all joined classrooms',
+    type: 'error',
+  };
+};
+
 export const getClassroom = async (classroomID: string, userID: string) => {
   try {
     const classroom = await prisma.classroom.findUnique({
       where: {
         classroomID: classroomID,
+        users: {
+          some: {
+            userID: userID,
+          },
+        },
       },
       include: {
         exams: true,
@@ -160,7 +190,7 @@ export const getClassroom = async (classroomID: string, userID: string) => {
       return {
         status: 404,
         type: 'error',
-        message: `Classroom ${classroomID} not found in PrismaDB`,
+        message: `Classroom ${classroomID} not found! You may not have access to it.`,
       };
     }
     return {

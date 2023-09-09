@@ -9,16 +9,30 @@ export default function Classrooms() {
     classroomID: string;
   };
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
-  const fetchClassrooms = async () => {};
+  const fetchClassrooms = async () => {
+    const res = await fetch('/api/classroom');
+    const data = await res.json();
+    if (data.status === 200) setClassrooms(data.classrooms);
+    else alert('Something went wrong while fetching classrooms');
+  };
+  useEffect(() => {
+    fetchClassrooms();
+  }, []);
   return (
     <>
       <QuickJoinClassroom />
-      <ClassroomCard
-        name='Classroom 1'
-        description='Sample description'
-        creator='Shuaib'
-        classroomID='123456'
-      />
+      <div className='flex flex-col space-y-5 '>
+        {classrooms.map((classroom) => (
+          <div>
+            <ClassroomCard
+              name={classroom.name}
+              description={classroom.description}
+              creator={classroom.creator}
+              classroomID={classroom.classroomID}
+            />
+          </div>
+        ))}
+      </div>
     </>
   );
 }
