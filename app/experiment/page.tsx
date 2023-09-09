@@ -1,4 +1,5 @@
 'use client';
+import Editor from '@/components/Editor';
 import ThreadCard from '@/components/discussion/ThreadCard';
 import EditQuestion from '@/components/questions/EditQuestion';
 import EditQuestionModal from '@/components/questions/EditQuestionModal';
@@ -10,6 +11,7 @@ import { useState } from 'react';
 export default function Page() {
   const [questions, setQuestions] = useState(dummyQuestions);
   console.log(questions);
+  const [value,setValue] = useState('');
   return (
     <>
       {
@@ -21,6 +23,7 @@ export default function Page() {
           }}/>
         })
       }
+      <Editor value={value} setValue={setValue}/>
     </>
   );
 }

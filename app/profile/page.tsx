@@ -1,3 +1,4 @@
+'use client';
 import Feed from '@/components/homepage/Feed';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,7 +10,6 @@ const data = {
   USERNAME: 'barackobama',
 };
 const Home = () => {
-  'use client';
   return (
     <Card
       sx={{

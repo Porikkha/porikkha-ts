@@ -23,6 +23,7 @@ import DiscussionCard from '@/components/classroom/DiscussionCard';
 import GenericAlert from '@/components/ui/GenericAlert';
 import { AlertColor } from '@mui/material';
 import InviteModal from '@/components/classroom/InviteModal';
+import EditDiscussionCardModal from '@/components/classroom/EditDiscussionCardModal';
 
 export default function Page({ params }: { params: { classroomID: string } }) {
   const searchParams = useSearchParams();
@@ -38,6 +39,7 @@ export default function Page({ params }: { params: { classroomID: string } }) {
   const [alertType, setAlertType] = useState<AlertColor>('success');
   const [alertText, setAlertText] = useState('Initial Alert Text');
   const [exams, setExams] = useState([]);
+  const [showCreateThread,setShowCreateThread] = useState(false) ;
   const values = { classroomName, classroomDesc, classroomID: params.classroomID };
   const setters = {
     setClassroomName,
@@ -147,6 +149,10 @@ export default function Page({ params }: { params: { classroomID: string } }) {
               </Chip>
             </div>
             <div className='my-10'>
+              <EditDiscussionCardModal  open={showCreateThread} onClose={() => setShowCreateThread(!showCreateThread)}/>
+              <BorderedButton onClick={() => setShowCreateThread(true)}>
+                Create Thread
+              </BorderedButton>
               <DiscussionCard />
             </div>
           </div>
