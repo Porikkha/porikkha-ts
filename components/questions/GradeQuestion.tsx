@@ -212,31 +212,37 @@ export default function GradeQuestion({
   qdata,
   adata,
   setScore,
+  view,
 }: {
   qdata: Question;
   adata: Answer;
   setScore: any;
+  view: any;
 }) {
 
   const [curScore, setCurScore] = React.useState(adata.score);
 
   return (
     <Card
-      className='p-3'
+    className="py-10 mx-auto"
       variant='outlined'
       color='primary'
-      sx={{ stroke: '#E2E3FC', margin: 'auto' }}
+      sx={{ stroke: '#E2E3FC', }}
     >
       <GradeQuestionContent qdata={qdata} adata={adata} />
       <Box sx={{display:"flex",flexDirection:"row",width:"125px",marginLeft:"auto"}}>
-        <Typography>Score:</Typography>
-        <Input
-          value={curScore}
-          onChange={(e) => {
-            setCurScore( Number(e.target.value)) ;
-            setScore(e.target.value);
-          }}
-        />
+        {view ? <p> Score : {curScore} </p> : 
+        <>
+                <Typography>Score:</Typography>
+          <Input
+            value={curScore}
+            onChange={(e) => {
+              setCurScore( Number(e.target.value)) ;
+              setScore(e.target.value);
+            }}
+          />
+        </>
+        }
       </Box>
     </Card>
   );

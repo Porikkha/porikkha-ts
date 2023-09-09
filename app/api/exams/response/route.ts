@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
   const body = await request.json();
 
   console.log('------------- HIT --------------');
+  body.graded = true;
   console.log(body);
 
   const exam = await getExamWithSubmission(body.stdID, body.examID);
