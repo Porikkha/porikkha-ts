@@ -11,20 +11,26 @@ import { useSession } from 'next-auth/react';
 import Editor from '../Editor';
 
 
-export default function DiscussionCard({open, onClose}: {open: boolean, onClose: any}) {
+export default function EditDiscussionCardModal({classroomId,open, onClose}: {classroomId: string,open: boolean, onClose: any}) {
   const {data:session} = useSession() ;
-  const [thread, setThread] = useState<DiscussionThreadInterface>();
+  const [thread, setThread] = useState<DiscussionThreadInterface>({
+    title: '',
+    content: '',
+    classroomID: classroomId,
+    creatorID: session?.user.id,
+  } as DiscussionThreadInterface);
 
-  const handlePost = () => {
-    const res = fetch(`/api/discussion/${thread?.discussionID}/thread`,{
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(thread),
-    });
-
+  const handlePost = async () => {
     console.log(thread);
+    thread.creatorID = session?.user.id!;
+    const res = await fetch(`/api/classroom/${thread?.classroomID}/discussions`,{
+        method: 'POST',
+        // headers: {
+        //     'Content-Type': 'application/json',
+        // },
+        body: JSON.stringify({thread: thread}),
+    });
+    console.log(res);
   }
   return (
     <Modal sx={{justifyContent:"center",alignContent:"center",justifySelf:"center",alignSelf:"center",width:"50%"}} open={open} onClose={onClose}>
@@ -36,7 +42,7 @@ export default function DiscussionCard({open, onClose}: {open: boolean, onClose:
             <Input
                 className='w-full'
                 value={thread?.title}
-                onChange={(e) => setThread({...thread!, title: e.target.value})}
+                onChange={(e) => setThread({...thread, title: e.target.value})}
             />
         </Typography>
         <div className='float-right ml-auto flex'>
@@ -55,7 +61,7 @@ export default function DiscussionCard({open, onClose}: {open: boolean, onClose:
         </Typography> */}
         <Editor
           value={thread?.content}
-          setValue={(e) => setThread({...thread!, content: e})}
+          setValue={(e) => setThread({...thread, content: e})}
         />
       </div>
 

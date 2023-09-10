@@ -24,6 +24,7 @@ import GenericAlert from '@/components/ui/GenericAlert';
 import { AlertColor } from '@mui/material';
 import InviteModal from '@/components/classroom/InviteModal';
 import EditDiscussionCardModal from '@/components/classroom/EditDiscussionCardModal';
+import { DiscussionThreadInterface } from '@/interfaces/DiscussionThread';
 
 export default function Page({ params }: { params: { classroomID: string } }) {
   const searchParams = useSearchParams();
@@ -40,6 +41,7 @@ export default function Page({ params }: { params: { classroomID: string } }) {
   const [alertText, setAlertText] = useState('Initial Alert Text');
   const [exams, setExams] = useState([]);
   const [showCreateThread,setShowCreateThread] = useState(false) ;
+  const [discussionThreads,setDiscussionThreads] = useState<DiscussionThreadInterface []>() ;
   const values = { classroomName, classroomDesc, classroomID: params.classroomID };
   const setters = {
     setClassroomName,
@@ -66,8 +68,25 @@ export default function Page({ params }: { params: { classroomID: string } }) {
     }
   };
 
+  const fetchDiscussionThreads = async () => {
+    const res = await fetch(`/api/classroom/${params.classroomID}/discussions`);
+    console.log(res);
+    const data = await res.json();
+    console.log(data);
+    if (data.status === 200) {
+      setDiscussionThreads(data.data);
+    } else {
+      console.log('Something bad happened while fetching classroom data: ', data.message);
+      setAlertType(data.type);
+      setAlertText(data.message);
+      setShowAlert(true);
+    }
+  };
+
+
   useEffect(() => {
     fetchClassroomData();
+    fetchDiscussionThreads();
   }, []);
   return (
     <>
@@ -149,11 +168,19 @@ export default function Page({ params }: { params: { classroomID: string } }) {
               </Chip>
             </div>
             <div className='my-10'>
-              <EditDiscussionCardModal  open={showCreateThread} onClose={() => setShowCreateThread(!showCreateThread)}/>
+              <EditDiscussionCardModal classroomId={params.classroomID} open={showCreateThread} onClose={() => setShowCreateThread(!showCreateThread)}/>
               <BorderedButton onClick={() => setShowCreateThread(true)}>
                 Create Thread
               </BorderedButton>
-              <DiscussionCard />
+
+              {
+                discussionThreads?.map((thread,index)=>{
+                  return (
+                    <DiscussionCard thread={thread}/>
+                  ); 
+                })
+              }
+              {/* <DiscussionCard /> */}
             </div>
           </div>
           <div className='col-span-2 h-screen bg-light-gray p-3'>

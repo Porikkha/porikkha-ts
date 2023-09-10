@@ -70,6 +70,7 @@ export const getDiscussionThreadsByClassroomID = async (classroomID: string) => 
         classroomID: classroomID,
       },
     });
+    console.log("🚀 ~ file: discussionThread.ts ~ line 100 ~ getDiscussionThreadsByClassroomID ~ discussionThreads", discussionThreads)
     return {
       status: 200,
       type: 'success',

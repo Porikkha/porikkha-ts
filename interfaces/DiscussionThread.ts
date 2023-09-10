@@ -3,6 +3,7 @@ export interface DiscussionThreadInterface {
   creatorID: string;
   title: string;
   content: string;
+  timeCreated?: Date; 
 }
 
 export interface PostInterface {
