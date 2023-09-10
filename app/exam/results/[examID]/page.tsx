@@ -18,7 +18,7 @@ import Analytics from '@/components/results/Analytics';
 
 export default function Page({ params }: { params: { examID: string } }) {
   const searchParams = useSearchParams();
-  const [rows, setRows] = useState([createData('Deuce', 0, 0, 0, 0, 0, 'None', 'None')]);
+  const [rows, setRows] = useState([createData('Deuce', '7PM', 0, 0, 0, 0, 'None', 'None')]);
   const [examTitle, setExamTitle] = useState('Loading...');
   const [xAxis, setXAxis] = useState<number[]>([0, 10, 20, 30]);
   const [yData, setYData] = useState<number[]>([1, 1, 1, 1]);

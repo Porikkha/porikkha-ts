@@ -1,6 +1,6 @@
 export function createData(
   name: string,
-  answered: number,
+  answered: string,
   correct: number,
   marks: number,
   integrityScore: number,
