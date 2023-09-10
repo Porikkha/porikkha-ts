@@ -176,6 +176,14 @@ export const getExamMetaByUserId = async (userID: string) => {
     where: {
       creatorID: userID,
     },
+    include: {
+      _count: {
+        select: {
+          Submission: true,
+        }
+      }
+    }
+
   });
   return exams;
 };

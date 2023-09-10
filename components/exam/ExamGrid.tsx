@@ -31,6 +31,7 @@ export function ExamGrid() {
         title: exam.title,
         questions: [],
         allowedAbilities: [],
+        submissionCount: exam._count.Submission, 
       };
       return e;
     });
@@ -60,7 +61,7 @@ export function ExamGrid() {
             <div className='-mx-4 flex flex-wrap'>
               {exams?.map((exam, index) => (
                 <div className='mb-4 w-1/3 px-4' key={index}>
-                  <ExamCard exam={exam} />
+                  <ExamCard exam={exam}/>
                 </div>
               ))}
             </div>
