@@ -1,6 +1,6 @@
 'use client';
 
-import { Button, Chip, CircularProgress, Divider, Typography } from '@mui/joy';
+import { Button, Chip, CircularProgress, Divider, Tooltip, Typography } from '@mui/joy';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ExamGrid } from '@/components/exam/ExamGrid';
@@ -38,6 +38,7 @@ export default function Page({ params }: { params: { classroomID: string } }) {
   const [alertType, setAlertType] = useState<AlertColor>('success');
   const [alertText, setAlertText] = useState('Initial Alert Text');
   const [exams, setExams] = useState([]);
+  const [users, setUsers] = useState(null);
   const values = { classroomName, classroomDesc, classroomID: params.classroomID };
   const setters = {
     setClassroomName,
@@ -56,6 +57,7 @@ export default function Page({ params }: { params: { classroomID: string } }) {
       setClassroomID(data.classroom.classroomID);
       setExams(data.classroom.exams);
       setIsCreator(data.isCreator);
+      setUsers(data.users);
     } else {
       console.log('Something bad happened while fetching classroom data: ', data.message);
       setAlertType(data.type);
@@ -130,10 +132,18 @@ export default function Page({ params }: { params: { classroomID: string } }) {
             {/* ------------------ */}
             <Divider className='bg-slate-200' />
             <div className='my-2 flex gap-1'>
-              <Avatar size='sm'>JG</Avatar>
-              <Avatar size='sm'>RM</Avatar>
-              <Avatar size='sm'>SB</Avatar>
-              <Avatar size='sm'>+9</Avatar>
+              { users &&
+                users.users.map((user : any) => {
+                  return (
+                      <Tooltip variant='soft' title={user.username} >
+                        <Avatar size='sm'>{ getInitials(user.username) }</Avatar> 
+                      </Tooltip>
+                  );
+                })
+              }
+              {
+                users && users._count.users > 4 && <Avatar size='sm'>+{users._count.users - 4}</Avatar>
+              }
 
               <Chip
                 className='float-right ml-auto'
@@ -160,4 +170,16 @@ export default function Page({ params }: { params: { classroomID: string } }) {
       </section>
     </>
   );
+}
+
+function getInitials(name: string) {
+  const words = name.split(' ');
+  if (words.length >= 2) {
+    const initials = words.slice(0, 2).map(word => word[0].toUpperCase()).join('');
+    return initials;
+  } else if (words.length === 1) {
+    return words[0][0].toUpperCase();
+  } else {
+    return '';
+  }
 }

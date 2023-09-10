@@ -36,8 +36,9 @@ export default function SubmissionTable({
 }: {
   rows: {
     name: string;
-    answered: number;
+    answered: string;
     correct: number;
+    integrityScore: number;
     marks: number;
     totalMarks: number;
     examID: string;
@@ -51,8 +52,8 @@ export default function SubmissionTable({
         <TableHead>
           <TableRow>
             <StyledTableCell>{header}</StyledTableCell>
-            <StyledTableCell>Answered</StyledTableCell>
-            <StyledTableCell>Correct</StyledTableCell>
+            <StyledTableCell>Submission Time</StyledTableCell>
+            <StyledTableCell>Integrity Score</StyledTableCell>
             <StyledTableCell>Marks</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -64,8 +65,8 @@ export default function SubmissionTable({
                   {row.name}
                 </Link>
               </TableCell>
-              <StyledTableCell>{row.answered}</StyledTableCell>
-              <StyledTableCell>{row.correct}</StyledTableCell>
+              <StyledTableCell>{ (new Date(row.answered)).toLocaleTimeString('en-US' , {hour12:true}) }</StyledTableCell>
+              <StyledTableCell>{row.integrityScore}</StyledTableCell>
               <StyledTableCell>{`${row.marks} / ${row.totalMarks}`}</StyledTableCell>
             </StyledTableRow>
           ))}

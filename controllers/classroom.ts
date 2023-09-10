@@ -157,10 +157,14 @@ export const getClassroom = async (classroomID: string, userID: string) => {
         message: `Classroom ${classroomID} not found in PrismaDB`,
       };
     }
+    const users = await getUsers(classroomID);
+    console.log(users);
+
     return {
       status: 200,
       classroom: classroom,
       isCreator: classroom.creatorID === userID,
+      users: users,
     };
   } catch (e) {
     console.log('Error invoking getClassroom: ', e);
@@ -252,3 +256,33 @@ export const inviteUserToClassroom = async (params: {
     type: 'error',
   };
 };
+
+export async function getUsers(classroomID : any) {
+  try {
+    const user_count = await prisma.classroom.findUnique({
+      where: {
+        classroomID: classroomID,
+      },
+      select: {
+        users: {
+          select: {
+            userID: true,
+            username: true,
+          }, 
+          take: 4,
+        },
+        _count: {
+          select: {
+            users: true,
+          }
+        }
+      },
+    });
+    // console.log(user_count);
+    return user_count;
+  }
+  catch (err) {
+    return null;
+  }
+  return null;
+}
