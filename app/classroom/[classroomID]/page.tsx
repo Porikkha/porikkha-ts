@@ -66,6 +66,16 @@ export default function Page({ params }: { params: { classroomID: string } }) {
     }
   };
 
+  const handleLeave = async () => {
+    const res = await fetch('/api/classroom/' + params.classroomID, {
+      method: 'POST',
+    });
+    const data = await res.json();
+    setAlertText(data.message);
+    setAlertType(data.type);
+    setShowAlert(true);
+  };
+
   useEffect(() => {
     fetchClassroomData();
   }, []);
@@ -111,9 +121,7 @@ export default function Page({ params }: { params: { classroomID: string } }) {
               {/* ------------------*/}
               <div className='float-right ml-auto'>
                 <BorderedButton
-                  onClick={() => {
-                    console.log('Hello');
-                  }}
+                  onClick={handleLeave}
                 >
                   Leave Room
                 </BorderedButton>

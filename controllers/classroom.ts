@@ -89,7 +89,7 @@ export const removeUserFromClassroom = async (classroomID: string, userID: strin
       return {
         status: 404,
         type: 'error',
-        message: `Cannot remove: User ${userID} does not exist in Classroom ${classroomID}`,
+        message: `Cannot remove: You are not in Classroom ${classroomID}`,
       };
     }
     const res = await prisma.classroom.update({
@@ -107,7 +107,7 @@ export const removeUserFromClassroom = async (classroomID: string, userID: strin
     return {
       status: 200,
       type: 'info',
-      message: `Server: User ${userID} removed from Classroom ${classroomID}`,
+      message: `You have been removed from Classroom ${classroomID}`,
     };
   } catch (err) {
     console.log('👎 Error invoking removeUserFromClassroom: ', err);
