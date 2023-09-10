@@ -118,7 +118,35 @@ export const removeUserFromClassroom = async (classroomID: string, userID: strin
     message: `Server: Error invoking removeUserFromClassroom`,
   };
 };
-
+export const updateClassroom = async (
+  classroomID: string,
+  name: string,
+  description: string
+) => {
+  try {
+    await prisma.classroom.update({
+      where: {
+        classroomID: classroomID,
+      },
+      data: {
+        name: name,
+        description: description,
+      },
+    });
+    return {
+      status: 200,
+      type: 'success',
+      message: `Server: Classroom ${classroomID} updated successfully`,
+    };
+  } catch (err) {
+    console.log('👎 Error invoking updateClassroom: ', err);
+  }
+  return {
+    status: 500,
+    type: 'error',
+    message: `Server: Error invoking updateClassroom`,
+  };
+};
 export const createClassroom = async (classroom: ClassroomInterface) => {
   try {
     await prisma.classroom.create({
@@ -293,7 +321,7 @@ export const inviteUserToClassroom = async (params: {
   };
 };
 
-export async function getUsers(classroomID : any) {
+export async function getUsers(classroomID: any) {
   try {
     const user_count = await prisma.classroom.findUnique({
       where: {
@@ -304,20 +332,19 @@ export async function getUsers(classroomID : any) {
           select: {
             userID: true,
             username: true,
-          }, 
+          },
           take: 4,
         },
         _count: {
           select: {
             users: true,
-          }
-        }
+          },
+        },
       },
     });
     // console.log(user_count);
     return user_count;
-  }
-  catch (err) {
+  } catch (err) {
     return null;
   }
   return null;

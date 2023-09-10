@@ -100,12 +100,14 @@ export default function Page({ params }: { params: { classroomID: string } }) {
                 {classroomName}
               </Typography>
               {/* ---------Added by shuaib---------*/}
-              <IconButton
-                sx={{ color: 'var(--clr-purple-1)' }}
-                onClick={() => setOpen(true)}
-              >
-                <EditNote />
-              </IconButton>
+              {isCreator && (
+                <IconButton
+                  sx={{ color: 'var(--clr-purple-1)' }}
+                  onClick={() => setOpen(true)}
+                >
+                  <EditNote />
+                </IconButton>
+              )}
               {/* ------------------*/}
               <div className='float-right ml-auto'>
                 <BorderedButton
@@ -132,18 +134,17 @@ export default function Page({ params }: { params: { classroomID: string } }) {
             {/* ------------------ */}
             <Divider className='bg-slate-200' />
             <div className='my-2 flex gap-1'>
-              { users &&
-                users.users.map((user : any) => {
+              {users &&
+                users.users.map((user: any) => {
                   return (
-                      <Tooltip variant='soft' title={user.username} >
-                        <Avatar size='sm'>{ getInitials(user.username) }</Avatar> 
-                      </Tooltip>
+                    <Tooltip variant='soft' title={user.username}>
+                      <Avatar size='sm'>{getInitials(user.username)}</Avatar>
+                    </Tooltip>
                   );
-                })
-              }
-              {
-                users && users._count.users > 4 && <Avatar size='sm'>+{users._count.users - 4}</Avatar>
-              }
+                })}
+              {users && users._count.users > 4 && (
+                <Avatar size='sm'>+{users._count.users - 4}</Avatar>
+              )}
 
               <Chip
                 className='float-right ml-auto'
@@ -175,7 +176,10 @@ export default function Page({ params }: { params: { classroomID: string } }) {
 function getInitials(name: string) {
   const words = name.split(' ');
   if (words.length >= 2) {
-    const initials = words.slice(0, 2).map(word => word[0].toUpperCase()).join('');
+    const initials = words
+      .slice(0, 2)
+      .map((word) => word[0].toUpperCase())
+      .join('');
     return initials;
   } else if (words.length === 1) {
     return words[0][0].toUpperCase();
