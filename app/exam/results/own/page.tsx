@@ -26,6 +26,9 @@ export default function Page({ params }: { params: { examID: string } }) {
     console.log('Slow Alert');
   }
 
+  const [totalIntegrity, setTotalIntegrity] = useState(0);
+  const [count, setCount] = useState(0);
+
   const values = {
     title: examTitle,
     xAxis,
@@ -40,6 +43,8 @@ export default function Page({ params }: { params: { examID: string } }) {
     setExamTitle('Your Analytics');
     // first clear all previous rows
     setRows([]);
+    let sum = 0;
+    
     data.rows.forEach((sub: any) => {
       setRows((prev) => [
         ...prev,
@@ -54,7 +59,12 @@ export default function Page({ params }: { params: { examID: string } }) {
           sub.student.userID
         ),
       ]);
+      sum += Number(sub.integrityScore);
     });
+
+    setTotalIntegrity(sum);
+    setCount(data.rows.length);
+
     const result = createMarkDistribution(data.rows);
     console.log(result);
     setXAxis(result.xAxis);
@@ -74,7 +84,7 @@ export default function Page({ params }: { params: { examID: string } }) {
             <SubmissionTable rows={rows} header={'Exam Name'}/>
           </div>
           <div className='col-span-4 flex h-screen flex-col space-y-6 bg-light-gray p-3'>
-            <Analytics values={values} />
+            <Analytics values={values} avgIntegrity={totalIntegrity / count} />
           </div>
         </div>
       </section>
