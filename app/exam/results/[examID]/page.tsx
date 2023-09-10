@@ -18,7 +18,7 @@ import Analytics from '@/components/results/Analytics';
 
 export default function Page({ params }: { params: { examID: string } }) {
   const searchParams = useSearchParams();
-  const [rows, setRows] = useState([createData('Deuce', 0, 0, 0, 0, 0)]);
+  const [rows, setRows] = useState([createData('Deuce', '7PM', 0, 0, 0, 0, 'None', 'None')]);
   const [examTitle, setExamTitle] = useState('Loading...');
   const [xAxis, setXAxis] = useState<number[]>([0, 10, 20, 30]);
   const [yData, setYData] = useState<number[]>([1, 1, 1, 1]);
@@ -32,6 +32,9 @@ export default function Page({ params }: { params: { examID: string } }) {
     yData,
   };
 
+  const [totalIntegrity, setTotalIntegrity] = useState(0);
+  const [count, setCount] = useState(0);
+
   const fetchSubmissions = async () => {
     const response = await fetch('/api/exams/results/' + params.examID, {
       method: 'GET',
@@ -41,19 +44,26 @@ export default function Page({ params }: { params: { examID: string } }) {
     setExamTitle(data.examTitle);
     // first clear all previous rows
     setRows([]);
+    let sum = 0;
     data.rows.forEach((sub: any) => {
       setRows((prev) => [
         ...prev,
         createData(
           sub.student.username,
-          sub.totalAnswered,
+          sub.submissionTime,
           sub.totalCorrect,
           sub.achievedMarks,
           sub.integrityScore,
-          sub.exam.totalMarks
+          sub.exam.totalMarks,
+          sub.exam.examID,
+          sub.student.userID
         ),
       ]);
+      sum += Number(sub.integrityScore);
     });
+    console.log("SUM ------------> ", sum);
+    setTotalIntegrity(sum);
+    setCount(data.rows.length);
     const result = createMarkDistribution(data.rows);
     console.log(result);
     setXAxis(result.xAxis);
@@ -70,10 +80,10 @@ export default function Page({ params }: { params: { examID: string } }) {
       <section className='w-full pl-16'>
         <div className='grid grid-cols-8 gap-7 p-5'>
           <div className='col-span-4 h-screen rounded-md bg-light-gray p-5'>
-            <SubmissionTable rows={rows} header={'Student Name'}/>
+            <SubmissionTable rows={rows} header={'Student Name'} />
           </div>
           <div className='col-span-4 flex h-screen flex-col space-y-6 bg-light-gray p-3'>
-            <Analytics values={values} />
+            <Analytics values={values} avgIntegrity={totalIntegrity/count} />
           </div>
         </div>
       </section>

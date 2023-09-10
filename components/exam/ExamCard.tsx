@@ -2,6 +2,7 @@ import formatTime, { formatDuration } from '@/utils/timeUtils';
 import { Button, Divider, Typography } from '@mui/joy';
 import { useRouter } from 'next/navigation';
 import { AiOutlineDelete } from 'react-icons/ai';
+import { LuActivity } from 'react-icons/lu';
 
 const ExamCard = ({ exam }: any) => {
   const router = useRouter();
@@ -36,16 +37,19 @@ const ExamCard = ({ exam }: any) => {
       <Typography className='pt-1 text-xs font-medium'>
         Duration : {formatDuration(exam.duration)}{' '}
       </Typography>
-      <Typography className='pt-1 text-xs font-medium'>Submissions : {0} </Typography>
+      <Typography className='pt-1 text-xs font-medium'>Submissions : {exam.submissionCount} </Typography>
 
-      <div className='flex w-full justify-between'>
+      <div className='flex w-full '>
         <Button
           className='mt-5 rounded-md border-2 border-purple-500 bg-white text-purple-500 hover:bg-purple-300 hover:text-white'
           onClick={() => editExam(exam.examID)}
         >
           View
         </Button>
-        <button className='mt-5 text-purple-500' onClick={() => deleteExam(exam.examID)}>
+        <button className='ml-auto mt-5 px-3 text-purple-500' onClick={() => router.push(`/exam/results/${exam.examID}`)}>
+          <LuActivity />
+        </button>
+        <button className='ml mt-5 text-purple-500' onClick={() => deleteExam(exam.examID)}>
           <AiOutlineDelete />
         </button>
       </div>

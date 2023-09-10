@@ -16,7 +16,7 @@ const SubmissionCard = ({ submission }: { submission: Submission }) => {
       <Divider className='bg-slate-200' />
       {/* <Typography className="text-xs pt-1 font-medium">Submission Time: { formatTime(submission?.submissionTime!)} </Typography> */}
       <Typography className='pt-1 text-xs font-medium'>
-        Score : {submission.achievedMarks}{' '}
+        Score : {submission.achievedMarks === -1 ? 'Ungraded' : submission.achievedMarks}{' '}
       </Typography>
 
       <div className='flex w-full justify-center'>

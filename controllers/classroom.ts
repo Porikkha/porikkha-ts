@@ -31,16 +31,16 @@ export const addUserToClassroom = async (classroomID: string, userID: string) =>
     if (classroom === null) {
       return {
         status: 404,
-        type: 'error',
-        message: `Server: Classroom ${classroomID} does not exist`,
+        type: 'warning',
+        message: `Classroom ${classroomID} does not exist`,
       };
     }
     const alreadyExists = await checkAlreadyExisting(classroomID, userID);
     if (alreadyExists) {
       return {
         status: 404,
-        type: 'error',
-        message: `Cannot add: User ${userID} already exists in Classroom ${classroomID}`,
+        type: 'info',
+        message: `You are already in Classroom ${classroomID}`,
       };
     }
     const res = await prisma.classroom.update({
@@ -57,8 +57,8 @@ export const addUserToClassroom = async (classroomID: string, userID: string) =>
     });
     return {
       status: 200,
-      type: 'info',
-      message: `Server: User ${userID} added to Classroom ${classroomID}`,
+      type: 'success',
+      message: `You have been added to Classroom ${classroomID}`,
     };
   } catch (err) {
     console.log('👎 Error invoking addUserToClassroom: ', err);
@@ -89,7 +89,7 @@ export const removeUserFromClassroom = async (classroomID: string, userID: strin
       return {
         status: 404,
         type: 'error',
-        message: `Cannot remove: User ${userID} does not exist in Classroom ${classroomID}`,
+        message: `Cannot remove: You are not in Classroom ${classroomID}`,
       };
     }
     const res = await prisma.classroom.update({
@@ -107,7 +107,7 @@ export const removeUserFromClassroom = async (classroomID: string, userID: strin
     return {
       status: 200,
       type: 'info',
-      message: `Server: User ${userID} removed from Classroom ${classroomID}`,
+      message: `You have been removed from Classroom ${classroomID}`,
     };
   } catch (err) {
     console.log('👎 Error invoking removeUserFromClassroom: ', err);
@@ -118,15 +118,49 @@ export const removeUserFromClassroom = async (classroomID: string, userID: strin
     message: `Server: Error invoking removeUserFromClassroom`,
   };
 };
-
-export const upsertClassroom = async (classroom: ClassroomInterface) => {
+export const updateClassroom = async (
+  classroomID: string,
+  name: string,
+  description: string
+) => {
   try {
-    await prisma.classroom.upsert({
+    await prisma.classroom.update({
       where: {
-        classroomID: classroom.classroomID,
+        classroomID: classroomID,
       },
-      update: classroom,
-      create: classroom,
+      data: {
+        name: name,
+        description: description,
+      },
+    });
+    return {
+      status: 200,
+      type: 'success',
+      message: `Server: Classroom ${classroomID} updated successfully`,
+    };
+  } catch (err) {
+    console.log('👎 Error invoking updateClassroom: ', err);
+  }
+  return {
+    status: 500,
+    type: 'error',
+    message: `Server: Error invoking updateClassroom`,
+  };
+};
+export const createClassroom = async (classroom: ClassroomInterface) => {
+  try {
+    await prisma.classroom.create({
+      data: {
+        classroomID: classroom.classroomID,
+        creatorID: classroom.creatorID,
+        name: classroom.name,
+        description: classroom.description,
+        users: {
+          connect: {
+            userID: classroom.creatorID,
+          },
+        },
+      },
     });
     console.log('✔️ Server: Classroom upsert successful on Prisma!');
     return {
@@ -134,9 +168,34 @@ export const upsertClassroom = async (classroom: ClassroomInterface) => {
       classroomID: classroom.classroomID,
     };
   } catch (e) {
-    console.log('👎 Error invoking upsertClassroom: ', e);
+    console.log('👎 Error invoking createClassroom: ', e);
   }
   return { status: 500 };
+};
+
+export const getAllJoinedClassrooms = async (userID: string) => {
+  try {
+    const classrooms = await prisma.classroom.findMany({
+      where: {
+        users: {
+          some: {
+            userID: userID,
+          },
+        },
+      },
+      include: {
+        creator: true,
+      },
+    });
+    return { status: 200, classrooms: classrooms };
+  } catch (err) {
+    console.log('Error invoking getAllJoinedClassrooms: ', err);
+  }
+  return {
+    status: 500,
+    message: 'There was an error fetching all joined classrooms',
+    type: 'error',
+  };
 };
 
 export const getClassroom = async (classroomID: string, userID: string) => {
@@ -144,6 +203,11 @@ export const getClassroom = async (classroomID: string, userID: string) => {
     const classroom = await prisma.classroom.findUnique({
       where: {
         classroomID: classroomID,
+        users: {
+          some: {
+            userID: userID,
+          },
+        },
       },
       include: {
         exams: true,
@@ -154,13 +218,17 @@ export const getClassroom = async (classroomID: string, userID: string) => {
       return {
         status: 404,
         type: 'error',
-        message: `Classroom ${classroomID} not found in PrismaDB`,
+        message: `Classroom ${classroomID} not found! You may not have access to it.`,
       };
     }
+    const users = await getUsers(classroomID);
+    console.log(users);
+
     return {
       status: 200,
       classroom: classroom,
       isCreator: classroom.creatorID === userID,
+      users: users,
     };
   } catch (e) {
     console.log('Error invoking getClassroom: ', e);
@@ -252,3 +320,32 @@ export const inviteUserToClassroom = async (params: {
     type: 'error',
   };
 };
+
+export async function getUsers(classroomID: any) {
+  try {
+    const user_count = await prisma.classroom.findUnique({
+      where: {
+        classroomID: classroomID,
+      },
+      select: {
+        users: {
+          select: {
+            userID: true,
+            username: true,
+          },
+          take: 4,
+        },
+        _count: {
+          select: {
+            users: true,
+          },
+        },
+      },
+    });
+    // console.log(user_count);
+    return user_count;
+  } catch (err) {
+    return null;
+  }
+  return null;
+}

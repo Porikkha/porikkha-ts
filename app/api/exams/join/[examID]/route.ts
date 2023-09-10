@@ -24,7 +24,14 @@ export async function GET(request: NextRequest, { params }: any) {
   } else if (canJoinResponse.status === 403) {
     return NextResponse.redirect(homeUrl + '/exam/preview/' + examID);
   }
-  const exam = await getExamWithoutAnswer(userID, examID);
-  console.log("🚀 ~ file: route.ts:28 ~ GET ~ exam:", exam);
-  return NextResponse.json({ status: 200, exam: exam });
+  const data = await getExamWithoutAnswer(userID, examID);
+  if (data === null) {
+    return NextResponse.redirect(homeUrl);
+  }
+  console.log('🚀 ~ file: route.ts:28 ~ GET ~ data:', data);
+  return NextResponse.json({
+    status: 200,
+    exam: data?.exam,
+    integrityScore: data?.integrityScore,
+  });
 }

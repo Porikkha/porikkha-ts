@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -35,10 +36,13 @@ export default function SubmissionTable({
 }: {
   rows: {
     name: string;
-    answered: number;
+    answered: string;
     correct: number;
+    integrityScore: number;
     marks: number;
     totalMarks: number;
+    examID: string;
+    studentID: string;
   }[];
   header: string;
 }) {
@@ -48,19 +52,21 @@ export default function SubmissionTable({
         <TableHead>
           <TableRow>
             <StyledTableCell>{header}</StyledTableCell>
-            <StyledTableCell>Answered</StyledTableCell>
-            <StyledTableCell>Correct</StyledTableCell>
+            <StyledTableCell>Submission Time</StyledTableCell>
+            <StyledTableCell>Integrity Score</StyledTableCell>
             <StyledTableCell>Marks</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => (
             <StyledTableRow key={row.name}>
-              <StyledTableCell component='th' scope='row'>
-                {row.name}
-              </StyledTableCell>
-              <StyledTableCell>{row.answered}</StyledTableCell>
-              <StyledTableCell>{row.correct}</StyledTableCell>
+              <TableCell component='th' scope='row'>
+                <Link href={`/exam/grade/${row.examID}/${row.studentID}`}>
+                  {row.name}
+                </Link>
+              </TableCell>
+              <StyledTableCell>{ (new Date(row.answered)).toLocaleTimeString('en-US' , {hour12:true}) }</StyledTableCell>
+              <StyledTableCell>{row.integrityScore}</StyledTableCell>
               <StyledTableCell>{`${row.marks} / ${row.totalMarks}`}</StyledTableCell>
             </StyledTableRow>
           ))}

@@ -19,6 +19,12 @@ export default interface Exam {
   duration: number;
   totalMarks: number;
   allowedAbilities: Object[];
+  submissionCount?: number;
+}
+
+export interface ExamResponse {
+  exam: Exam;
+  integrityScore: number;
 }
 
 export const dummyExam: Exam = {

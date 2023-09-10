@@ -16,6 +16,8 @@ export default function ResultCard({ title, examID, score, total }: any) {
         className='my-2 mx-5 bg-sky-100'
         color='primary'
         onClick={() => {
+          console.log("CLICKED ", examID);
+          router.push('/exam/view/' + examID);
         //   router.push('/exam/create/' + exam.examID);
         }}
         size='sm'

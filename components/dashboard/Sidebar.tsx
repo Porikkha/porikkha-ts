@@ -11,12 +11,56 @@ import {
   LuUser,
 } from 'react-icons/lu';
 
+import { BiAddToQueue } from 'react-icons/bi';
+import ExamInterface from '@/interfaces/Exam';
+import { useSession } from 'next-auth/react';
+import { addMinutes } from '@/utils/timeUtils';
+
 import { signOut } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Sidebar() {
+  const { data: session } = useSession();
+  const router = useRouter();
+  const handleCreateExam = async (e: any) => {
+    e.preventDefault();
+    const creatorID = session?.user?.id;
+    if (!creatorID) {
+      console.log('❌ ~ file: Nav.tsx:59 : creatorID not found');
+      return;
+    }
+    const exam: ExamInterface = {
+      creatorID: session?.user?.id!,
+      examID: '',
+      title: 'Exam Title',
+      description: 'Exam Description',
+      questions: [],
+      startTime: addMinutes(new Date(), 60),
+      duration: 30,
+      totalMarks: 0,
+      allowedAbilities: [
+        {
+          type: 'copy',
+          isAllowed: false,
+        },
+        {
+          type: 'print',
+          isAllowed: true,
+        },
+      ],
+    };
+    const response = await fetch('/api/exams', {
+      method: 'POST',
+      body: JSON.stringify({
+        exam: exam,
+      }),
+    });
+    const data = await response.json();
+    if (data.status == 200 && data.examID) router.push('/exam/create/' + data.examID);
+  };
   const handleLogout = () => {
     signOut();
     console.log('Logged Out');
@@ -44,8 +88,12 @@ export default function Sidebar() {
       <Link href='/profile'>
         <SideBarIcon icon={<LuUser />} />
       </Link>
-      <SideBarIcon icon={<LuSettings />} />
-      <SideBarIcon icon={<LuBarChart4 />} />
+      <div onClick={handleCreateExam}>
+        <SideBarIcon icon={<BiAddToQueue />} />
+      </div>
+      <Link href='/exam/results/own'>
+        <SideBarIcon icon={<LuBarChart4 />} />
+      </Link>
       <div onClick={handleLogout}>
         <SideBarIcon icon={<LuLogOut />} />
       </div>

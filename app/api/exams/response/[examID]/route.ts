@@ -20,7 +20,7 @@ export async function GET(request: NextRequest, { params }: any) {
 
   const userID = session?.user.id!; 
 
-  const stdID = params.stdID;
+  const stdID = session?.user.id!; 
   const examID = params.examID;
 
   // await autogradeAndUpdateSubmission(examID, stdID);
@@ -31,6 +31,13 @@ export async function GET(request: NextRequest, { params }: any) {
   if (exam?.creatorID != userID && stdID != userID) {
         return NextResponse.redirect(homeUrl);
   }
+//   console.log(" --------------------------- " , await hasExamEnded(examID) , "------------------------------------");
+  if (! (await hasExamEnded(examID)) ) {
+    return NextResponse.redirect(homeUrl);
+  } else {
+    console.log("Exam Ended Successfully");
+  }
+
   console.log("🚀 ~ file: route.ts:28 ~ GET ~ exam:", exam);
   const submission = await getSubmissionFromDatabase(examID, stdID);
   return NextResponse.json({ status: 200, exam: exam, submission: submission });

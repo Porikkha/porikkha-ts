@@ -99,6 +99,7 @@ export default function Page({ params }: { params: { examID: string } }) {
         setExam(exam);
         setQuestions(exam.questions);
         setLoading(false);
+        setIntegrityScore(data.integrityScore);
       }
     }
   };

@@ -18,13 +18,16 @@ import Analytics from '@/components/results/Analytics';
 
 export default function Page({ params }: { params: { examID: string } }) {
   const searchParams = useSearchParams();
-  const [rows, setRows] = useState([createData('Deuce', 0, 0, 0, 0, 0)]);
+  const [rows, setRows] = useState([createData('Deuce', '7PM', 0, 0, 0, 0, 'None', 'None')]);
   const [examTitle, setExamTitle] = useState('Loading...');
   const [xAxis, setXAxis] = useState<number[]>([0, 10, 20, 30]);
   const [yData, setYData] = useState<number[]>([1, 1, 1, 1]);
   if (searchParams.has('status') && searchParams.get('status') == 'success') {
     console.log('Slow Alert');
   }
+
+  const [totalIntegrity, setTotalIntegrity] = useState(0);
+  const [count, setCount] = useState(0);
 
   const values = {
     title: examTitle,
@@ -37,23 +40,31 @@ export default function Page({ params }: { params: { examID: string } }) {
       method: 'GET',
     });
     const data = await response.json();
-    console.log(data);
     setExamTitle('Your Analytics');
     // first clear all previous rows
     setRows([]);
+    let sum = 0;
+    console.log(data.rows);
     data.rows.forEach((sub: any) => {
       setRows((prev) => [
         ...prev,
         createData(
           sub.exam.title,
-          sub.totalAnswered,
+          sub.submissionTime,
           sub.totalCorrect,
           sub.achievedMarks,
           sub.integrityScore,
-          sub.exam.totalMarks
+          sub.exam.totalMarks,
+          sub.exam.examID,
+          sub.student.userID
         ),
       ]);
+      sum += Number(sub.integrityScore);
     });
+
+    setTotalIntegrity(sum);
+    setCount(data.rows.length);
+
     const result = createMarkDistribution(data.rows);
     console.log(result);
     setXAxis(result.xAxis);
@@ -73,7 +84,7 @@ export default function Page({ params }: { params: { examID: string } }) {
             <SubmissionTable rows={rows} header={'Exam Name'}/>
           </div>
           <div className='col-span-4 flex h-screen flex-col space-y-6 bg-light-gray p-3'>
-            <Analytics values={values} />
+            <Analytics values={values} avgIntegrity={totalIntegrity / count} />
           </div>
         </div>
       </section>

@@ -28,15 +28,15 @@ import ExamGradingBanner from '@/components/exam/ExamGradingBanner';
 import { exampleSubmission } from '@/interfaces/Submission';
 import GradeQuestion from '@/components/questions/GradeQuestion';
 
-export default function Page({ params }: { params: { examID: string; stdID: string } }) {
-  console.log(params.examID, params.stdID);
+export default function Page({ params }: { params: { examID: string;  } }) {
+  // console.log(params.examID, params.stdID);
 
   const router = useRouter();
   const [exam, setExam] = useState(dummyExam);
   const [submission, setSubmission] = useState<Submission >(); // exampleSubmission);
 
   const fetchExam = async (examID: string) => {
-    const response = await fetch(`/api/exams/response/${params.examID}/${params.stdID}`, {
+    const response = await fetch(`/api/exams/response/${params.examID}`, {
       method: 'GET',
     });
     if (response.redirected) {
@@ -53,23 +53,7 @@ export default function Page({ params }: { params: { examID: string; stdID: stri
       }
     }
   };
-
-    const handleSubmission = async (e: any) => {
-        console.log("Clicked");
-        // submission.achievedMarks=20;
-        e.preventDefault();
-        const response = await fetch(`/api/exams/response/`, {
-            method: 'POST',
-            body: JSON.stringify(submission),
-        });
-        const body = await response.json();
-        if (body.status == 200) {
-            router.push(`/exam/results/${params.examID}`);
-        }
-        // if (response.redirected) {
-        //     router.push(response.url);
-        // }
-    }
+    
     useEffect(() => {
         fetchExam(params.examID);
     }, []);
@@ -82,15 +66,7 @@ export default function Page({ params }: { params: { examID: string; stdID: stri
         <div className='w-4/5 m-auto'>
         {
             exam.questions.map((question: QuestionInterface, index: number) => {
-                return <GradeQuestion view={false} qdata={question} adata={submission.answers[index]} setScore={(score: number) => {
-                    console.log("Score: ", score) 
-                    let newSubmission = {...submission};
-                    newSubmission.answers[index].score = Number(score);
-                    newSubmission.achievedMarks = newSubmission.answers.reduce((acc, cur) => acc + cur.score! , 0);
-                    setSubmission(newSubmission);
-                    console.log(submission);
-                    // submission.answers[index].score = score;
-                    // submission.achievedMarks
+                return <GradeQuestion view={true} qdata={question} adata={submission.answers[index]} setScore={(score: number) => {
                 }}/>
             })
         } 
@@ -98,16 +74,7 @@ export default function Page({ params }: { params: { examID: string; stdID: stri
         
         </>)
       }
-      <div className='mx-auto w-4/5'>
-        <form className='float-right py-5' onSubmit={handleSubmission}>
-          <button
-            type='submit'
-            className='rounded-md bg-purple-700/70 px-4 py-2 text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-green-500'
-          >
-            Submit{' '}
-          </button>
-        </form>
-      </div>
+
     </div>
     </>
   );
