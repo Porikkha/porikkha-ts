@@ -19,6 +19,7 @@ export default interface Exam {
   duration: number;
   totalMarks: number;
   allowedAbilities: Object[];
+  submissionCount?: number;
 }
 
 export interface ExamResponse {

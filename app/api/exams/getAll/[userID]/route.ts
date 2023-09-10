@@ -26,5 +26,7 @@ import { getExamMetaByUserId } from '@/controllers/examRepo';
 export async function GET(request: NextRequest, { params }: any) {
   const userID = params.userID;
   const exams = await getExamMetaByUserId(userID);
+  console.log('---------------------------------');
+  console.log(exams);
   return NextResponse.json({ status: 200, exams: exams });
 }

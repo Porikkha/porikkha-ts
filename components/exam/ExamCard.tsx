@@ -36,7 +36,7 @@ const ExamCard = ({ exam }: any) => {
       <Typography className='pt-1 text-xs font-medium'>
         Duration : {formatDuration(exam.duration)}{' '}
       </Typography>
-      <Typography className='pt-1 text-xs font-medium'>Submissions : {0} </Typography>
+      <Typography className='pt-1 text-xs font-medium'>Submissions : {exam.submissionCount} </Typography>
 
       <div className='flex w-full justify-between'>
         <Button

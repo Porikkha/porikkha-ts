@@ -26,6 +26,7 @@ export function SubmissionGrid() {
       '🚀 ~ file: page.tsx:37 ~ newSubmissionList ~ newSubmissionList:',
       newSubmissionList
     );
+
     setSubmissions(newSubmissionList);
     setLoading(false);
   };
