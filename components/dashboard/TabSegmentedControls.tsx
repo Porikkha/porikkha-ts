@@ -6,6 +6,7 @@ import TabPanel from '@mui/joy/TabPanel';
 import Calendar from './Calendar';
 import PublishedResults from './PublishedResults';
 import Notifications from './Notifications';
+import Classrooms from './Classrooms';
 
 export default function TabsSegmentedControls() {
   return (
@@ -36,6 +37,9 @@ export default function TabsSegmentedControls() {
       </TabPanel>
       <TabPanel value={2}>
         <PublishedResults />
+      </TabPanel>
+      <TabPanel value={3}>
+        <Classrooms />
       </TabPanel>
     </Tabs>
   );

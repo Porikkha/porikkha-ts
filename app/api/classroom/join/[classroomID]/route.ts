@@ -13,6 +13,6 @@ export async function POST(
         return NextResponse.redirect('/');
     }
     const userID = session?.user?.id;
-    const res = addUserToClassroom(classroomID, userID);
+    const res = await addUserToClassroom(classroomID, userID);
     return NextResponse.json(res);
 }

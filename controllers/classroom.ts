@@ -31,16 +31,16 @@ export const addUserToClassroom = async (classroomID: string, userID: string) =>
     if (classroom === null) {
       return {
         status: 404,
-        type: 'error',
-        message: `Server: Classroom ${classroomID} does not exist`,
+        type: 'warning',
+        message: `Classroom ${classroomID} does not exist`,
       };
     }
     const alreadyExists = await checkAlreadyExisting(classroomID, userID);
     if (alreadyExists) {
       return {
         status: 404,
-        type: 'error',
-        message: `Cannot add: User ${userID} already exists in Classroom ${classroomID}`,
+        type: 'info',
+        message: `You are already in Classroom ${classroomID}`,
       };
     }
     const res = await prisma.classroom.update({
@@ -57,8 +57,8 @@ export const addUserToClassroom = async (classroomID: string, userID: string) =>
     });
     return {
       status: 200,
-      type: 'info',
-      message: `Server: User ${userID} added to Classroom ${classroomID}`,
+      type: 'success',
+      message: `You have been added to Classroom ${classroomID}`,
     };
   } catch (err) {
     console.log('👎 Error invoking addUserToClassroom: ', err);
@@ -119,14 +119,20 @@ export const removeUserFromClassroom = async (classroomID: string, userID: strin
   };
 };
 
-export const upsertClassroom = async (classroom: ClassroomInterface) => {
+export const createClassroom = async (classroom: ClassroomInterface) => {
   try {
-    await prisma.classroom.upsert({
-      where: {
+    await prisma.classroom.create({
+      data: {
         classroomID: classroom.classroomID,
+        creatorID: classroom.creatorID,
+        name: classroom.name,
+        description: classroom.description,
+        users: {
+          connect: {
+            userID: classroom.creatorID,
+          },
+        },
       },
-      update: classroom,
-      create: classroom,
     });
     console.log('✔️ Server: Classroom upsert successful on Prisma!');
     return {
@@ -134,9 +140,34 @@ export const upsertClassroom = async (classroom: ClassroomInterface) => {
       classroomID: classroom.classroomID,
     };
   } catch (e) {
-    console.log('👎 Error invoking upsertClassroom: ', e);
+    console.log('👎 Error invoking createClassroom: ', e);
   }
   return { status: 500 };
+};
+
+export const getAllJoinedClassrooms = async (userID: string) => {
+  try {
+    const classrooms = await prisma.classroom.findMany({
+      where: {
+        users: {
+          some: {
+            userID: userID,
+          },
+        },
+      },
+      include: {
+        creator: true,
+      },
+    });
+    return { status: 200, classrooms: classrooms };
+  } catch (err) {
+    console.log('Error invoking getAllJoinedClassrooms: ', err);
+  }
+  return {
+    status: 500,
+    message: 'There was an error fetching all joined classrooms',
+    type: 'error',
+  };
 };
 
 export const getClassroom = async (classroomID: string, userID: string) => {
@@ -144,6 +175,11 @@ export const getClassroom = async (classroomID: string, userID: string) => {
     const classroom = await prisma.classroom.findUnique({
       where: {
         classroomID: classroomID,
+        users: {
+          some: {
+            userID: userID,
+          },
+        },
       },
       include: {
         exams: true,
@@ -154,7 +190,7 @@ export const getClassroom = async (classroomID: string, userID: string) => {
       return {
         status: 404,
         type: 'error',
-        message: `Classroom ${classroomID} not found in PrismaDB`,
+        message: `Classroom ${classroomID} not found! You may not have access to it.`,
       };
     }
     const users = await getUsers(classroomID);
